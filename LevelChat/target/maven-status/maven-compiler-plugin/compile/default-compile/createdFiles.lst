@@ -1,0 +1,8 @@
+net\ncteam\levelchat\web\UserLogController.class
+net\ncteam\levelchat\dao\UserLogDAO.class
+net\ncteam\levelchat\dao\UserLogDAOImpl.class
+net\ncteam\levelchat\domain\UsersLog.class
+net\ncteam\levelchat\service\UserLogService.class
+net\ncteam\levelchat\authentication\AuthenticationSuccessHandlerImpl.class
+net\ncteam\levelchat\service\UserLogServiceImpl.class
+net\ncteam\levelchat\domain\Role.class
