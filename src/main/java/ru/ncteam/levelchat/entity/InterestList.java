@@ -6,15 +6,17 @@ import javax.persistence.*;
 @Table(name = "INTEREST_LIST")
 public class InterestList {
     @Id
-    @GeneratedValue
     @Column(name = "LIST_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
+    @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long listId;
 
     @Column(name = "INTEREST_GROUP", unique = true)
     private long interestGroup;
 
-    @Column(name = "INTEREST_ID")
-    private long interestId;
+    @ManyToOne
+    @JoinColumn(name = "INTEREST_ID", nullable = false)
+    private Interests interest;
 
     public long getListId() {
         return listId;
@@ -32,11 +34,11 @@ public class InterestList {
         this.interestGroup = interestGroup;
     }
 
-    public long getInterestId() {
-        return interestId;
+    public Interests getInterests() {
+        return interest;
     }
 
-    public void setInterestId(long interestId) {
-        this.interestId = interestId;
+    public void setInterest(Interests interest) {
+        this.interest = interest;
     }
 }

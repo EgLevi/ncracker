@@ -8,7 +8,7 @@
     <name>ru.ncteam.levelchat Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <properties>
-        <hibernate-version>5.2.8.Final</hibernate-version>
+        <hibernate-version>5.2.5.Final</hibernate-version>
         <spring.version>4.3.6.RELEASE</spring.version>
         <spring-security-version>4.2.1.RELEASE</spring-security-version>
     </properties>
@@ -22,8 +22,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring 3 dependencies -->
-        <!-- Spring 3 dependencies -->
+        <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -33,6 +32,18 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
@@ -63,7 +74,6 @@
         </dependency>
 
         <!-- Hibernate -->
-        <!-- to start need only this -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -113,13 +123,21 @@
             <artifactId>hibernate-ehcache</artifactId>
             <version>${hibernate-version}</version>
         </dependency>
-        <!--END Hibernate -->
 
+        <!--Servlets-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+        
+        <!--jstl-->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
 
     </dependencies>
     <build>

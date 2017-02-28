@@ -7,15 +7,17 @@ import java.sql.Blob;
 @Table(name = "PHOTO_LIB")
 public class PhotoLib {
     @Id
-    @GeneratedValue
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
+    @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long id;
 
     @Column(name = "PHOTO")
     private Blob photo;
 
-    @Column(name = "USER_ID")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private UserInfo userInfo;
 
     public long getId() {
         return id;
@@ -33,11 +35,11 @@ public class PhotoLib {
         this.photo = photo;
     }
 
-    public long getUserId() {
-        return userId;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

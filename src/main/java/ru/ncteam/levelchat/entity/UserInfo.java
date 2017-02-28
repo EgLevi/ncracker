@@ -1,16 +1,18 @@
 package ru.ncteam.levelchat.entity;
 
-import com.sun.istack.internal.NotNull;
 
 import javax.persistence.*;
 import java.sql.Blob;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER_INFO")
 public class UserInfo {
     @Id
-    @GeneratedValue
     @Column(name = "USER_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
+    @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long user_id;
 
     @Column(name = "NAME", length = 30)
@@ -34,7 +36,6 @@ public class UserInfo {
     @Column(name = "LOGIN", length = 100, unique = true)
     private String login;
 
-    @NotNull
     @Column(name = "PASSWORD", length = 100)
     private String password;
 
@@ -43,6 +44,30 @@ public class UserInfo {
 
     @Column(name = "PHOTO_AVA")
     private Blob photo_ava;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable(name = "USERS_ROLES",
+            joinColumns = {@JoinColumn(name = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
+    private Set<Role> roles = new HashSet<Role>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable(name = "USER_INTEREST",
+            joinColumns = {@JoinColumn(name = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "INTEREST_ID")})
+    private Set<Interests> interests = new HashSet<Interests>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
+    public Set<Messages> messages = new HashSet<Messages>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
+    public Set<PhotoLib> photoLibs = new HashSet<PhotoLib>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
+    public Set<UserData> userDatas = new HashSet<UserData>();
 
     public long getUser_id() {
         return user_id;
@@ -130,5 +155,53 @@ public class UserInfo {
 
     public void setPhoto_ava(Blob photo_ava) {
         this.photo_ava = photo_ava;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Set<Interests> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(Set<Interests> interests) {
+        this.interests = interests;
+    }
+
+    public Set<ChatGroup> getChatGroups() {
+        return chatGroups;
+    }
+
+    public void setChatGroups(Set<ChatGroup> chatGroups) {
+        this.chatGroups = chatGroups;
+    }
+
+    public Set<Messages> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Messages> messages) {
+        this.messages = messages;
+    }
+
+    public Set<PhotoLib> getPhotoLibs() {
+        return photoLibs;
+    }
+
+    public void setPhotoLibs(Set<PhotoLib> photoLibs) {
+        this.photoLibs = photoLibs;
+    }
+
+    public Set<UserData> getUserDatas() {
+        return userDatas;
+    }
+
+    public void setUserDatas(Set<UserData> userDatas) {
+        this.userDatas = userDatas;
     }
 }

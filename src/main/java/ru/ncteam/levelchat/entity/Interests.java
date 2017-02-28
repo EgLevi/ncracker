@@ -1,20 +1,27 @@
 package ru.ncteam.levelchat.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "INTERESTS")
 public class Interests {
     @Id
-    @GeneratedValue
     @Column(name = "INTEREST_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
+    @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long interestId;
 
     @Column(name = "INTEREST_NAME", length = 130, unique = true)
     private String interestName;
 
-    @Column(name = "CATEGORY_ID")
-    private long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "CATEGORY_ID", nullable = false)
+    private CategoryInterest categoryInterest;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interest")
+    public Set<InterestList> interestLists = new HashSet<InterestList>();
 
     public long getInterestId() {
         return interestId;
@@ -32,11 +39,19 @@ public class Interests {
         this.interestName = interestName;
     }
 
-    public long getCategoryId() {
-        return categoryId;
+    public CategoryInterest getCategoryInterest() {
+        return categoryInterest;
     }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryInterest(CategoryInterest categoryInterest) {
+        this.categoryInterest = categoryInterest;
+    }
+
+    public Set<InterestList> getInterestLists() {
+        return interestLists;
+    }
+
+    public void setInterestLists(Set<InterestList> interestLists) {
+        this.interestLists = interestLists;
     }
 }

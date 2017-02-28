@@ -6,15 +6,18 @@ import javax.persistence.*;
 @Table(name = "CHAT_GROUP")
 public class ChatGroup {
     @Id
-    @GeneratedValue
     @Column(name = "GROUP_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
+    @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long groupId;
 
-    @Column(name = "USER_ID")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private UserInfo user;
 
-    @Column(name = "CHAT_ID")
-    private long chatId;
+    @ManyToOne
+    @JoinColumn(name = "CHAT_ID", nullable = false)
+    private Chat chat;
 
     public long getGroupId() {
         return groupId;
@@ -24,19 +27,19 @@ public class ChatGroup {
         this.groupId = groupId;
     }
 
-    public long getUserId() {
-        return userId;
+    public UserInfo getUser() {
+        return user;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserInfo(UserInfo user) {
+        this.user = user;
     }
 
-    public long getChatId() {
-        return chatId;
+    public Chat getChat() {
+        return chat;
     }
 
-    public void setChatId(long chatId) {
-        this.chatId = chatId;
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 }

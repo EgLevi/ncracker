@@ -2,23 +2,31 @@ package ru.ncteam.levelchat.entity;
 
 import javax.persistence.*;
 import java.sql.Blob;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER_DATA")
 public class UserData {
     @Id
-    @GeneratedValue
     @Column(name = "DATA_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
+    @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long dataId;
 
     @Column(name = "DATA")
     private Blob data;
 
-    @Column(name = "TYPE")
-    private String type;
+    @ManyToOne
+    @JoinColumn(name = "TYPE", nullable = false)
+    private TypeData type;
 
-    @Column(name = "USER_ID")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private UserInfo userInfo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userData")
+    public Set<Messages> messages = new HashSet<Messages>();
 
     public long getDataId() {
         return dataId;
@@ -36,19 +44,27 @@ public class UserData {
         this.data = data;
     }
 
-    public String getType() {
+    public TypeData getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TypeData type) {
         this.type = type;
     }
 
-    public long getUserId() {
-        return userId;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public Set<Messages> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Messages> messages) {
+        this.messages = messages;
     }
 }

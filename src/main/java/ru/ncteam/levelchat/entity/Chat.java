@@ -1,13 +1,16 @@
 package ru.ncteam.levelchat.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "CHAT")
 public class Chat {
     @Id
-    @GeneratedValue
     @Column(name = "CHAT_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
+    @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long chatId;
 
     @Column(name = "NAME_CHAT", length = 100)
@@ -19,11 +22,18 @@ public class Chat {
     @Column(name = "LIST_ID")
     private long listId;
 
-    @Column(name = "LEVEL_ID")
-    private long levelId;
+    @ManyToOne
+    @JoinColumn(name = "LEVEL_ID", nullable = false)
+    private Levels level;
 
     @Column(name = "PERSONAL_CHAT")
     private boolean isPersonalChat;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
+    public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
+    public Set<Messages> messages = new HashSet<Messages>();
 
     public long getChatId() {
         return chatId;
@@ -57,12 +67,12 @@ public class Chat {
         this.listId = listId;
     }
 
-    public long getLevelId() {
-        return levelId;
+    public Levels getLevel() {
+        return level;
     }
 
-    public void setLevelId(long levelId) {
-        this.levelId = levelId;
+    public void setLevel(Levels level) {
+        this.level = level;
     }
 
     public boolean isPersonalChat() {
@@ -71,5 +81,21 @@ public class Chat {
 
     public void setPersonalChat(boolean personalChat) {
         isPersonalChat = personalChat;
+    }
+
+    public Set<ChatGroup> getChatGroups() {
+        return chatGroups;
+    }
+
+    public void setChatGroups(Set<ChatGroup> chatGroups) {
+        this.chatGroups = chatGroups;
+    }
+
+    public Set<Messages> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Messages> messages) {
+        this.messages = messages;
     }
 }

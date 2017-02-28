@@ -6,21 +6,25 @@ import javax.persistence.*;
 @Table(name = "MESSAGES")
 public class Messages {
     @Id
-    @GeneratedValue
     @Column(name = "MESSAGE_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
+    @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long messageId;
 
     @Column(name = "TWXT_MSG", length = 4000)
     private long textMessage;
 
-    @Column(name = "CHAT_ID")
-    private long chatId;
+    @ManyToOne
+    @JoinColumn(name = "CHAT_ID", nullable = false)
+    private Chat chat;
 
-    @Column(name = "USER_ID")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private UserInfo userInfo;
 
-    @Column(name = "DATA_ID")
-    private long dataId;
+    @ManyToOne
+    @JoinColumn(name = "DATA_ID", nullable = false)
+    private UserData userData;
 
     public long getMessageId() {
         return messageId;
@@ -38,27 +42,27 @@ public class Messages {
         this.textMessage = textMessage;
     }
 
-    public long getChatId() {
-        return chatId;
+    public Chat getChat() {
+        return chat;
     }
 
-    public void setChatId(long chatId) {
-        this.chatId = chatId;
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 
-    public long getUserId() {
-        return userId;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
-    public long getDataId() {
-        return dataId;
+    public UserData getUserData() {
+        return userData;
     }
 
-    public void setDataId(long dataId) {
-        this.dataId = dataId;
+    public void setUserData(UserData userData) {
+        this.userData = userData;
     }
 }
