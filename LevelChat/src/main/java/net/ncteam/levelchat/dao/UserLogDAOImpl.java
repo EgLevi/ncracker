@@ -40,9 +40,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class UserLogDAOImpl implements UserDetailsService, UserLogDAO  {
 
+	//дл€ работы с базой данных, интерфейс предоставл€ет возможность получени€ сессии
 	private SessionFactory sessionFactory;
 	
+	//класс дл€ шифровани€ паролей в базе 
 	private BCryptPasswordEncoder bcryptEncoder;
+	
 	
 	public void setSessionFactory (SessionFactory sessionFactory)
 	{
@@ -53,10 +56,11 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO  {
         this.bcryptEncoder = bcryptEncoder;
     }
 
+	//метод добавл€ющий user'а в базу
 	@Transactional
 	public String addUser(UserInfo userInfo) {
 		
-		if (existUser(userInfo))
+		if (existUser(userInfo))//если пользователь с таким логином не существует, то пытаемс€ добавить пользовател€
 		{
 			userInfo.setPassword(bcryptEncoder.encode(userInfo.getPassword()));
 			Role role=new Role();
@@ -81,21 +85,20 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO  {
 		}
 	}
 	
+	//функци€ проверки существовани€ пользовател€ с заданным именем (возвращает true, если пользовател€ нет)
 	@Transactional
 	public boolean existUser(UserInfo userInfo) {
-		//return sessionFactory.getCurrentSession().find("from UsersLog where login='"+userLog.getLogin()+"'").isEmpty();
-		//return true;
-		return sessionFactory.getCurrentSession().createQuery("from UsersLog where login='"
-		+userInfo.getLogin()+"'").list().isEmpty();
+		return sessionFactory.getCurrentSession().createQuery("from UserInfo u where u.login='"
+			+userInfo.getLogin()+"'").list().isEmpty();
 	}
-
+	//эта функци€ пока нигде не используетс€
 	@SuppressWarnings("unchecked")
 	public List<UsersLog> listUser() {
 
 		return sessionFactory.getCurrentSession().createQuery("from UsersLog")
 			.list();
 	}
-
+	//эта функци€ пока нигде не используетс€
 	public void removeUser(Integer iduserlog) {
 		UsersLog userLog = (UsersLog) sessionFactory.getCurrentSession().load(
 				UsersLog.class, iduserlog);
@@ -105,7 +108,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO  {
 
 	}
 	
-	
+	//эта функци€ пока нигде не используетс€
 	@Transactional
 	public List<String> getMessages(String username)
 	       throws DataAccessException
@@ -126,6 +129,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO  {
 		return messages;
 	}
 	
+	//эта функци€ нигде не используетс€
 	@Transactional
 	public List<String> getMessages(String username, int mid)
 	       throws DataAccessException
@@ -146,6 +150,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO  {
 		return messages;
 	}
 	
+	//эта функци€ нигде не используетс€
 	@Transactional
 	public void addMessage(String username, String message, int mid)
 	       throws DataAccessException
@@ -171,6 +176,8 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO  {
 		sessionFactory.getCurrentSession().save(mes);*/
 	}
 
+	//функци€, предоставл€юща€ spring-security данные пользовател€ с определЄнным логином (логин, пароль, права)
+	//чтобы модуль безопасности мог проверить правильность введЄнного парол€ и обладание требуемыми правами доступа
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		String strQuery = "from UserInfo u where u.login='"+username+"'";

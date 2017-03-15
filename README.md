@@ -1,2 +1,3 @@
 # ncteamproject
-testing branch
+Чтобы просто запустить проект, нужно файл LevelChat.war заdeployить на tomcat, например
+Можео весб проет посмотреть в Eclipse, файл проекта здесь тоже имеется

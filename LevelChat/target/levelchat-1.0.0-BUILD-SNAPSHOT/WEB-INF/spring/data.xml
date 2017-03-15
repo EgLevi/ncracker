@@ -50,10 +50,10 @@
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="net.ncteam.levelchat.domain" />
+		<property name="packagesToScan" value="net.ncteam.levelchat.domain" /><!-- Указывает папку, в которой нужно искать сущности для маппинга в БД -->
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop><!-- хиберней сам создаст таблицы, у того пользователя, который указан в фале jdbc.properties (если они не существуют) -->
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
 				<prop key="hibernate.connection.charSet">UTF-8</prop>

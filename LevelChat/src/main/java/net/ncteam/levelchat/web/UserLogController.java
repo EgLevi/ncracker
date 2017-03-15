@@ -36,6 +36,7 @@ public class UserLogController {
 	@Qualifier("UserLogService")
 	private UserLogService userLogService;
 
+	//это пока лишний метод
 	@RequestMapping("/index")
 	public String listContacts(Map<String, Object> map) {
 
@@ -45,18 +46,19 @@ public class UserLogController {
 		return "index";
 	}
 	
+	//отправляет пользователя на страницу login'а
 	@RequestMapping("/login")
 	public String login() {
-		System.out.println("v222222222");
 		return "login";
 	}
 	
+	//при обращении пользователя на сайт, отправка ему страницы пользователя
 	@RequestMapping("/")
 	public String startPage() {
 		return "userpage";
 	}
 	
-	
+	//отправляет пользователя на страницу user'а
 	@RequestMapping("/userpage")
 	public String userPage(@CurrentUser User user,Map<String, Object> map) {
 		
@@ -66,6 +68,8 @@ public class UserLogController {
 		return "userpage";
 	}
 	
+	
+	//этот метод пока не используется
 	@RequestMapping(value = "/ajaxadd", method = RequestMethod.GET)
     @ResponseBody
     public Set<String> ajaxAddMessage(@CurrentUser User user, String mes, int mid) {
@@ -79,10 +83,10 @@ public class UserLogController {
         return records;
     }
 	
-	
-	 @RequestMapping(value = "/ajax", method = RequestMethod.GET)
-	    @ResponseBody
-	    public List<String> ajaxChat(@CurrentUser User user, int mid) {
+	//этот метод пока не используется
+	@RequestMapping(value = "/ajax", method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> ajaxChat(@CurrentUser User user, int mid) {
 		 
 	        /*Set<String> records = new HashSet<String>();
 	        records.add("Record #1");
@@ -95,26 +99,28 @@ public class UserLogController {
 	    }
 	 
 	 
-	
+	//отправляет пользователя на страницу admin'а
 	@RequestMapping("/adminpage")
 	public String adminPage() {
 		return "adminpage";
 	}
 	
+	
+	//отправляет пользователя на страницу registration
 	@RequestMapping("/registration")
 	public String registrationPage() {
 		return "registration";
 	}
 	
-	
+	//пользователь ввёл данные для регистрации, контроллер пытется добавить пользователя через service-слой
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public String addContact(@ModelAttribute("usersLog") UserInfo userInfo,
 			BindingResult result) {
 
 		if(userLogService.addUser(userInfo).equals("success"))
 		{
-			return "redirect:/login";
+			return "redirect:/userpage";
 		}
-		return "redirect:/registration";
+		return "redirect:/registration?error";
 	}
 }

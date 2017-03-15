@@ -5,6 +5,18 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
+<!-- intercept-url - url, который прослушивает spring-security
+и в зависимости прав, назначенных на этот url разрешает или блокирует доступ пользователя
+form-login описывает взаимодействие с login страницей, login-page куда нужно отправить пользователя,
+если он ещё не залогинен,
+username-parameter - то, чему должно равняться атрибут name поля ввода input в форме логина,
+чтобы spring-security понял, что этот input отвечает за имя пользователя,
+password-parameter - то, чему должно равняться атрибут name поля ввода input в форме логина,
+чтобы spring-security понял, что этот input отвечает за пароль пользователя,
+login-processing-url - то, чему должен равняться атрибут action формы логина (url(относительный),
+на который отпраляются введённые данные (поэтому spring-security понимает, что эти данные предназначены ему))
+authentication-success-handler-ref - в случае успешной идентификации и аутентификации передаётся упраление этому бину(компоненту, классу)
+ -->
 	
 	<http use-expressions="true">
 		<intercept-url pattern="/" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
@@ -21,23 +33,29 @@ http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 		/>
 		<logout logout-url="/logout" logout-success-url="/login" />
 		
+		<!--менеджер сессий  -->
 		<session-management>
+		<!-- бин внутри этого тэга описывает возможности по параллельным сессиям
+		(т.е. управляет возможностью открытия разных сессий для одного пользователя, например с разных устройств)-->
   			<concurrency-control session-registry-alias="sessionRegistry"/>
 		</session-management>
 		
-		<!--<anonymous username="guest" granted-authority="ROLE_ANONYMOUS" />  -->
 		<remember-me/>
+		<!-- пока не используем специальные csrf-токены, которые должны отпраляться клиентом при запросах -->
 		<csrf disabled="true"/>
 	</http>
 	
+	<!-- Менеджер аутентификации, здесь мы пишем свой бин, в котором был переопределён метод loadUserByUsername(String username),
+	что делает эта функция смотреть в классе UserLogDAOImpl этого проекта -->
 	<authentication-manager>
         <authentication-provider user-service-ref="UserLogDAOImpl">
+        <!-- У класса UserLogDAOImpl есть поле bcryptEncoder, которое spring проинжектит описанным ниже бином -->
         	<password-encoder ref="bcryptEncoder"/>
         </authentication-provider>
     </authentication-manager>
 	
+	<!-- бин, который использовался выше, в нём описываются действия при успешной аутентификации -->
 	<beans:bean id="successHandler" class="net.ncteam.levelchat.authentication.AuthenticationSuccessHandlerImpl"/>
-    
     
 	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
 	
