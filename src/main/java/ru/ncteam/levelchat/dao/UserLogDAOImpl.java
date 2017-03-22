@@ -36,7 +36,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     @Transactional
     public String addUser(UserInfo userInfo) {
 
-        if (existUser(userInfo))//���� ������������ � ����� ������� �� ����������, �� �������� �������� ������������
+        if (existUser(userInfo))
         {
             userInfo.setPassword(bcryptEncoder.encode(userInfo.getPassword()));
             Role role = new Role();
@@ -56,18 +56,16 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         }
     }
 
-    //������� �������� ������������� ������������ � �������� ������ (���������� true, ���� ������������ ���)
     @Transactional
     public boolean existUser(UserInfo userInfo) {
         return sessionFactory.getCurrentSession().createQuery("from UserInfo u where u.login='"
                 + userInfo.getLogin() + "'").list().isEmpty();
     }
 
-    //��� ������� ���� ����� �� ������������
     @SuppressWarnings("unchecked")
     public List<UsersLog> listUser() {
 
-        return sessionFactory.getCurrentSession().createQuery("from UsersLog")
+        return sessionFactory.getCurrentSession().createQuery("select * from UsersLog")
                 .list();
     }
 
@@ -81,7 +79,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 
     }
 
-    //��� ������� ���� ����� �� ������������
     @Transactional
     public List<String> getMessages(String username)
             throws DataAccessException {
@@ -101,7 +98,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         return messages;
     }
 
-    //��� ������� ����� �� ������������
     @Transactional
     public List<String> getMessages(String username, int mid)
             throws DataAccessException {
@@ -121,7 +117,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         return messages;
     }
 
-    //��� ������� ����� �� ������������
     @Transactional
     public void addMessage(String username, String message, int mid)
             throws DataAccessException {
@@ -146,8 +141,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 		sessionFactory.getCurrentSession().save(mes);*/
     }
 
-    //�������, ��������������� spring-security ������ ������������ � ����������� ������� (�����, ������, �����)
-    //����� ������ ������������ ��� ��������� ������������ ��������� ������ � ��������� ���������� ������� �������
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String strQuery = "from UserInfo u where u.login='" + username + "'";
