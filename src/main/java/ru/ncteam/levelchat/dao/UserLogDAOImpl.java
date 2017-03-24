@@ -4,7 +4,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ncteam.levelchat.entity.MessageKey;
 import ru.ncteam.levelchat.entity.Role;
 import ru.ncteam.levelchat.entity.UserInfo;
-import ru.ncteam.levelchat.entity.UsersLog;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -62,22 +60,22 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
                 + userInfo.getLogin() + "'").list().isEmpty();
     }
 
-    @SuppressWarnings("unchecked")
+    /*@SuppressWarnings("unchecked")
     public List<UsersLog> listUser() {
 
         return sessionFactory.getCurrentSession().createQuery("select * from UsersLog")
                 .list();
-    }
+    }*/
 
     //��� ������� ���� ����� �� ������������
-    public void removeUser(Integer iduserlog) {
+    /*public void removeUser(Integer iduserlog) {
         UsersLog userLog = (UsersLog) sessionFactory.getCurrentSession().load(
                 UsersLog.class, iduserlog);
         if (null != userLog) {
             sessionFactory.getCurrentSession().delete(userLog);
         }
 
-    }
+    }*/
 
     @Transactional
     public List<String> getMessages(String username)

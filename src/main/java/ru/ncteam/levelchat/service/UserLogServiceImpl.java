@@ -1,10 +1,10 @@
 package ru.ncteam.levelchat.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ncteam.levelchat.dao.UserLogDAO;
 import ru.ncteam.levelchat.entity.UserInfo;
-import ru.ncteam.levelchat.entity.UsersLog;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class UserLogServiceImpl implements UserLogService {
 
+	@Autowired
     private UserLogDAO userLogDAO;
 
     public void setUserLogDAO(UserLogDAO userLogDAO) {
@@ -24,14 +25,14 @@ public class UserLogServiceImpl implements UserLogService {
         return userLogDAO.addUser(userInfo);
     }
 
-    public List<UsersLog> listUser() {
+    /*public List<UsersLog> listUser() {
 
         return userLogDAO.listUser();
     }
 
     public void removeUser(Integer iduserlog) {
         userLogDAO.removeUser(iduserlog);
-    }
+    }*/
 
 
     public List<String> getMessages(String username) {

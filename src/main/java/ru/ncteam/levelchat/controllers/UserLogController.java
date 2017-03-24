@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileWriter;
 
 import ru.ncteam.levelchat.entity.UserInfo;
-import ru.ncteam.levelchat.entity.UsersLog;
 import ru.ncteam.levelchat.service.UserLogService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +24,16 @@ import ru.ncteam.levelchat.annotation.CurrentUser;
 @Controller
 public class UserLogController {
 	@Autowired
-	@Qualifier("userLogServiceImpl")
 	private UserLogService userLogService;
 
-	@RequestMapping("/index")
+	/*@RequestMapping("/index")
 	public String listContacts(Map<String, Object> map) {
 
 		map.put("users_log", new UsersLog());
 		map.put("users_logList", userLogService.listUser());
 
 		return "index";
-	}
+	}*/
 	
 	@RequestMapping("/login")
 	public String login() {

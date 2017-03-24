@@ -1,7 +1,6 @@
 package ru.ncteam.levelchat.service;
 
 import ru.ncteam.levelchat.entity.UserInfo;
-import ru.ncteam.levelchat.entity.UsersLog;
 
 import java.util.List;
 
@@ -10,9 +9,9 @@ public interface UserLogService {
 
 	public String addUser(UserInfo userInfo);
 
-	public List<UsersLog> listUser();
+	//public List<UsersLog> listUser();
 
-	public void removeUser(Integer iduserlog);
+	//public void removeUser(Integer iduserlog);
 	
     public List<String> getMessages(String username);
     

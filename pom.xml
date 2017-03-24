@@ -137,6 +137,13 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        
+        <!--Oracle driver-->
+        <dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>12.1.0.2</version>
+		</dependency>
 
 
     </dependencies>
