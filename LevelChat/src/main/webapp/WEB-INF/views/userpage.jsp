@@ -1,1 +1,0 @@
-There will some page (it's the newest version)
