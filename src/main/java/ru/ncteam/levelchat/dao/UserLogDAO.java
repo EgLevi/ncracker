@@ -8,6 +8,10 @@ import java.util.List;
 public interface UserLogDAO {
 
 	public String addUser(UserInfo userInfo);
+	
+	public String updateUserInfo(UserInfo userInfo);
+	
+	public String updateUserInfoPhoto(UserInfo userInfo);
 
 	//public List<UsersLog> listUser();
 

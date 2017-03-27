@@ -24,6 +24,14 @@ public class UserLogServiceImpl implements UserLogService {
     public String addUser(UserInfo userInfo) {
         return userLogDAO.addUser(userInfo);
     }
+    
+    public String updateUserInfo(UserInfo userInfo) {
+        return userLogDAO.updateUserInfo(userInfo);
+    }
+    
+    public String updateUserInfoPhoto(UserInfo userInfo) {
+        return userLogDAO.updateUserInfoPhoto(userInfo);
+    }
 
     /*public List<UsersLog> listUser() {
 

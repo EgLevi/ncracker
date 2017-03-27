@@ -3,7 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -53,21 +53,19 @@
                     <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
                   </div>
                   <div class="panel-body">
-                    <form:form method="post" action="j_spring_security_check">
+                  <div class="photo-wrapper" style="margin: 0 auto;">
+                        <h1 class="logo">
+                             <img src="resources/images/logo4.png">
+                        </h1>
+                      </div>
+                    <form:form method="post">
                       <div class="form-group">
-                        <input type="text" class="form-control" name="j_username" placeholder="Имя пользователя">
+                        <input name="userfile" type="file" />
                       </div>
                       <div class="form-group">
-                        <input type="password" class="form-control" name="j_password" placeholder="Пароль">
-                      </div>
-                      <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                        <button type="submit" class="btn btn-primary btn-block">Загрузить</button>
                       </div>
                     </form:form>
-                    <div class="login-help">
-                      <a href="registration" style="color:#777777">Регистрация</a> 
-                      <a href="adminpage" style="color:#777777">Войти как админ</a>
-                    </div>
                   </div>
                 </div>
 

@@ -2,6 +2,7 @@ package ru.ncteam.levelchat.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -20,6 +21,7 @@ import ru.ncteam.levelchat.entity.UserInfo;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.sql.SQLException;
 import java.util.*;
 
 @Repository
@@ -31,7 +33,17 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     @Autowired
     private BCryptPasswordEncoder bcryptEncoder;
 
-    @Transactional
+    public BCryptPasswordEncoder getBcryptEncoder() {
+		return bcryptEncoder;
+	}
+
+
+	public void setBcryptEncoder(BCryptPasswordEncoder bcryptEncoder) {
+		this.bcryptEncoder = bcryptEncoder;
+	}
+
+
+	@Transactional
     public String addUser(UserInfo userInfo) {
 
         if (existUser(userInfo))
@@ -53,6 +65,54 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             return "A user with this login already exist";
         }
     }
+    
+    
+	@Transactional
+    public String updateUserInfo(UserInfo userInfo) {
+
+    	try {
+            Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
+            		+ "email=:email,"
+            		+ " country=:country,"
+            		+ " city=:city,"
+            		+ " name=:name,"
+            		+ " age=:age,"
+            		+ " sex=:sex"
+            		+ " where login=:login");
+            query.setParameter("email", userInfo.getEmail());
+            query.setParameter("country", userInfo.getCountry());
+            query.setParameter("city", userInfo.getCity());
+            query.setParameter("name", userInfo.getName());
+            query.setParameter("age", userInfo.getAge());
+            query.setParameter("sex", userInfo.getSex());
+            query.setParameter("login", userInfo.getLogin());
+            query.executeUpdate();
+            return "success";
+        } catch (HibernateException e) {
+            return e.getMessage();
+        }
+    }
+	
+	
+	@Transactional
+    public String updateUserInfoPhoto(UserInfo userInfo) {
+
+    	try {
+            Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
+            		+ "photo_ava=:photo_ava "
+            		+ "where login=:login");
+            
+            query.setBinary("photo_ava",userInfo.getPhoto_ava().getBytes(0, (int)userInfo.getPhoto_ava().length()));
+            query.setString("login", userInfo.getLogin());
+            query.executeUpdate();
+            return "success";
+        } catch (HibernateException e) {
+            return e.getMessage();
+        } catch (SQLException e) {
+        	return e.getMessage();
+		}
+    }
+	
 
     @Transactional
     public boolean existUser(UserInfo userInfo) {

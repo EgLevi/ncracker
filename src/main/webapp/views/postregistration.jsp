@@ -53,29 +53,41 @@
                     <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
                   </div>
                   <div class="panel-body">
-                    <form:form method="post" action="j_spring_security_check">
+                    <form:form method="post" action="postregistration">
                       <div class="form-group">
-                        <input type="text" class="form-control" name="j_username" placeholder="Имя пользователя">
+                        <label for="email">Email</label>
+                        <input type="text" class="form-control" name="email">
                       </div>
                       <div class="form-group">
-                        <input type="password" class="form-control" name="j_password" placeholder="Пароль">
+                        <label for="country">Страна</label>
+                        <input type="text" class="form-control" name="country">
                       </div>
                       <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                        <label for="city">Город</label>
+                        <input type="text" class="form-control" name="city">
+                      </div>
+                      <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" name="name">
+                      </div>
+                      <div class="form-group">
+                        <label for="age">Возраст</label>
+                        <input type="text" class="form-control" name="age">
+                      </div>
+                      <div class="form-group">
+                        <label for="sex">Пол</label>
+                        <input type="text" class="form-control" name="sex">
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
                       </div>
                     </form:form>
-                    <div class="login-help">
-                      <a href="registration" style="color:#777777">Регистрация</a> 
-                      <a href="adminpage" style="color:#777777">Войти как админ</a>
-                    </div>
                   </div>
                 </div>
 
                 </div> <!-- /.col-md-2 col-sm-12-->
                 </div>
                 </div>   
-
-<!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
 
   <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
     </body>

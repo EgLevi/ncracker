@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ru.ncteam.levelchat.authentication.AuthenticationSuccessHandlerImpl;
 import ru.ncteam.levelchat.dao.UserLogDAO;
@@ -18,6 +21,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
     private UserLogDAO userLogDAOImpl;
+	
+	@Autowired
+    private PasswordEncoder bcryptEncoder;
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -50,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService((UserDetailsService)userLogDAOImpl);
+    	auth.userDetailsService((UserDetailsService)userLogDAOImpl).passwordEncoder(bcryptEncoder);
     }
     
     @Bean

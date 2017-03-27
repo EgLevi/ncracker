@@ -8,7 +8,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
          <link rel="stylesheet" type="text/css" href="resources/css/affablebean.css">
-         <link rel="stylesheet" type="text/css" href="resources/css/bootstrap_min.css">  
+         <link rel="stylesheet" type="text/css" href="resources/css/bootstrap_min.css">
+         <link rel="stylesheet" type="text/css" href="resources/css/LCstyle.css">  
     </head>
     <body style="background-attachment:fixed" topmargin="10">
         <header>
@@ -44,18 +45,35 @@
                       </div>
                   </div>
               </div>
-        </header><!-- header close -->     
-        <div class="login-card">
-            <h1>Регистрация</h1><br>
-            <form:form method="post" action="registration" commandName="usersLog">
-                 <input type="text" name="login" placeholder="Имя пользователя" puth="login">
-                 <input type="password" name="password" placeholder="Пароль" puth="password">
-                 <input type="submit" name="button_login" class="login login-submit" value="OK">
-            </form:form>
-        </div>
+        </header><!-- header close -->
+        <div class="container-fluid" style="padding-right: 500px;padding-left: 500px;">
+            <div class="row col-md-12">
+                <div class="panel panel-primary" style="background-color:#e5e8ed">
+                  <div class="panel-heading" style="background-color:#e5e8ed">
+                    <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
+                  </div>
+                  <div class="panel-body">
+                    <form:form method="post" action="registration">
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="login" placeholder="Имя пользователя">
+                      </div>
+                      <div class="form-group">
+                        <input type="password" class="form-control" name="password" placeholder="Пароль">
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Регистрация</button>
+                      </div>
+                    </form:form>
+                  </div>
+                </div>
+
+                </div> <!-- /.col-md-2 col-sm-12-->
+                </div>
+                </div>   
 
 <!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
 
   <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
     </body>
 </html>
+

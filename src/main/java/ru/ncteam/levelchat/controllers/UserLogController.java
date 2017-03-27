@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import ru.ncteam.levelchat.annotation.CurrentUser;
 
@@ -46,11 +47,13 @@ public class UserLogController {
 	}
 	
 	@RequestMapping("/userpage")
-	public String userPage(@CurrentUser User user,Map<String, Object> map) {
+	public String userPage(Map<String, Object> map) {
 		
 		//List<String> listMessages = userLogService.getMessages(user.getUsername());
 		//map.put("listMessages", userLogService.getMessages(user.getUsername()));
 		//map.put("Message", "Text of exchange...");
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String name = user.getUsername();
 		return "userpage";
 	}
 	
@@ -100,8 +103,44 @@ public class UserLogController {
 
 		if(userLogService.addUser(userInfo).equals("success"))
 		{
-			return "redirect:/userpage";
+			return "postregistration";
 		}
 		return "redirect:/registration?error";
+	}
+	
+	@RequestMapping("/postregistration")
+	public String postRegistrationPage() {
+		return "postregistration";
+	}
+	
+	@RequestMapping(value = "/postregistration", method = RequestMethod.POST)
+	public String updateUserInfo(@ModelAttribute("usersLog") UserInfo userInfo,
+			BindingResult result) {
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		userInfo.setLogin(user.getUsername());
+
+		if(userLogService.updateUserInfo(userInfo).equals("success"))
+		{
+			return "postregistrationPhoto";
+		}
+		return "redirect:/postregistration?error";
+	}
+	
+	@RequestMapping("/posregistrationPhoto")
+	public String postRegistrationPhotoPage() {
+		return "posregistrationPhoto";
+	}
+	
+	@RequestMapping(value = "/postregistrationPhoto", method = RequestMethod.POST)
+	public String updateUserInfoPhoto(@ModelAttribute("usersLog") UserInfo userInfo,
+			@CurrentUser User user,
+			BindingResult result) {
+		userInfo.setLogin(user.getUsername());
+
+		if(userLogService.updateUserInfoPhoto(userInfo).equals("success"))
+		{
+			return "postregistrationPhoto";
+		}
+		return "redirect:/postregistration?error";
 	}
 }
