@@ -12,7 +12,7 @@ public class Messages {
     private long messageId;
 
     @Column(name = "TWXT_MSG", length = 4000)
-    private long textMessage;
+    private String textMessage;
 
     @ManyToOne
     @JoinColumn(name = "CHAT_ID", nullable = false)
@@ -26,6 +26,7 @@ public class Messages {
     @JoinColumn(name = "DATA_ID", nullable = false)
     private UserData userData;
 
+
     public long getMessageId() {
         return messageId;
     }
@@ -34,11 +35,11 @@ public class Messages {
         this.messageId = messageId;
     }
 
-    public long getTextMessage() {
+    public String getTextMessage() {
         return textMessage;
     }
 
-    public void setTextMessage(long textMessage) {
+    public void setTextMessage(String textMessage) {
         this.textMessage = textMessage;
     }
 
