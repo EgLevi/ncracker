@@ -57,7 +57,8 @@ public class ChatService implements ServletContextListener {
 
                                         private String messageAsXml(final Message message) {
                                             StringBuffer sb = new StringBuffer();
-                                            sb.append("<message>")
+                                            sb
+                                                    .append("<message>")
                                                     .append("<username>")
                                                     .append(message.username)
                                                     .append("</username>")
