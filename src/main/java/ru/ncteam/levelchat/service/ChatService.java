@@ -1,6 +1,7 @@
 package ru.ncteam.levelchat.service;
 
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import ru.ncteam.levelchat.entity.Message;
 
 import javax.servlet.AsyncContext;
@@ -56,6 +57,7 @@ public class ChatService implements ServletContextListener {
                                         }
 
                                         private String messageAsXml(final Message message) {
+                                            ;
                                             StringBuffer sb = new StringBuffer();
                                             sb
                                                     .append("<message>")
