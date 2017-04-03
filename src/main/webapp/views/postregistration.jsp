@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
+k<%@ page language="java" contentType="text/html; charset=utf8"
 	pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -57,26 +57,39 @@
                       <div class="form-group">
                         <label for="email">Email</label>
                         <input type="text" class="form-control" name="email">
+                        <label class="label label-danger">${emailError}</label>
+                        <form:errors name="email" cssClass="error"/>
                       </div>
                       <div class="form-group">
                         <label for="country">Страна</label>
                         <input type="text" class="form-control" name="country">
+                        <label class="label label-danger">${countryError}</label>
+                        <form:errors name="country" cssClass="error"/>
                       </div>
                       <div class="form-group">
                         <label for="city">Город</label>
                         <input type="text" class="form-control" name="city">
+                        <label class="label label-danger">${cityError}</label>
+                        <form:errors name="city" cssClass="error"/>
                       </div>
                       <div class="form-group">
                         <label for="name">Имя</label>
                         <input type="text" class="form-control" name="name">
+                        <label class="label label-danger">${nameError}</label>
+                        <form:errors name="name" cssClass="error"/>
                       </div>
                       <div class="form-group">
                         <label for="age">Возраст</label>
                         <input type="text" class="form-control" name="age">
+                        <label class="label label-danger">${ageError}</label>
+                        <form:errors name="age" cssClass="error"/>
                       </div>
                       <div class="form-group">
                         <label for="sex">Пол</label>
-                        <input type="text" class="form-control" name="sex">
+                        <select class="form-control" name="sex">
+						    <option>м</option>
+						    <option>ж</option>
+						</select>
                       </div>
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Сохранить</button>

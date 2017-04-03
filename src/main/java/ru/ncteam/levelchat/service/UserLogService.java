@@ -4,6 +4,8 @@ import ru.ncteam.levelchat.entity.UserInfo;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 
 public interface UserLogService {
 
@@ -11,7 +13,7 @@ public interface UserLogService {
 	
 	public String updateUserInfo(UserInfo userInfo);
 	
-	public String updateUserInfoPhoto(UserInfo userInfo);
+	public String updateUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava);
 
 	//public List<UsersLog> listUser();
 
@@ -22,4 +24,6 @@ public interface UserLogService {
     public List<String> getMessages(String username, int mid);
     
     public void addMessage(String username, String message, int mid);
+    
+    public void autoLogin(String username, String password);
 }

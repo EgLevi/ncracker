@@ -2,6 +2,10 @@ package ru.ncteam.levelchat.entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,15 +20,21 @@ public class UserInfo {
     private long user_id;
 
     @Column(name = "NAME", length = 30)
+    @Size(min=1, max=30, message="Имя пользователя должно быть от 1 до 20 символов")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Имя пользователя не должно содержать пробельных символов")
     private String name;
 
+
     @Column(name = "SURNAME", length = 30)
+    @Size(min=1, max=30, message="Фамилия пользователя должна быть от 1 до 20 символов")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Фамилия пользователя не должна содержать пробельных символов")
     private String surname;
 
     @Column(name = "SEX", length = 1)
     private String sex;
 
     @Column(name = "AGE")
+    @Max(value=150, message="Возраст не может превышать 150 лет")
     private int age;
 
     @Column(name = "COUNTRY", length = 30)
@@ -33,17 +43,26 @@ public class UserInfo {
     @Column(name = "CITY", length = 30)
     private String city;
 
-    @Column(name = "LOGIN", length = 100, unique = true)
+
+    @Column(name = "LOGIN", length = 30, unique = true)
+    @Size(min=1, max=30, message="Логин пользователя должен быть от 1 до 20 символов")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Логин пользователя не должен содержать пробельных символов")
     private String login;
 
-    @Column(name = "PASSWORD", length = 100)
-    private String password;
 
-    @Column(name = "EMAIL", length = 100)
+    @Column(name = "PASSWORD", length = 30)
+    @Size(min=6, max=30, message="Пароль пользователя должен быть от 6 до 30 символов")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Пароль пользователя не должнен содержать пробельных символов")
+    private String password;
+    
+
+    @Column(name = "EMAIL", length = 30)
+    @Size(min=6, max=30, message="Email пользователя должен быть от 6 до 30 символов")
+    @Pattern(regexp="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}", message="неправильный Email")
     private String email;
 
     @Column(name = "PHOTO_AVA")
-    private Blob photo_ava;
+    private long photo_ava;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "USERS_ROLES",
@@ -149,11 +168,11 @@ public class UserInfo {
         this.email = email;
     }
 
-    public Blob getPhoto_ava() {
+    public long getPhoto_ava() {
         return photo_ava;
     }
 
-    public void setPhoto_ava(Blob photo_ava) {
+    public void setPhoto_ava(long photo_ava) {
         this.photo_ava = photo_ava;
     }
 

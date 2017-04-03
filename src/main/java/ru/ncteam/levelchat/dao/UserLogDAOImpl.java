@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import ru.ncteam.levelchat.entity.IdImg;
 import ru.ncteam.levelchat.entity.MessageKey;
 import ru.ncteam.levelchat.entity.Role;
 import ru.ncteam.levelchat.entity.UserInfo;
@@ -101,16 +103,13 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
             		+ "photo_ava=:photo_ava "
             		+ "where login=:login");
-            
-            query.setBinary("photo_ava",userInfo.getPhoto_ava().getBytes(0, (int)userInfo.getPhoto_ava().length()));
+            query.setLong("photo_ava", userInfo.getPhoto_ava());
             query.setString("login", userInfo.getLogin());
             query.executeUpdate();
             return "success";
         } catch (HibernateException e) {
             return e.getMessage();
-        } catch (SQLException e) {
-        	return e.getMessage();
-		}
+        }
     }
 	
 
@@ -222,5 +221,34 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         return user;
     }
 
+    
+    @Transactional
+    public long getIdImg() {
+    	try{
+        	Query query = sessionFactory.getCurrentSession().createQuery("select i.value from IdImg i where i.id=0");
+        	List<Long> ll = query.list();
+        	long idImg = ((Long)query.list().get(0)).longValue();
+            return idImg;
+    	}
+    	catch(Exception e)
+    	{
+    		e=e;
+    		return 0;
+    	}
+    }
+    
+    @Transactional
+    public void setIdImg(long idImg) {
+    	
+    	try {
+            Query query=sessionFactory.getCurrentSession().createQuery("update IdImg set "
+            		+ "value=:value "
+            		+ "where id=0");
+            query.setLong("value", idImg);
+            query.executeUpdate();
+        } catch (HibernateException e) {
+           
+        }
+    }
 
 }

@@ -55,10 +55,14 @@
                   <div class="panel-body">
                     <form:form method="post" action="registration">
                       <div class="form-group">
-                        <input type="text" class="form-control" name="login" placeholder="Имя пользователя">
+                        <input type="text" class="form-control" name="login" placeholder="Имя пользователя"/>
+                        <label class="label label-danger">${loginError}</label>
+                        <form:errors name="login" cssClass="error"/>
                       </div>
                       <div class="form-group">
-                        <input type="password" class="form-control" name="password" placeholder="Пароль">
+                        <input type="password" class="form-control" name="password" placeholder="Пароль"/>
+                        <label class="label label-danger">${passwordError}</label>
+                        <form:errors name="password" cssClass="error"/>
                       </div>
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Регистрация</button>

@@ -3,8 +3,10 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+	<script src="resources/js/jquery-1.4.2.min.js" type="text/javascript" ></script>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
          <link rel="stylesheet" type="text/css" href="resources/css/affablebean.css">
@@ -55,23 +57,66 @@
                   <div class="panel-body">
                   <div class="photo-wrapper" style="margin: 0 auto;">
                         <h1 class="logo">
-                             <img src="resources/images/logo4.png">
+                             <img id="avatar" src="resources/images/logo4.png">
                         </h1>
-                      </div>
-                    <form:form method="post">
-                      <div class="form-group">
-                        <input name="userfile" type="file" />
-                      </div>
-                      <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Загрузить</button>
-                      </div>
-                    </form:form>
+                   </div>
+                    <form method="post" action="postregistrationPhoto" enctype="multipart/form-data">
+	                    <div class="form-group">
+	                      <div class="inputFile">
+	                      	<label>
+		                      	<span class="btn btn-primary fileinput-button" id="IFBtn" style="width:0px;">
+		                    		<span>Выбрать фото</span>
+		                        	<input name="photo_ava" type="file" multiple/>
+		                		</span>
+	                		</label>
+	                      </div>
+	                    </div>
+                     	<div class="form-group" id="btnSubmit">
+                        	<button type="submit" class="btn btn-primary btn-block">Загрузить</button>
+                      	</div>
+                    </form>
                   </div>
                 </div>
 
                 </div> <!-- /.col-md-2 col-sm-12-->
                 </div>
-                </div>   
+    <style>
+	    .inputFile input[type="file"]{
+
+			display: none;/* скрываем input file */
+
+		}
+	</style>
+                
+	<script type="text/javascript">
+		
+		document.getElementById('IFBtn').style.width=document.getElementById('btnSubmit').clientWidth+"px";
+		$(function() {
+		    $('form').submit(function() {
+		        var formData = new FormData($('form')[0]);
+		        /*var i = 0;
+		        $('form input').each(function(){
+		          if ($(this).attr('type') != 'file') {
+		            formData.append($(this).attr('name'), $(this).val()); // помещаем все значения полей в объект
+		          }
+		        });*/
+		        
+		        $.ajax({
+		            type : 'POST',
+		            url : $('form').attr('action'), // url записан в параметре action формы
+		            data : formData,
+		            contentType: false,
+		            processData: false,
+		            success: function(res) {
+		              //res = $.parseJSON(res);
+		              var img = document.getElementById("avatar");
+				      img.src = res;
+		            }
+		          });
+		      return false; // отменяем отправку формы, т.е. перезагрузку страницы
+		    });
+		  });
+	</script>
 
 <!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
 
