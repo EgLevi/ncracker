@@ -14,12 +14,7 @@
          <link rel="stylesheet" type="text/css" href="resources/css/LCstyle.css">  
     </head>
     <body style="background-attachment:fixed" topmargin="10">
-        <header>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                      <!-- header Nav Start -->
-                        <nav class="navbar navbar-default"> <!-- navbar-default navbar-static-top-->
+        <div class="navbar navbar-default"> <!-- navbar-default navbar-static-top-->
                             <div class="container-fluid">
                               <!-- Brand and toggle get grouped for better mobile display -->
                                 <div class="navbar-header">
@@ -29,27 +24,23 @@
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                     </button>
-                                    <a class="navbar-brand" href="index.html">
-                                      <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
+                                    <a class="navbar-brand" href="http://localhost:8081/ru.ncteam.levelchat/index.html">
+                                      <img src="resources/images/logo4.png" alt="Logo" height="40" align="top">
                                     </a>
                                 </div>
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                      <li><a href="index.html">Главная</a></li>
-                                      <li><a href="#">Поддержка</a></li>
-                                      <li><a href="#">О нас</a></li>
-                                      <li><a href="contact.html">Контакты</a></li>
+                                      <li><a href="http://localhost:8081/ru.ncteam.levelchat/index.html">Главная</a></li>
+                                      <li><a href="http://localhost:8081/ru.ncteam.levelchat/postregistration#">Поддержка</a></li>
+                                      <li><a href="http://localhost:8081/ru.ncteam.levelchat/postregistration#">О нас</a></li>
+                                      <li><a href="http://localhost:8081/ru.ncteam.levelchat/contact.html">Контакты</a></li>
                                     </ul>
                                 </div><!-- /.navbar-collapse -->
                               </div><!-- /.container-fluid -->
-                          </nav>
-                      </div>
-                  </div>
-              </div>
-        </header><!-- header close -->
-        <div class="container-fluid" style="padding-right: 500px;padding-left: 500px;">
-            <div class="row col-md-12">
+                          </div>
+        <div class="container-fluid" style="width:730px;">
+            <div class="row col-md-12" style="width:430px; margin:auto;">
                 <div class="panel panel-primary" style="background-color:#e5e8ed">
                   <div class="panel-heading" style="background-color:#e5e8ed">
                     <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
@@ -60,19 +51,19 @@
                              <img id="avatar" src="resources/images/logo4.png">
                         </h1>
                    </div>
-                    <form method="post" action="postregistrationPhoto" enctype="multipart/form-data">
+                    <form method="get" action="userpage" enctype="multipart/form-data">
 	                    <div class="form-group">
 	                      <div class="inputFile">
 	                      	<label>
 		                      	<span class="btn btn-primary fileinput-button" id="IFBtn" style="width:0px;">
 		                    		<span>Выбрать фото</span>
-		                        	<input name="photo_ava" type="file" multiple/>
+		                        	<input id="selectPhoto" name="photo_ava" type="file" multiple/>
 		                		</span>
 	                		</label>
 	                      </div>
 	                    </div>
                      	<div class="form-group" id="btnSubmit">
-                        	<button type="submit" class="btn btn-primary btn-block">Загрузить</button>
+                        	<button type="submit" class="btn btn-primary btn-block">Сохранить</button>
                       	</div>
                     </form>
                   </div>
@@ -91,29 +82,39 @@
 	<script type="text/javascript">
 		
 		document.getElementById('IFBtn').style.width=document.getElementById('btnSubmit').clientWidth+"px";
+		
+		function sendPhoto()
+		{
+			var formData = new FormData($('form')[0]);
+	        /*var i = 0;
+	        $('form input').each(function(){
+	          if ($(this).attr('type') != 'file') {
+	            formData.append($(this).attr('name'), $(this).val()); // помещаем все значения полей в объект
+	          }
+	        });*/
+	        
+	        $.ajax({
+	            type : 'POST',
+	            url : "postregistrationPhoto", // url записан в параметре action формы
+	            data : formData,
+	            contentType: false,
+	            processData: false,
+	            success: function(res) {
+	              //res = $.parseJSON(res);
+	              var img = document.getElementById("avatar");
+			      img.src = res;
+	            }
+	          });
+		}
+		
+		selectPhoto.addEventListener("change",sendPhoto);
+		
+		
 		$(function() {
 		    $('form').submit(function() {
-		        var formData = new FormData($('form')[0]);
-		        /*var i = 0;
-		        $('form input').each(function(){
-		          if ($(this).attr('type') != 'file') {
-		            formData.append($(this).attr('name'), $(this).val()); // помещаем все значения полей в объект
-		          }
-		        });*/
 		        
-		        $.ajax({
-		            type : 'POST',
-		            url : $('form').attr('action'), // url записан в параметре action формы
-		            data : formData,
-		            contentType: false,
-		            processData: false,
-		            success: function(res) {
-		              //res = $.parseJSON(res);
-		              var img = document.getElementById("avatar");
-				      img.src = res;
-		            }
-		          });
-		      return false; // отменяем отправку формы, т.е. перезагрузку страницы
+				window.location = "/ru.ncteam.levelchat/userpage";
+				return false; // отменяем отправку формы, т.е. перезагрузку страницы
 		    });
 		  });
 	</script>

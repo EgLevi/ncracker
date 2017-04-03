@@ -3,6 +3,7 @@ package ru.ncteam.levelchat.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -20,14 +21,14 @@ public class UserInfo {
     private long user_id;
 
     @Column(name = "NAME", length = 30)
-    @Size(min=1, max=30, message="Имя пользователя должно быть от 1 до 20 символов")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Имя пользователя не должно содержать пробельных символов")
+    @Size(min=1, max=30, message="Имя должно быть от 1 до 20 символов")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Имя не должно содержать пробелов")
     private String name;
 
 
     @Column(name = "SURNAME", length = 30)
-    @Size(min=1, max=30, message="Фамилия пользователя должна быть от 1 до 20 символов")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Фамилия пользователя не должна содержать пробельных символов")
+    @Size(min=1, max=30, message="Фамилия должна быть от 1 до 20 символов")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Фамилия не должна содержать пробелов")
     private String surname;
 
     @Column(name = "SEX", length = 1)
@@ -35,29 +36,34 @@ public class UserInfo {
 
     @Column(name = "AGE")
     @Max(value=150, message="Возраст не может превышать 150 лет")
+    @Min(value=0, message="Возраст не может быть меньше 1 года")
     private int age;
 
+    @Size(min=1, max=30, message="Слишком большое(маленькое) название страны")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Название страны не должно содержать пробелов")
     @Column(name = "COUNTRY", length = 30)
     private String country;
 
+    @Size(min=1, max=30, message="Слишком большое(маленькое) название города")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Название города не должно содержать пробелов")
     @Column(name = "CITY", length = 30)
     private String city;
 
 
     @Column(name = "LOGIN", length = 30, unique = true)
-    @Size(min=1, max=30, message="Логин пользователя должен быть от 1 до 20 символов")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Логин пользователя не должен содержать пробельных символов")
+    @Size(min=1, max=30, message="Логин должен быть от 1 до 20 символов")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Логин не должен содержать пробелов")
     private String login;
 
 
     @Column(name = "PASSWORD", length = 30)
-    @Size(min=6, max=30, message="Пароль пользователя должен быть от 6 до 30 символов")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Пароль пользователя не должнен содержать пробельных символов")
+    @Size(min=6, max=30, message="Пароль должен быть от 6 до 30 символов")
+    @Pattern(regexp="^[^\t\n\r\f]+$", message="Пароль не должнен содержать пробелов")
     private String password;
     
 
     @Column(name = "EMAIL", length = 30)
-    @Size(min=6, max=30, message="Email пользователя должен быть от 6 до 30 символов")
+    @Size(min=6, max=30, message="Email должен быть от 6 до 30 символов")
     @Pattern(regexp="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}", message="неправильный Email")
     private String email;
 

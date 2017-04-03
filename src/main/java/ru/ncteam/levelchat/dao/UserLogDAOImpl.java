@@ -78,6 +78,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             		+ " country=:country,"
             		+ " city=:city,"
             		+ " name=:name,"
+            		+ " surname=:surname,"
             		+ " age=:age,"
             		+ " sex=:sex"
             		+ " where login=:login");
@@ -85,6 +86,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             query.setParameter("country", userInfo.getCountry());
             query.setParameter("city", userInfo.getCity());
             query.setParameter("name", userInfo.getName());
+            query.setParameter("surname", userInfo.getSurname());
             query.setParameter("age", userInfo.getAge());
             query.setParameter("sex", userInfo.getSex());
             query.setParameter("login", userInfo.getLogin());

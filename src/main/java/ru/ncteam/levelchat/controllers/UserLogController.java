@@ -36,7 +36,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import oracle.sql.BLOB;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -130,10 +129,15 @@ public class UserLogController {
 			Model model) {
 		if(result.hasErrors())
 		{
+			String code;
 			List<FieldError> listErrors = result.getFieldErrors();
 			for (int i=0;i<listErrors.size();i++)
 			{
-				model.addAttribute(listErrors.get(i).getField()+"Error", listErrors.get(i).getDefaultMessage());
+				code = listErrors.get(i).getCode();
+				if(!code.equals("typeMismatch"))
+				{
+					model.addAttribute(listErrors.get(i).getField()+"Error", listErrors.get(i).getDefaultMessage());
+				}
 			}
 			return "registration";
 		}
@@ -156,10 +160,15 @@ public class UserLogController {
 			Model model) {
 		if(result.hasErrors())
 		{
+			String code;
 			List<FieldError> listErrors = result.getFieldErrors();
 			for (int i=0;i<listErrors.size();i++)
 			{
-				model.addAttribute(listErrors.get(i).getField()+"Error", listErrors.get(i).getDefaultMessage());
+				code = listErrors.get(i).getCode();
+				if(!code.equals("typeMismatch"))
+				{
+					model.addAttribute(listErrors.get(i).getField()+"Error", listErrors.get(i).getDefaultMessage());
+				}
 			}
 			return "postregistration";
 		}
@@ -184,7 +193,6 @@ public class UserLogController {
 	public String updateUserInfoPhoto(@RequestParam(value = "photo_ava", required=false) MultipartFile photo_ava) {
 		if (!photo_ava.isEmpty()) {
 	            try {
-	                //Blob photo = new SerialBlob(photo_ava.getBytes());
 	                User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	        		UserInfo userInfo = new UserInfo();
 	        		userInfo.setLogin(user.getUsername());
