@@ -30,7 +30,7 @@ public class HibernateConfig {
     @Autowired
     private Environment hibernateProps;
 
-    //Дальше не трогай - убъёт
+    //Дальше не трогай - убъёт. Можно поменять только 80 строку
 
     @Bean
     public DataSource dataSource() {
@@ -77,7 +77,7 @@ public class HibernateConfig {
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", "create");
         properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
         return properties;
     }
