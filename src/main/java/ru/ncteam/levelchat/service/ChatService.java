@@ -1,6 +1,7 @@
 package ru.ncteam.levelchat.service;
 
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import ru.ncteam.levelchat.entity.Message;
 
@@ -18,12 +19,14 @@ import java.util.concurrent.Executors;
 @WebListener
 public class ChatService implements ServletContextListener {
 
+    final static Logger LOGGER = Logger.getLogger(ChatService.class);
 
     public void contextDestroyed(final ServletContextEvent sce) {
 
     }
 
     public void contextInitialized(final ServletContextEvent sce) {
+        System.setProperty("rootPath", sce.getServletContext().getRealPath("/"));
 
         Thread t = new Thread(new Runnable() {
             public void run() {
@@ -51,6 +54,7 @@ public class ChatService implements ServletContextListener {
                                                 response.setContentType("text/json");
                                                 response.getWriter().write(messageAsJSON(message));
                                                 aCtx.complete();
+                                                LOGGER.info("Сообщение отправлено");
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
