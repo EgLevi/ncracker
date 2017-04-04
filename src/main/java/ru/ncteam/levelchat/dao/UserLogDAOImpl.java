@@ -2,10 +2,8 @@ package ru.ncteam.levelchat.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,14 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.ncteam.levelchat.entity.IdImg;
-import ru.ncteam.levelchat.entity.MessageKey;
+
 import ru.ncteam.levelchat.entity.Role;
 import ru.ncteam.levelchat.entity.UserInfo;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.sql.SQLException;
+
 import java.util.*;
 
 @Repository
@@ -72,6 +67,8 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 	@Transactional
     public String updateUserInfo(UserInfo userInfo) {
 
+		//sessionFactory.getCurrentSession().update(userInfo);
+		//return "success";
     	try {
             Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
             		+ "email=:email,"
@@ -101,6 +98,8 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 	@Transactional
     public String updateUserInfoPhoto(UserInfo userInfo) {
 
+		//sessionFactory.getCurrentSession().update(userInfo);
+		//return "success";
     	try {
             Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
             		+ "photo_ava=:photo_ava "
@@ -118,7 +117,13 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     @Transactional
     public boolean existUser(UserInfo userInfo) {
         return sessionFactory.getCurrentSession().createQuery("from UserInfo u where u.login='"
-                + userInfo.getLogin() + "'").list().isEmpty();
+                + userInfo.getLogin() + "'").getResultList().isEmpty();
+    }
+    
+    @Transactional
+    public boolean existUser(String login) {
+        return sessionFactory.getCurrentSession().createQuery("from UserInfo u where u.login='"
+                + login + "'").getResultList().isEmpty();
     }
 
     /*@SuppressWarnings("unchecked")
@@ -138,7 +143,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 
     }*/
 
-    @Transactional
+    /*@Transactional
     public List<String> getMessages(String username)
             throws DataAccessException {
 
@@ -155,9 +160,9 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
                 "u.message from Messages u where u.pk_idmess.id_mess='"
                         + idMess + "'").list();
         return messages;
-    }
+    }*/
 
-    @Transactional
+    /*@Transactional
     public List<String> getMessages(String username, int mid)
             throws DataAccessException {
 
@@ -174,9 +179,9 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
                 "u.message from Messages u where u.pk_idmess.id_mess='"
                         + idMess + "' and u.pk_idmess.id>='" + mid + "'").list();
         return messages;
-    }
+    }*/
 
-    @Transactional
+    /*@Transactional
     public void addMessage(String username, String message, int mid)
             throws DataAccessException {
         File file = new File("c:/LOGs.txt");
@@ -193,12 +198,12 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         MessageKey mk = new MessageKey();
         mk.setId_mess(idMess);
         mk.setId(mid + 1);
-        /*Messages mes = new Messages();
+        Messages mes = new Messages();
         mes.setMessageKey(mk);
 		mes.setMessage(message);
 		mes.setRecepient("a");
-		sessionFactory.getCurrentSession().save(mes);*/
-    }
+		sessionFactory.getCurrentSession().save(mes);
+    }*/
 
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -210,7 +215,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             userInfo = (UserInfo) query.uniqueResult();
             roles = userInfo.getRoles();
         } catch (HibernateException e) {
-            e = e;
         }
 
         Iterator<Role> it = roles.iterator();

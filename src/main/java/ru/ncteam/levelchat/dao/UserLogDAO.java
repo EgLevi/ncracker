@@ -23,13 +23,15 @@ public interface UserLogDAO {
 
 	//public void removeUser(Integer iduserlog);
 	
-	public boolean existUser(UserInfo userInfo); 
+	public boolean existUser(UserInfo userInfo);
 	
-	public List<String> getMessages(String username);
+	public boolean existUser(String login); 
 	
-	public List<String> getMessages(String username,int mid);
+	//public List<String> getMessages(String username);
 	
-	public void addMessage(String username, String message, int mid);
+	//public List<String> getMessages(String username,int mid);
+	
+	//public void addMessage(String username, String message, int mid);
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 	

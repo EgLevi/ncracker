@@ -1,28 +1,15 @@
 package ru.ncteam.levelchat.controllers;
 
 import java.util.Map;
-import java.util.List;
-import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.Valid;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Blob;
+import java.util.List;
 
 import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.service.UserLogService;
-import ru.ncteam.levelchat.trial.Trial;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,13 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import ru.ncteam.levelchat.annotation.CurrentUser;
 
 @Controller
 public class UserLogController {
@@ -77,14 +61,14 @@ public class UserLogController {
 		//List<String> listMessages = userLogService.getMessages(user.getUsername());
 		//map.put("listMessages", userLogService.getMessages(user.getUsername()));
 		//map.put("Message", "Text of exchange...");
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String name = user.getUsername();
+		//User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    //String name = user.getUsername();
 	    //trial.incCounter();
 		return "userpage";
 	}
 	
 	
-	@RequestMapping(value = "/ajaxadd", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/ajaxadd", method = RequestMethod.GET)
     @ResponseBody
     public Set<String> ajaxAddMessage(@CurrentUser User user, String mes, int mid) {
 	 
@@ -95,21 +79,21 @@ public class UserLogController {
         records.add("Record #1");
         records.add("Record #2");
         return records;
-    }
+    }*/
 	
-	@RequestMapping(value = "/ajax", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/ajax", method = RequestMethod.GET)
 	@ResponseBody
 	public List<String> ajaxChat(@CurrentUser User user, int mid) {
 		 
-	        /*Set<String> records = new HashSet<String>();
+	        Set<String> records = new HashSet<String>();
 	        records.add("Record #1");
-	        records.add("Record #2");*/
+	        records.add("Record #2");
 	        
 	        List<String> response = userLogService.getMessages(user.getUsername(), mid);
 	        
 	        
 	        return response;
-	    }
+	    }*/
 	 
 	 
 	@RequestMapping("/adminpage")
@@ -146,7 +130,21 @@ public class UserLogController {
 			userLogService.autoLogin(userInfo.getLogin(), userInfo.getPassword());
 			return "postregistration";
 		}
-		return "redirect:/registration?error";
+		else
+		{
+			model.addAttribute("loginError", "Пользователь с таким логином уже существует");
+			return "registration";
+		}
+	}
+	
+	@RequestMapping(value = "/registration/check", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkLogin(@RequestParam(value = "login", required=false) String login) {
+		if(userLogService.checkLogin(login))
+		{
+			return "success";
+		}
+		return "fail";
 	}
 	
 	@RequestMapping("/postregistration")
@@ -168,6 +166,10 @@ public class UserLogController {
 				if(!code.equals("typeMismatch"))
 				{
 					model.addAttribute(listErrors.get(i).getField()+"Error", listErrors.get(i).getDefaultMessage());
+				}
+				else
+				{
+					model.addAttribute(listErrors.get(i).getField()+"Error", "Недопустимое значение");
 				}
 			}
 			return "postregistration";
@@ -192,16 +194,20 @@ public class UserLogController {
 	@ResponseBody
 	public String updateUserInfoPhoto(@RequestParam(value = "photo_ava", required=false) MultipartFile photo_ava) {
 		if (!photo_ava.isEmpty()) {
+			if(!(photo_ava.getContentType().equals("jpg") || photo_ava.getContentType().equals("png")))
+			{
+				return "недопустимый формат изображения";
+			}
 	            try {
-	                User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	        		UserInfo userInfo = new UserInfo();
-	        		userInfo.setLogin(user.getUsername());
-	        		String str = userLogService.updateUserInfoPhoto(userInfo,photo_ava);
-	        		if(!str.equals("fail"))
-	        		{
-	        			return ("resources/images/"+str);
-	        		}
-	        		return null;
+		                User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		        		UserInfo userInfo = new UserInfo();
+		        		userInfo.setLogin(user.getUsername());
+		        		String str = userLogService.updateUserInfoPhoto(userInfo,photo_ava);
+		        		if(!str.equals("fail"))
+		        		{
+		        			return ("resources/images/"+str);
+		        		}
+		        		return null;
 	            } catch (Exception e) {
 	            	return null;
 	            }

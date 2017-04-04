@@ -13,17 +13,19 @@ public interface UserLogService {
 	
 	public String updateUserInfo(UserInfo userInfo);
 	
+	public boolean checkLogin(String login);
+	
 	public String updateUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava);
 
 	//public List<UsersLog> listUser();
 
 	//public void removeUser(Integer iduserlog);
 	
-    public List<String> getMessages(String username);
+    //public List<String> getMessages(String username);
     
-    public List<String> getMessages(String username, int mid);
+    //public List<String> getMessages(String username, int mid);
     
-    public void addMessage(String username, String message, int mid);
+    //public void addMessage(String username, String message, int mid);
     
     public void autoLogin(String username, String password);
 }
