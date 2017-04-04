@@ -22,13 +22,13 @@ public class UserInfo {
 
     @Column(name = "NAME", length = 30)
     @Size(min=1, max=30, message="Имя должно быть от 1 до 20 символов")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Имя не должно содержать пробелов")
+    @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String name;
 
 
     @Column(name = "SURNAME", length = 30)
     @Size(min=1, max=30, message="Фамилия должна быть от 1 до 20 символов")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Фамилия не должна содержать пробелов")
+    @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String surname;
 
     @Column(name = "SEX", length = 1)
@@ -40,25 +40,25 @@ public class UserInfo {
     private int age;
 
     @Size(min=1, max=30, message="Слишком большое(маленькое) название страны")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Название страны не должно содержать пробелов")
+    @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "COUNTRY", length = 30)
     private String country;
 
     @Size(min=1, max=30, message="Слишком большое(маленькое) название города")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Название города не должно содержать пробелов")
+    @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "CITY", length = 30)
     private String city;
 
 
     @Column(name = "LOGIN", length = 30, unique = true)
     @Size(min=1, max=30, message="Логин должен быть от 1 до 20 символов")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Логин не должен содержать пробелов")
+    @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String login;
 
 
     @Column(name = "PASSWORD", length = 30)
     @Size(min=6, max=30, message="Пароль должен быть от 6 до 30 символов")
-    @Pattern(regexp="^[^\t\n\r\f]+$", message="Пароль не должнен содержать пробелов")
+    @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String password;
     
 
