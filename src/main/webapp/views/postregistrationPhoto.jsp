@@ -54,12 +54,13 @@
                     <form method="get" action="userpage" enctype="multipart/form-data">
 	                    <div class="form-group">
 	                      <div class="inputFile">
-	                      	<label>
+	                      	<label style="margin-bottom:7px;">
 		                      	<span class="btn btn-primary fileinput-button" id="IFBtn" style="width:0px;">
 		                    		<span>Выбрать фото</span>
 		                        	<input id="selectPhoto" name="photo_ava" type="file" multiple/>
 		                		</span>
 	                		</label>
+                        	<label id="photoError" class="label label-danger"></label>
 	                      </div>
 	                    </div>
                      	<div class="form-group" id="btnSubmit">
@@ -86,12 +87,6 @@
 		function sendPhoto()
 		{
 			var formData = new FormData($('form')[0]);
-	        /*var i = 0;
-	        $('form input').each(function(){
-	          if ($(this).attr('type') != 'file') {
-	            formData.append($(this).attr('name'), $(this).val()); // помещаем все значения полей в объект
-	          }
-	        });*/
 	        
 	        $.ajax({
 	            type : 'POST',
@@ -100,9 +95,15 @@
 	            contentType: false,
 	            processData: false,
 	            success: function(res) {
-	              //res = $.parseJSON(res);
-	              var img = document.getElementById("avatar");
-			      img.src = res;
+	            	if(res.indexOf("fail")>-1)
+	            	{
+	            		photoError.innerHTML="Изображение должно иметть формат png или jpg";
+	            	}
+	            	else
+	            	{
+		              	var img = document.getElementById("avatar");
+				      	img.src = res;
+	            	}
 	            }
 	          });
 		}

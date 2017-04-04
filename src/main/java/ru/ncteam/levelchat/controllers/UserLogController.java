@@ -196,7 +196,7 @@ public class UserLogController {
 		if (!photo_ava.isEmpty()) {
 			if(!(photo_ava.getContentType().equals("jpg") || photo_ava.getContentType().equals("png")))
 			{
-				return "недопустимый формат изображения";
+				return "fail";
 			}
 	            try {
 		                User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -207,12 +207,12 @@ public class UserLogController {
 		        		{
 		        			return ("resources/images/"+str);
 		        		}
-		        		return null;
+		        		return "fail";
 	            } catch (Exception e) {
-	            	return null;
+	            	return "fail";
 	            }
 	        } else {
-	        	return null;
+	        	return "fail";
 	        }
 		
 

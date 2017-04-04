@@ -67,8 +67,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 	@Transactional
     public String updateUserInfo(UserInfo userInfo) {
 
-		//sessionFactory.getCurrentSession().update(userInfo);
-		//return "success";
     	try {
             Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
             		+ "email=:email,"
@@ -98,8 +96,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 	@Transactional
     public String updateUserInfoPhoto(UserInfo userInfo) {
 
-		//sessionFactory.getCurrentSession().update(userInfo);
-		//return "success";
     	try {
             Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
             		+ "photo_ava=:photo_ava "
