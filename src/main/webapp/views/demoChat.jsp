@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Demo CHAT</title>
     <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    <script src="../resources/js/jquery.json.js"></script>
     <link href="../resources/css/bootstrap_min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -14,14 +15,14 @@
             $.ajax({
                 url: "chat",
                 type: "GET",
-                dataType: "xml",
+                dataType: "json",
                 context: document.body,
                 success: function (data) {
-                    var username = $(data).find('username').text();
-                    var text = $(data).find('text').text();
+
+                    var username = $.evalJSON($.toJSON(data)).username;
+                    var text = $.evalJSON($.toJSON(data)).text;
                     var history = $('#chat_msgs').text();
                     $('#chat_msgs').html(history + username + ": " + text + "\n");
-                    getData();
                 }
             });
         }

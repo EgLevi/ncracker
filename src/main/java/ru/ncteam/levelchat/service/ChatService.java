@@ -1,7 +1,7 @@
 package ru.ncteam.levelchat.service;
 
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.json.simple.JSONObject;
 import ru.ncteam.levelchat.entity.Message;
 
 import javax.servlet.AsyncContext;
@@ -48,27 +48,20 @@ public class ChatService implements ServletContextListener {
                                         public void run() {
                                             try {
                                                 ServletResponse response = aCtx.getResponse();
-                                                response.setContentType("text/xml");
-                                                response.getWriter().write(messageAsXml(message));
+                                                response.setContentType("text/json");
+                                                response.getWriter().write(messageAsJSON(message));
                                                 aCtx.complete();
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
                                         }
 
-                                        private String messageAsXml(final Message message) {
-                                            ;
-                                            StringBuffer sb = new StringBuffer();
-                                            sb
-                                                    .append("<message>")
-                                                    .append("<username>")
-                                                    .append(message.username)
-                                                    .append("</username>")
-                                                    .append("<text>")
-                                                    .append(message.message)
-                                                    .append("</text>")
-                                                    .append("</message>");
-                                            return sb.toString();
+                                        private String messageAsJSON(final Message message) {
+                                            JSONObject json = new JSONObject();
+                                            json.put("text",message.message);
+                                            json.put("username",message.username);
+                                            System.out.println(json.toString());
+                                            return json.toString();
                                         }
                                     });
                                 }
