@@ -58,9 +58,8 @@ public class ChatService implements ServletContextListener {
 
                                         private String messageAsJSON(final Message message) {
                                             JSONObject json = new JSONObject();
-                                            json.put("text",message.message);
-                                            json.put("username",message.username);
-                                            System.out.println(json.toString());
+                                            json.put("username", message.username);
+                                            json.put("message", message.message);
                                             return json.toString();
                                         }
                                     });
