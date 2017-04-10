@@ -1,4 +1,4 @@
-﻿$(function(){
+$(function(){
 var mid = 0;
 $(document).ready(function() {
         $("#test").click(function(){	
