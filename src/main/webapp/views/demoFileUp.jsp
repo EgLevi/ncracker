@@ -13,9 +13,9 @@
     </head>
     <body>
         <h1>Привет. Просто показать как работает загрузка файла на сервер</h1>
-        <form action="http://localhost:8080/upload" method="post" enctype="multipart/form-data">
+        <form action="/upload" method="post" enctype="multipart/form-data">
 		<input name="description" type="text"><br>
-		<input name="data" type="file"><br>
+		<input name="file" type="file"><br>
 		<input type="submit"><br>
 	</form>
     </body>

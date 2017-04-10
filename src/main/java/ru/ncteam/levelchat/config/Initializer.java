@@ -22,7 +22,7 @@ public class Initializer implements WebApplicationInitializer {
 
         ctx.setServletContext(servletContext);
         servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy("springSecurityFilterChain"))
-        .addMappingForUrlPatterns(null, false, "/*");
+                      .addMappingForUrlPatterns(null, false, "/*");
         // настраиваем маппинг Dispatcher Servletа
         ServletRegistration.Dynamic servlet =
                 servletContext.addServlet(DISPATCHER_SERVLET_NAME, new DispatcherServlet(ctx));
