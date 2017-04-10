@@ -1,30 +1,22 @@
 package ru.ncteam.levelchat.service;
 
-
-import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
-import org.springframework.stereotype.Service;
 import ru.ncteam.levelchat.entity.Message;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebListener;
 import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-@WebListener
-public class ChatService implements ServletContextListener {
 
-    final static Logger LOGGER = Logger.getLogger(ChatService.class);
-
-    public void contextDestroyed(final ServletContextEvent sce) {
-
-    }
-
+/**
+ * Created by Senter1st on 10.04.2017.
+ */
+public class FileUploadService implements ServletContextListener {
     public void contextInitialized(final ServletContextEvent sce) {
         System.setProperty("rootPath", sce.getServletContext().getRealPath("/"));
 
@@ -76,5 +68,8 @@ public class ChatService implements ServletContextListener {
 
         t.start();
     }
-}
 
+    public void contextDestroyed(ServletContextEvent sce) {
+
+    }
+}
