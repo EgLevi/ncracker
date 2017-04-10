@@ -10,9 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class FileController {
+
 
     @RequestMapping(value = "/file", method = RequestMethod.GET)
     public String getDemoFile() {
@@ -21,18 +25,53 @@ public class FileController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public String uploadFile(@RequestParam("file") MultipartFile file) {// имена параметров (тут - "file") - из формы JSP.
+    public String uploadFile(@RequestParam("file") MultipartFile file) {
 
-        String filename = null;
 
+        StringBuffer filename = new StringBuffer();
+        StringBuffer dirfile = new StringBuffer();
+        MessageDigest messageDigest;
+        byte[] digest = new byte[0];
         if (!file.isEmpty()) {
             try {
-                byte[] bytes = file.getBytes();
-                filename = file.getOriginalFilename();
-                File dir = new File(File.separator + "loadFiles");
+
+
+
+/*
+                MD5 encryption
+*/
+                try {
+                    messageDigest = MessageDigest.getInstance("MD5");
+                    messageDigest.reset();
+                    messageDigest.update(file.getBytes());
+                    digest = messageDigest.digest();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                BigInteger bigInt = new BigInteger(1, digest);
+                String md5Hex = bigInt.toString(16);
+
+                while (md5Hex.length() < 32) {
+                    md5Hex = "0" + md5Hex;
+                }
+/*
+                End MD5 encryption
+*/
+
+                filename.append(md5Hex);//add filename in var
+                filename.append(getFileExtension(file));
+                dirfile.append("uploads");
+                dirfile.append(File.separator);
+                dirfile.append(filename.substring(0,2));
+                dirfile.append(File.separator);
+                dirfile.append(filename.substring(2, 4));
+                filename.delete(0, 4);
+
+                File dir = new File(dirfile.toString());
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
+                byte[] bytes = file.getBytes();
                 File uploadedFile = new File(dir.getAbsolutePath() + File.separator + filename);
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadedFile));
                 stream.write(bytes);
@@ -47,6 +86,19 @@ public class FileController {
         } else {
             return "You failed to upload " + filename + " because the file was empty.";
         }
+    }
+
+    /**
+     *
+     * @param file
+     * @return extension of file
+     */
+    private static String getFileExtension(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        // если в имени файла есть точка и она не является первым символом в названии файла
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+            return fileName.substring(fileName.lastIndexOf("."));
+        else return "";
     }
 
 }
