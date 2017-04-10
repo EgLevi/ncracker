@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 $(function(){
+=======
+(function(){
+>>>>>>> master
 var mid = 0;
 $(document).ready(function() {
         $("#test").click(function(){	
