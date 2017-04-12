@@ -75,7 +75,6 @@ public class FileController {
     }
 
     /**
-     *
      * @param file
      * @return md5 hash of file
      */
