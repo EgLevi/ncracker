@@ -16,7 +16,7 @@ import java.util.Queue;
 @WebServlet(name = "chatServlet", urlPatterns = {"/chat"}, asyncSupported = true)
 public class ChatServlet extends HttpServlet {
 
-    @Override
+   /* @Override
     protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         AsyncContext aCtx = req.startAsync(req, resp);
         aCtx.setTimeout(1000 * 60 * 5L); //5 min timeout
@@ -33,5 +33,5 @@ public class ChatServlet extends HttpServlet {
         Queue<Message> msgQueue = (Queue<Message>) servletContext.getAttribute("messages");
         msgQueue.add(new Message(message, username));
         aCtx.complete();
-    }
+    }*/
 }

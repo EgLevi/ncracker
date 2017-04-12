@@ -1,9 +1,3 @@
-<%--
-    Document   : demoFileUp
-    Created on : 05.04.2017, 0:57:56
-    Author     : vara
---%>
-
 <%@page contentType="text/html" pageEncoding="windows-1251" %>
 <!DOCTYPE html>
 <html>
