@@ -17,6 +17,7 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.Properties;
 
 @Configuration
@@ -34,6 +35,7 @@ public class HibernateConfig {
 
     @Bean
     public DataSource dataSource() {
+        Locale.setDefault(Locale.ENGLISH);
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         try {
             Class.forName(hibernateProps.getProperty("dataSource.DriverClassName"));
