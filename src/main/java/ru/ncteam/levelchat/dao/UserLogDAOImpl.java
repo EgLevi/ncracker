@@ -34,8 +34,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     @Transactional
     public String addUser(UserInfo userInfo) {
 
-        if (existUser(userInfo))
-        {
+        if (existUser(userInfo)) {
             userInfo.setPassword(bcryptEncoder.encode(userInfo.getPassword()));
             Role role = new Role();
             role.setRole("ROLE_USER");
@@ -90,10 +89,9 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         Integer idMess = (Integer) sessionFactory.getCurrentSession().createQuery(
                 "u.id_mess from Chat u where u.idchat='"
                         + idChat + "'").list().get(0);
-        List<String> messages = sessionFactory.getCurrentSession().createQuery(
+        return (List<String>) sessionFactory.getCurrentSession().createQuery(
                 "u.message from Messages u where u.pk_idmess.id_mess='"
                         + idMess + "'").list();
-        return messages;
     }
 
     @Transactional
@@ -132,7 +130,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         MessageKey mk = new MessageKey();
         mk.setId_mess(idMess);
         mk.setId(mid + 1);
-        /*Messages mes = new Messages();
+        /*Message mes = new Message();
         mes.setMessageKey(mk);
 		mes.setMessage(message);
 		mes.setRecepient("a");
@@ -149,7 +147,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             userInfo = (UserInfo) query.uniqueResult();
             roles = userInfo.getRoles();
         } catch (HibernateException e) {
-            e = e;
+            System.out.println(e);
         }
 
         Iterator<Role> it = roles.iterator();
@@ -157,9 +155,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         while (it.hasNext()) {
             collectionGA.add(new SimpleGrantedAuthority(it.next().getRole()));
         }
-
-        UserDetails user = new User(username, userInfo.getPassword(), true, true, true, true, collectionGA);
-        return user;
+        return new User(username, userInfo.getPassword(), true, true, true, true, collectionGA);
     }
 
 
