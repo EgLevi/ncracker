@@ -1,5 +1,7 @@
 package ru.ncteam.levelchat.dao;
 
+import ru.ncteam.levelchat.entity.CategoryInterest;
+import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 
 import java.util.List;
@@ -38,5 +40,23 @@ public interface UserLogDAO {
 	public long getIdImg();
     
     public void setIdImg(long idImg);
+    
+    public List<CategoryInterest> getAllCategory();
+    
+    public List<Interests> getInterestsByCatId(long categoryId);
+    
+    public List<Interests> getInterestsByCatName(String categoryNAme);
+    
+    public void putInterestsByCatId(long categoryId,List<Interests> interests) throws HibernateException;
+    
+    public List<Long> putInterests(List<Interests> interests, String categoryName) throws HibernateException;
+    
+    public void deleteInterests(List<Interests> interests, String categoryName) throws HibernateException;
+    
+    public void deleteCategory(String categoryName) throws HibernateException;
+    
+    public void updateInterests(List<Interests> interests) throws HibernateException;
+    
+    public void putCategoryInterestByName(String categoryName) throws HibernateException;
 
 }

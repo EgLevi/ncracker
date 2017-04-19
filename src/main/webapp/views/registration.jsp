@@ -66,6 +66,10 @@
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Регистрация</button>
                       </div>
+                      <div class="form-group">
+                        <input id="remember_me" name="remeber_me_parameter" type="checkbox"/>
+						<label for="remember_me" class="inline">Запомнить</label>
+                      </div>
                     </form:form>
                   </div>
                 </div>

@@ -46,19 +46,25 @@
                   <div class="panel-body">
                     <form:form method="post" action="j_spring_security_check">
                       <div class="form-group">
+                      	<label for="j_username">Логин</label>
                         <input type="text" class="form-control" name="j_username" placeholder="Имя пользователя">
                       </div>
                       <div class="form-group">
+                      	<label for="j_password">Пароль</label>
                         <input type="password" class="form-control" name="j_password" placeholder="Пароль">
                       </div>
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Войти</button>
                       </div>
-                    </form:form>
+                      <div class="form-group">
+                        <input id="remember_me" name="remeber_me_parameter" type="checkbox"/>
+						<label for="remember_me" class="inline">Запомнить</label>
+                      </div>
                     <div class="login-help">
                       <a href="registration" style="color:#777777">Регистрация</a> 
                       <a href="adminpage" style="color:#777777">Войти как админ</a>
                     </div>
+                    </form:form>
                   </div>
                 </div>
 

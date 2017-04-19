@@ -7,7 +7,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,13 +21,13 @@ public class UserInfo {
 
     @Column(name = "NAME", length = 30)
     @Size(min=1, max=30, message="Имя должно быть от 1 до 20 символов")
-    @Pattern(regexp="[a-zA-Z[А-я]0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String name;
 
 
     @Column(name = "SURNAME", length = 30)
     @Size(min=1, max=30, message="Фамилия должна быть от 1 до 20 символов")
-    @Pattern(regexp="[a-zA-Z[А-я]0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String surname;
 
     @Column(name = "SEX", length = 1)
@@ -40,19 +39,19 @@ public class UserInfo {
     private int age;
 
     @Size(min=1, max=30, message="Слишком большое(маленькое) название страны")
-    @Pattern(regexp="[a-zA-Z[А-я]0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "COUNTRY", length = 30)
     private String country;
 
     @Size(min=1, max=30, message="Слишком большое(маленькое) название города")
-    @Pattern(regexp="[a-zA-Z[А-я]0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "CITY", length = 30)
     private String city;
 
 
     @Column(name = "LOGIN", length = 30, unique = true)
     @Size(min=1, max=30, message="Логин должен быть от 1 до 20 символов")
-    @Pattern(regexp="[a-zA-Z[А-я]0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String login;
 
 

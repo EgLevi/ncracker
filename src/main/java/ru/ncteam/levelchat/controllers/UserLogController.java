@@ -4,8 +4,10 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.service.UserLogService;
 
@@ -15,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -96,9 +100,115 @@ public class UserLogController {
 	    }*/
 	 
 	 
-	@RequestMapping("/adminpage")
-	public String adminPage() {
+	@RequestMapping(value = "/adminpage",method = RequestMethod.GET)
+	public String adminPage(Map<String, Object> map) {
+		map.put("categoryInterestsList", userLogService.getAllCategory());
 		return "adminpage";
+	}
+	
+	@RequestMapping(value = "/adminpage",method = RequestMethod.POST)
+	@ResponseBody
+	public String putCategoryInterest(@RequestBody String categoryName) {
+		try
+		{
+			userLogService.putCategoryInterestByName(categoryName);
+			return categoryName;
+		}
+		catch(Exception e)
+		{
+			return "fail";
+		}
+	}
+	
+	/*@RequestMapping(value = "/adminpage/{categoryId}",method = RequestMethod.GET)
+	@ResponseBody
+	public List<Interests> getInterestsById(@PathVariable long categoryId) {
+		List<Interests> listInterests = userLogService.getInterestsByCatId(categoryId); 
+		return listInterests;
+	}*/
+	
+	@RequestMapping(value = "/adminpage/{categoryName}",method = RequestMethod.GET)
+	@ResponseBody
+	public List<Interests> getInterestsByName(@PathVariable String categoryName) {
+		List<Interests> listInterests = userLogService.getInterestsByCatName(categoryName); 
+		return listInterests;
+	}
+	
+	
+	/*@RequestMapping(value = "/adminpage/{categoryId}",method = RequestMethod.POST)
+	@ResponseBody
+	public String putInterests(@PathVariable long categoryId,
+			@RequestBody ArrayList<Interests> interests,
+			BindingResult result) {
+		try
+		{
+			userLogService.putInterestsByCatId(categoryId,interests);
+			return "success";
+		}
+		catch (Exception e)
+		{
+			return "fail";
+		}
+	}*/
+	
+	@RequestMapping(value = "/adminpage/update",method = RequestMethod.POST)
+	@ResponseBody
+	public String updateInterests(@RequestBody ArrayList<Interests> interests,
+			BindingResult result) {
+		try
+		{
+			userLogService.updateInterests(interests);
+			return "success";
+		}
+		catch (Exception e)
+		{
+			return "fail";
+		}
+	}
+	
+	@RequestMapping(value = "/adminpage/put/{categoryName}",method = RequestMethod.POST)
+	@ResponseBody
+	public List<Long> putInterests(@PathVariable String categoryName,
+			@RequestBody ArrayList<Interests> interests,
+			BindingResult result) {
+		try
+		{
+			return userLogService.putInterests(interests,categoryName);
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
+	}
+	
+	@RequestMapping(value = "/adminpage/delete/{categoryName}",method = RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteInterests(@PathVariable String categoryName,
+			@RequestBody ArrayList<Interests> interests,
+			BindingResult result) {
+		try
+		{
+			userLogService.deleteInterests(interests,categoryName);
+			return "success";
+		}
+		catch (Exception e)
+		{
+			return "fail";
+		}
+	}
+	
+	@RequestMapping(value = "/adminpage/deleteCategory/{categoryName}",method = RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteCategory(@PathVariable String categoryName) {
+		try
+		{
+			userLogService.deleteCategory(categoryName);
+			return "success";
+		}
+		catch (Exception e)
+		{
+			return "fail";
+		}
 	}
 	
 	
@@ -111,6 +221,7 @@ public class UserLogController {
 	public String addContact(@ModelAttribute("usersLog") @Valid UserInfo userInfo,
 			BindingResult result,
 			Model model) {
+		String userPassword = userInfo.getPassword();
 		if(result.hasErrors())
 		{
 			String code;
@@ -127,7 +238,7 @@ public class UserLogController {
 		}
 		if(userLogService.addUser(userInfo).equals("success"))
 		{
-			userLogService.autoLogin(userInfo.getLogin(), userInfo.getPassword());
+			userLogService.autoLogin(userInfo.getLogin(), userPassword);
 			return "postregistration";
 		}
 		else
@@ -194,7 +305,7 @@ public class UserLogController {
 	@ResponseBody
 	public String updateUserInfoPhoto(@RequestParam(value = "photo_ava", required=false) MultipartFile photo_ava) {
 		if (!photo_ava.isEmpty()) {
-			if(!(photo_ava.getContentType().equals("jpg") || photo_ava.getContentType().equals("png")))
+			if(!(photo_ava.getContentType().equals("image/jpeg") || photo_ava.getContentType().equals("image/png")))
 			{
 				return "fail";
 			}
@@ -218,6 +329,10 @@ public class UserLogController {
 
 		
 	}
+	
+	
+
+		
 	
 	/*@RequestMapping(value = "/ajaxadd", method = RequestMethod.GET)
     @ResponseBody
