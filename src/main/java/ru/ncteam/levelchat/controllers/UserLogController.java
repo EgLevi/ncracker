@@ -34,17 +34,6 @@ public class UserLogController {
 	@Autowired
 	private UserLogService userLogService;
 	
-	/*@Autowired
-	private Trial trial;*/
-
-	/*@RequestMapping("/index")
-	public String listContacts(Map<String, Object> map) {
-
-		map.put("users_log", new UsersLog());
-		map.put("users_logList", userLogService.listUser());
-
-		return "index";
-	}*/
 	
 	@RequestMapping("/login")
 	public String login() {
@@ -53,51 +42,13 @@ public class UserLogController {
 	
 	@RequestMapping("/")
 	public String startPage() {
-		//trial.incCounter();
-		//trial.incCounter();
-		//int cnt=trial.getCounter();
 		return "userpage";
 	}
 	
 	@RequestMapping("/userpage")
 	public String userPage(Map<String, Object> map) {
-		
-		//List<String> listMessages = userLogService.getMessages(user.getUsername());
-		//map.put("listMessages", userLogService.getMessages(user.getUsername()));
-		//map.put("Message", "Text of exchange...");
-		//User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    //String name = user.getUsername();
-	    //trial.incCounter();
 		return "userpage";
 	}
-	
-	
-	/*@RequestMapping(value = "/ajaxadd", method = RequestMethod.GET)
-    @ResponseBody
-    public Set<String> ajaxAddMessage(@CurrentUser User user, String mes, int mid) {
-	 
-		File file = new File("c:/LOGs.txt");
-        FileWriter fr = null;
-        userLogService.addMessage(user.getUsername(), mes, mid);
-        Set<String> records = new HashSet<String>();
-        records.add("Record #1");
-        records.add("Record #2");
-        return records;
-    }*/
-	
-	/*@RequestMapping(value = "/ajax", method = RequestMethod.GET)
-	@ResponseBody
-	public List<String> ajaxChat(@CurrentUser User user, int mid) {
-		 
-	        Set<String> records = new HashSet<String>();
-	        records.add("Record #1");
-	        records.add("Record #2");
-	        
-	        List<String> response = userLogService.getMessages(user.getUsername(), mid);
-	        
-	        
-	        return response;
-	    }*/
 	 
 	 
 	@RequestMapping(value = "/adminpage",method = RequestMethod.GET)
@@ -120,12 +71,6 @@ public class UserLogController {
 		}
 	}
 	
-	/*@RequestMapping(value = "/adminpage/{categoryId}",method = RequestMethod.GET)
-	@ResponseBody
-	public List<Interests> getInterestsById(@PathVariable long categoryId) {
-		List<Interests> listInterests = userLogService.getInterestsByCatId(categoryId); 
-		return listInterests;
-	}*/
 	
 	@RequestMapping(value = "/adminpage/{categoryName}",method = RequestMethod.GET)
 	@ResponseBody
@@ -134,22 +79,6 @@ public class UserLogController {
 		return listInterests;
 	}
 	
-	
-	/*@RequestMapping(value = "/adminpage/{categoryId}",method = RequestMethod.POST)
-	@ResponseBody
-	public String putInterests(@PathVariable long categoryId,
-			@RequestBody ArrayList<Interests> interests,
-			BindingResult result) {
-		try
-		{
-			userLogService.putInterestsByCatId(categoryId,interests);
-			return "success";
-		}
-		catch (Exception e)
-		{
-			return "fail";
-		}
-	}*/
 	
 	@RequestMapping(value = "/adminpage/update",method = RequestMethod.POST)
 	@ResponseBody
@@ -329,21 +258,4 @@ public class UserLogController {
 
 		
 	}
-	
-	
-
-		
-	
-	/*@RequestMapping(value = "/ajaxadd", method = RequestMethod.GET)
-    @ResponseBody
-    public Set<String> ajaxAddMessage(@CurrentUser User user, String mes, int mid) {
-	 
-		File file = new File("c:/LOGs.txt");
-        FileWriter fr = null;
-        userLogService.addMessage(user.getUsername(), mes, mid);
-        Set<String> records = new HashSet<String>();
-        records.add("Record #1");
-        records.add("Record #2");
-        return records;
-    }*/
 }

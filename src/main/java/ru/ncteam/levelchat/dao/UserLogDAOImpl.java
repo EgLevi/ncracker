@@ -36,16 +36,15 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 		return bcryptEncoder;
 	}
 
-
 	public void setBcryptEncoder(BCryptPasswordEncoder bcryptEncoder) {
 		this.bcryptEncoder = bcryptEncoder;
 	}
 
 
 	@Transactional
-    public String addUser(UserInfo userInfo) {
+    public String addUser(UserInfo userInfo,String queryString) {
 
-        if (existUser(userInfo))
+        if (existUser(userInfo,queryString))
         {
             userInfo.setPassword(bcryptEncoder.encode(userInfo.getPassword()));
             Role role = new Role();
@@ -65,20 +64,11 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         }
     }
     
-    
 	@Transactional
-    public String updateUserInfo(UserInfo userInfo) {
+    public String updateUserInfo(UserInfo userInfo,String queryString) {
 
     	try {
-            Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
-            		+ "email=:email,"
-            		+ " country=:country,"
-            		+ " city=:city,"
-            		+ " name=:name,"
-            		+ " surname=:surname,"
-            		+ " age=:age,"
-            		+ " sex=:sex"
-            		+ " where login=:login");
+            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
             query.setParameter("email", userInfo.getEmail());
             query.setParameter("country", userInfo.getCountry());
             query.setParameter("city", userInfo.getCity());
@@ -86,6 +76,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             query.setParameter("surname", userInfo.getSurname());
             query.setParameter("age", userInfo.getAge());
             query.setParameter("sex", userInfo.getSex());
+            query.setParameter("photo_ava", userInfo.getPhoto_ava());
             query.setParameter("login", userInfo.getLogin());
             query.executeUpdate();
             return "success";
@@ -93,7 +84,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             return e.getMessage();
         }
     }
-	
 	
 	@Transactional
     public String updateUserInfoPhoto(UserInfo userInfo) {
@@ -113,24 +103,27 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 	
 
     @Transactional
-    public boolean existUser(UserInfo userInfo) {
-        return sessionFactory.getCurrentSession().createQuery("from UserInfo u where u.login='"
-                + userInfo.getLogin() + "'").getResultList().isEmpty();
+    public boolean existUser(UserInfo userInfo,String queryString) {
+        Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+        query.setParameter("login", userInfo.getLogin());
+        return query.getResultList().isEmpty();
     }
     
     @Transactional
-    public boolean existUser(String login) {
-        return sessionFactory.getCurrentSession().createQuery("from UserInfo u where u.login='"
-                + login + "'").getResultList().isEmpty();
+    public boolean existUser(String login,String queryString) {
+    	Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+        query.setParameter("login", login);
+        return query.getResultList().isEmpty();
     }
 
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String strQuery = "from UserInfo u where u.login='" + username + "'";
         UserInfo userInfo = null;
         Set<Role> roles = null;
-        try {
-            Query query = sessionFactory.getCurrentSession().createQuery(strQuery);
+        try 
+        {
+        	Query query = sessionFactory.getCurrentSession().createQuery("from UserInfo where login=:login");
+            query.setParameter("login", username);
             userInfo = (UserInfo) query.uniqueResult();
             roles = userInfo.getRoles();
         } catch (HibernateException e) {
@@ -147,9 +140,9 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
 
     @Transactional
-    public long getIdImg() {
+    public long getIdImg(String queryString) {
     	try{
-        	Query query = sessionFactory.getCurrentSession().createQuery("select i.value from IdImg i where i.id=0");
+        	Query query = sessionFactory.getCurrentSession().createQuery(queryString);
         	List<Long> ll = query.list();
         	long idImg = ((Long)query.list().get(0)).longValue();
             return idImg;
@@ -162,12 +155,10 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
     
     @Transactional
-    public void setIdImg(long idImg) {
+    public void setIdImg(long idImg,String queryString) {
     	
     	try {
-            Query query=sessionFactory.getCurrentSession().createQuery("update IdImg set "
-            		+ "value=:value "
-            		+ "where id=0");
+            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
             query.setLong("value", idImg);
             query.executeUpdate();
         } catch (HibernateException e) {
@@ -176,10 +167,10 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
     
     @Transactional
-    public List<CategoryInterest> getAllCategory() {
+    public List<CategoryInterest> getAllCategory(String queryString) {
     	
     	try {
-            Query query=sessionFactory.getCurrentSession().createQuery("from CategoryInterest");
+            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
             return query.getResultList();
         } catch (HibernateException e) {
         	return null;
@@ -188,10 +179,10 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
     
     @Transactional
-    public List<Interests> getInterestsByCatId(long categoryId)
+    public List<Interests> getInterestsByCatId(long categoryId,String queryString)
     {
     	try {
-            Query query=sessionFactory.getCurrentSession().createQuery("from Interests where categoryInterest.categoryId=:categoryId");
+            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
             query.setParameter("categoryId", categoryId);
             List<Interests> listInterests = query.getResultList();
             return listInterests;
@@ -202,10 +193,10 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
       
     @Transactional
-    public List<Interests> getInterestsByCatName(String categoryName)
+    public List<Interests> getInterestsByCatName(String categoryName,String queryString)
     {
     	try {
-            Query query=sessionFactory.getCurrentSession().createQuery("from Interests where categoryInterest.categoryName=:categoryName");
+            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
             query.setParameter("categoryName", categoryName);
             List<Interests> listInterests = query.getResultList();
             return listInterests;
@@ -216,11 +207,9 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
       
     @Transactional
-    public void putInterestsByCatId(long categoryId,List<Interests> interests) throws HibernateException
+    public void putInterestsByCatId(long categoryId,List<Interests> interests,String queryString) throws HibernateException
     {
-    	Query query=sessionFactory.getCurrentSession().createQuery("update Interests set "
-    			+ "interestName=:interestName "
-        		+ "where interestId=:interestId");
+    	Query query=sessionFactory.getCurrentSession().createQuery(queryString);
     	for(int i=0;i<interests.size();i++)
     	{
     		query.setParameter("interestName", interests.get(i).getInterestName());
@@ -230,11 +219,9 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
         
     @Transactional
-    public void updateInterests(List<Interests> interests) throws HibernateException
+    public void updateInterests(List<Interests> interests,String queryString) throws HibernateException
     {
-    	Query query=sessionFactory.getCurrentSession().createQuery("update Interests set "
-    			+ "interestName=:interestName "
-        		+ "where interestId=:interestId");
+    	Query query=sessionFactory.getCurrentSession().createQuery(queryString);
     	for(int i=0;i<interests.size();i++)
     	{
     		query.setParameter("interestName", interests.get(i).getInterestName());
@@ -244,10 +231,10 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
     
     @Transactional
-    public List<Long> putInterests(List<Interests> interests, String categoryName) throws HibernateException
+    public List<Long> putInterests(List<Interests> interests, String categoryName,String queryString) throws HibernateException
     {
-    	CategoryInterest categoryInterest = getCategoryInterestByName(categoryName);
-    	Interests interest;
+    	CategoryInterest categoryInterest = getCategoryInterestByName(categoryName, queryString);
+    	Interests interest=null;
     	List<Long> listId = new ArrayList<Long>();
     	for(int i=0;i<interests.size();i++)
     	{
@@ -259,9 +246,9 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
     
     @Transactional
-    public void deleteInterests(List<Interests> interests,String categoryName) throws HibernateException
+    public void deleteInterests(List<Interests> interests,String categoryName, String queryString) throws HibernateException
     {
-    	CategoryInterest categoryInterest = getCategoryInterestByName(categoryName);
+    	CategoryInterest categoryInterest = getCategoryInterestByName(categoryName,queryString);
     	Interests interest;
     	for(int i=0;i<interests.size();i++)
     	{
@@ -272,19 +259,17 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
     
     @Transactional
-    public void deleteCategory(String categoryName) throws HibernateException
+    public void deleteCategory(String categoryName, String queryString) throws HibernateException
     {
     	Session session = sessionFactory.getCurrentSession();
-    	Query query=session.createQuery("from CategoryInterest where categoryName=:categoryName");
-    	query.setParameter("categoryName", categoryName);
-    	CategoryInterest categoryInterest = (CategoryInterest)query.uniqueResult();
+    	CategoryInterest categoryInterest = getCategoryInterestByName(categoryName,queryString);
         session.delete(categoryInterest);
     }
     
     @Transactional
-    private CategoryInterest getCategoryInterestByName(String categoryName)
+    private CategoryInterest getCategoryInterestByName(String categoryName,String queryString)
     {
-    	Query query=sessionFactory.getCurrentSession().createQuery("from CategoryInterest where categoryName=:categoryName");
+    	Query query=sessionFactory.getCurrentSession().createQuery(queryString);
     	query.setParameter("categoryName", categoryName);
     	return (CategoryInterest)query.uniqueResult();
     }

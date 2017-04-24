@@ -7,40 +7,41 @@
 <html lang="en">
 <script src="resources/js/jquery-1.4.2.min.js" type="text/javascript"></script>
 <head>
-	<style>
-        .btn-default-hover{
+    <style>
+        .btn-default-hover {
             display: inline-block; /* Строчно-блочный элемент */
             position: relative; /* Относительное позиционирование */
-         }
-
-        .btn-default-hover:hover::after {
-            content: attr(data-title); /* Выводим текст */
-            position: absolute; /* Абсолютное позиционирование */
-            /*left: 0%;
-            top: 10%;*/ /* Положение подсказки */
-            left: 0; bottom: 34px;
-            z-index: 1; /* Отображаем подсказку поверх других элементов */
-            background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
-            font-family: Arial, sans-serif; /* Гарнитура шрифта */
-            font-size: 11px; /* Размер текста подсказки */
-            padding: 5px 10px; /* Поля */
-            border: 1px solid #333; /* Параметры рамки */
         }
+
+            .btn-default-hover:hover::after {
+                content: attr(data-title); /* Выводим текст */
+                position: absolute; /* Абсолютное позиционирование */
+                /*left: 0%;
+            top: 10%;*/ /* Положение подсказки */
+                left: 0;
+                bottom: 34px;
+                z-index: 1; /* Отображаем подсказку поверх других элементов */
+                background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
+                font-family: Arial, sans-serif; /* Гарнитура шрифта */
+                font-size: 11px; /* Размер текста подсказки */
+                padding: 5px 10px; /* Поля */
+                border: 1px solid #333; /* Параметры рамки */
+            }
 
 
         .dropbtn {
-        background-color: #FFFFFF;
-        color: white;
-        padding: 6px 12px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        cursor: pointer;
-        height: 34px;
+            background-color: #FFFFFF;
+            color: white;
+            padding: 6px 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            height: 34px;
         }
 
-        .dropbtn:hover, .dropbtn:focus {
-            background-color: #FFFFFF;
-        }
+            .dropbtn:hover, .dropbtn:focus {
+                background-color: #FFFFFF;
+            }
 
         .dropdown {
             position: relative;
@@ -57,17 +58,16 @@
             z-index: 1;
         }
 
-        .label-content
-        {
+        .label-content {
             min-width: 160px;
-            width:270px;
+            width: 270px;
             z-index: 1;
             color: black;
             padding: 6px 12px;
             margin-bottom: 0px;
             font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
             font-size: 14px;
-            font-weight:100;
+            font-weight: 100;
         }
 
         .dropdown-content a {
@@ -77,20 +77,24 @@
             display: block;
         }
 
-        .dropdown a:hover {background-color: #f1f1f1}
+        .dropdown a:hover {
+            background-color: #f1f1f1;
+        }
 
-        .show {display:block;}
-        
-        .element-center{
-        	margin:0 auto;
+        .show {
+            display: block;
         }
-        
-        .indent-down{
-        	margin-bottom:30px;
+
+        .element-center {
+            margin: 0 auto;
         }
-        
-        .indent-top{
-        	margin-top:30px;
+
+        .indent-down {
+            margin-bottom: 30px;
+        }
+
+        .indent-top {
+            margin-top: 30px;
         }
     </style>
     <title>Интересы пользователей</title>
@@ -107,245 +111,331 @@
 
 
     <div class="container indent-top">
-    <div class="panel panel-default control-main">
+        <div class="panel panel-default control-main">
             <div class="panel-heading">
                 <div class="input-group element-center">
-		        	<div class="dropdown indent-down">
-		                <label id="labelSlct" class="label-content">Выбрать категорию интересов</label>
-		                <button id="selectBtn" class="dropbtn btn btn-default"><span id="spanBtn" class="glyphicon glyphicon-chevron-down" style="color:#999999;"></span></button>
-		                <div id="myDropdown" class="dropdown-content">
-			                <c:if test="${!empty categoryInterestsList}">
-			                    <c:forEach items="${categoryInterestsList}" var="categoryInterest">
-			                        <a>${categoryInterest.categoryName}<span class="glyphicon glyphicon-remove" style="position:absolute; color:#FF0000; right:0%; top:inherit; padding:6px;"></span></a>
-			                    </c:forEach>
-			                </c:if>
-			                <a>Добавить новый элемент</a>
-		                </div>
-		            </div>
-		            <button type="button" id="commitBtn" data-title="Сохранить изменения" class="btn btn-default btn-default-hover" style="margin-bottom:0px; height: 34px;"><span class="glyphicon glyphicon-ok" style="color:#00FF00;"></span></button>
-		            <button type="button" id="cancelBtn" data-title="Отменить" class="btn btn-default btn-default-hover" style="margin-bottom:0px; height: 34px;"><span class="glyphicon glyphicon-repeat" style="color:#FF0000;"></span></button>
-		        </div>
+                    <div class="dropdown indent-down">
+                        <label id="labelSlct" class="label-content">Выбрать категорию интересов</label>
+                        <button id="selectBtn" class="dropbtn btn btn-default"><span id="spanBtn" class="glyphicon glyphicon-chevron-down" style="color:#999999;"></span></button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <c:if test="${!empty categoryInterestsList}">
+                                <c:forEach items="${categoryInterestsList}" var="categoryInterest">
+                                    <a>${categoryInterest.categoryName}<span class="glyphicon glyphicon-remove" style="position:absolute; color:#FF0000; right:0%; top:inherit; padding:6px;"></span></a>
+                                </c:forEach>
+                            </c:if>
+                            <a>Добавить новый элемент</a>
+                        </div>
+                    </div>
+                    <button type="button" id="commitBtn" data-title="Сохранить изменения" class="btn btn-default btn-default-hover" style="margin-bottom:0px; height: 34px;"><span class="glyphicon glyphicon-ok" style="color:#00FF00;"></span></button>
+                    <button type="button" id="cancelBtn" data-title="Отменить" class="btn btn-default btn-default-hover" style="margin-bottom:0px; height: 34px;"><span class="glyphicon glyphicon-repeat" style="color:#FF0000;"></span></button>
+                </div>
             </div>
             <div class="panel-body table-responsive" style="height:480px;">
                 <table class="table table-bordered element-center" onselectstart="return false" id="table" style="margin-top:30px; width: 609px; border: 1px solid #ddd;">
-		            <thead>
-		                <tr>
-		                    <th style="width: 118px;">ID</th>
-		                    <th>Интерес</th>
-		                </tr>
-		            </thead>
-		            <tbody id="tableBody">
-		            </tbody>
-		        </table>
+                    <thead>
+                        <tr>
+                            <th style="width: 118px;">ID</th>
+                            <th>Интерес</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
             </div>
         </div>
     </div>
     <script type="text/javascript">
 	    var data = [];//data for update
-	    var dataDelete = [];
-	    var dataInsert = [];
-	    var coordiantes;
-	    var row=0;
-	    var column=0;
-	    var prevSelIndex=undefined;
-	    var categoryId=0;
+	    var dataDelete = [];//данные об интересах, удалённых из таблицы
+	    var dataInsert = [];//данные об интересах вставленные в таблицу
+	    var coordiantes;//координаты txtarea
+	    var row=0;//строка таблицы
+	    var column=0;//колонка
+	    var prevSelIndex=undefined;//предыдущий ввыбранный элемент
 	    var categoryName=0;
-	    var valueOption = "";
-	    var selectedRow = [];
-	    var mouseBtnDown = false;
-	
-	    function sameSign(v1, v2)
-	    {
-	        if ((v1 * v2) > 0) {
-	            return true;
-	        }
-	        return false;
-	    }
-	
-	
+	    var valueOption = "";//значение введёного поля
+	    var selectedRow = [];//массив выделенных строк
+	    var mouseBtnDown = false;//флаг, означающий нажатие кнопки мыши
 	    var table = document.getElementById('table')
 	    var trList = table.getElementsByTagName('tr')
 	    var tdList;
-	
+	    var textareaInFocus = false;//флаг, означающий, что txtarea должна находиться в фокусе
+	    var textareaSelectInFocus = false;
+
+	    //отправка запроса на добавление новой категории
 	    function sendDataChangeSelect()//send request on interests of category
 	    {
-	    	if(valueOption != "")
-	    	{
-
-		    	$.ajax({
-		            type: 'POST',
-		            url: "adminpage",
-		            contentType: 'application/json',
-		            data : valueOption,
-		            success: function (res) {
-		            	var result;
-		            	try {
-		            	    result = JSON.parse(res); 
-		            	} catch (e) {
-		            	    result = res;
-		            	}
-		            	if(result=="fail")
-		            	{
-		            		alert("Some problem");
-		            		return;
-		            	}
-		                var elem;
-		                var childElem;
-		                elem = document.createElement('a');
-		                elem.innerHTML = valueOption+'<span class="glyphicon glyphicon-remove" style="position:absolute; color:#FF0000; right:0%; top:inherit; padding:6px;"></span>';
-		                myDropdown.insertBefore(elem, myDropdown.childNodes.item(myDropdown.childNodes.length - 2));
-		                changeSelected(valueOption);
-		                aList = myDropdown.getElementsByTagName('a');
-		                aList[aList.length - 2].addEventListener("mousedown", addNewOptionToSelect);
+	        if (valueOption != "")//если зна
+	        {
+	            $.ajax({
+	                type: 'POST',
+	                url: "adminpage",
+	                contentType: 'application/json',
+	                data: valueOption,
+	                success: function (res) {
+	                    var result;
+	                    try {
+	                        result = JSON.parse(res);
+	                    } catch (e) {
+	                        result = res;
+	                    }
+	                    if (result == "fail") {
+	                        alert("Some problem");
+	                        return;
+	                    }
+	                    var elem;
+	                    var childElem;
+	                    elem = document.createElement('a');
+	                    elem.innerHTML = valueOption + '<span class="glyphicon glyphicon-remove" style="position:absolute; color:#FF0000; right:0%; top:inherit; padding:6px;"></span>';
+	                    myDropdown.insertBefore(elem, myDropdown.childNodes.item(myDropdown.childNodes.length - 2));
+	                    changeSelected(valueOption);
+	                    aList = myDropdown.getElementsByTagName('a');
+	                    aList[aList.length - 2].addEventListener("mousedown", addNewOptionToSelect);
 	                    aList[aList.length - 2].children[0].addEventListener("mousedown", deleteCategory);
 	                    categoryName = valueOption;
-	    	            valueOption="";
-	            		getInterestOfCategory();
-		            },
-		        	error: function (jqXHR, textStatus, errorThrown)
-		        	{
-			            valueOption="";
-		        	}
-		        });
-	    	}
+	                    valueOption = "";
+	                    getInterestOfCategory();
+	                },
+	                error: function (jqXHR, textStatus, errorThrown) {
+	                    valueOption = "";
+	                }
+	            });
+	        }
 	    }
-	
-	    
-	    function checkResponse(res)
-	    {
-	    	var result;
-        	try {
-        	    result = JSON.parse(res); 
-        	} catch (e) {
-        	    result = res;
-        	}
-        	if(result!="success")
-        	{
-        		reloadTableAfterError();
-        	}
+
+	    function changeSelected(value) {
+	        labelSlct.innerHTML = value;
 	    }
-	    
-	    function reloadTableAfterError()
-	    {
-	    	alert("Some problem, commit is cancel");
-    		getInterestOfCategory();
-	    }
-	
-	
+
+	    //отправка запроса на сохранение изменений в БД
 	    function sendDataChangeTable(e)//send data about change in table (commit change)
 	    {
-	    	if(data.length>0)
-	    	{
-		        $.ajax({
-		            type: 'POST',
-		            url: "adminpage/update",
-		            contentType: 'application/json',
-		            data : JSON.stringify(data),
-		            success: function (res){
-		            	checkResponse(res);
-		            },
-		        	error: function (jqXHR, textStatus, errorThrown)
-		        	{
-		        		reloadTableAfterError();
-		        	}
-		        });
-                data = [];
-	    	}
-	
-	    	if(dataInsert.length>0)
-	    	{
-		        $.ajax({
-		            type: 'POST',
-		            url: "adminpage/put/" + categoryName,
-		            contentType: 'application/json',
-		            data: JSON.stringify(dataInsert),
-		            success: function (res) {
-		            	var result;
-		                try {
-		                    result = JSON.parse(res);
-		                } catch (e) {
-		                    result = res;
-		                }
+	        if (data.length > 0)//если есть данные на обновление, то посылаем соответствующий запрос
+	        {
+	            $.ajax({
+	                type: 'POST',
+	                url: "adminpage/update",
+	                contentType: 'application/json',
+	                data: JSON.stringify(data),
+	                success: function (res) {
+	                    checkResponse(res);
+	                },
+	                error: function (jqXHR, textStatus, errorThrown) {
+	                    reloadTableAfterError();
+	                }
+	            });
+	            data = [];
+	        }
+	        if (dataInsert.length > 0) {
+	            $.ajax({
+	                type: 'POST',
+	                url: "adminpage/put/" + categoryName,
+	                contentType: 'application/json',
+	                data: JSON.stringify(dataInsert),
+	                success: function (res) {
+	                    var result;
+	                    try {
+	                        result = JSON.parse(res);
+	                    } catch (e) {
+	                        result = res;
+	                    }
+	                    
+	                    if(!!result.length)
+	                    {
+	                    	for (i = 0; i < result.length; i++) {
+		                        tdList = trList[trList.length - 2 - i].getElementsByTagName('td');
+		                        tdList[0].innerHTML = result[result.length - 1 - i];
+		                    }
+	                    }
+	                    else
+	                    {
+	                    	tdList = trList[trList.length - 2 - i].getElementsByTagName('td');
+	                        tdList[0].innerHTML = result;
+	                    }
 
-		                for (i = 0; i < result.length; i++)
-		                {
-		                    tdList = trList[trList.length - 2 - i].getElementsByTagName('td');
-		                    tdList[0].innerHTML = result[result.length - 1 - i];
-		                }
-		                addEventInTable();
-		            },
-		            error: function (jqXHR, textStatus, errorThrown) {
-		            	reloadTableAfterError();
-		            }
-		        });
-                dataInsert = [];
-	    	}
-	
-	    	if(dataDelete.length>0)
-	    	{
-		        $.ajax({
-		            type: 'DELETE',
-		            url: "adminpage/delete/" + categoryName,
-		            contentType: 'application/json',
-		            data: JSON.stringify(dataDelete),
-		            success: function (res) {
-		            	checkResponse(res);
-		            },
-		            error: function (jqXHR, textStatus, errorThrown) {
-		            	reloadTableAfterError();
-		            }
-		        });
-            	dataDelete=[];
-	    	}
+	                    
+	                    addEventInTable();
+	                },
+	                error: function (jqXHR, textStatus, errorThrown) {
+	                    reloadTableAfterError();
+	                }
+	            });
+	            dataInsert = [];
+	        }
+
+	        if (dataDelete.length > 0) {
+	            $.ajax({
+	                type: 'DELETE',
+	                url: "adminpage/delete/" + categoryName,
+	                contentType: 'application/json',
+	                data: JSON.stringify(dataDelete),
+	                success: function (res) {
+	                    checkResponse(res);
+	                },
+	                error: function (jqXHR, textStatus, errorThrown) {
+	                    reloadTableAfterError();
+	                }
+	            });
+	            dataDelete = [];
+	        }
 	    }
-	
+
+	    //проверка ответа
+	    function checkResponse(res) {
+	        var result;
+	        try {
+	            result = JSON.parse(res);
+	        } catch (e) {
+	            result = res;
+	        }
+	        if (result != "success") {
+	            reloadTableAfterError();
+	        }
+	    }
+
+	    function reloadTableAfterError() {
+	        alert("Some problem, commit is cancel");
+	        getInterestOfCategory();
+	    }
+
+	    //отправка запроса на получение интересов по заданной категории и формирование таблицы из пришедших данных
+	    function getInterestOfCategory()//get data of table by category
+	    {
+	        var trBodyList = tableBody.getElementsByTagName("tr");//delete all old elements
+	        var length = trBodyList.length;
+	        for (i = 0; i < length; i++) {
+	            trBodyList[0].remove();
+	        }
+
+	        $.ajax({
+	            type: 'GET',
+	            url: "adminpage/" + categoryName,
+	            contentType: 'application/json',
+	            dataType: "json",
+	            success: function (res) {
+	                var result;
+	                try {
+	                    result = JSON.parse(res);
+	                } catch (e) {
+	                    result = res;
+	                }
+	                var trBodyList = tableBody.getElementsByTagName("tr");//delete all old elements
+	                var length = trBodyList.length;
+	                for (i = 0; i < length; i++) {
+	                    trBodyList[0].remove();
+	                }
+	                var elem;
+	                var childElem;
+	                for (i = 0; i < res.length; i++) {
+	                    elem = tableBody.insertRow(i);
+	                    childElem = document.createElement('td');
+	                    childElem.innerHTML = res[i].interestName;
+	                    elem.insertBefore(childElem, elem.firstChild);
+	                    childElem = document.createElement('td');
+	                    childElem.innerHTML = res[i].interestId;
+	                    elem.insertBefore(childElem, elem.lastChild);
+	                }
+	                elem = tableBody.insertRow(res.length);
+	                childElem = document.createElement('td');
+	                childElem.innerHTML = "";
+	                elem.insertBefore(childElem, elem.firstChild);
+	                childElem = document.createElement('td');
+	                childElem.innerHTML = "*";
+	                elem.insertBefore(childElem, elem.lastChild);
+	                addEventInTable();
+	            }
+	        });
+	    }
+
+	    //отправка запроса на удаление категории
+	    function sendDeleteCategoryCommand(categoryName, element)//send data about change in table
+	    {
+	        $.ajax({
+	            type: 'DELETE',
+	            url: "adminpage/deleteCategory/" + categoryName,
+	            success: function (res) {
+	                var result;
+	                try {
+	                    result = JSON.parse(res);
+	                } catch (e) {
+	                    result = res;
+	                }
+	                if (result != "success") {
+	                    alert("Some problem with delete category");
+	                    return;
+	                }
+	                element.parentNode.remove();
+	                labelSlct.innerHTML = "Выбрать категорию интересов";
+	                for (i = 1; i < trList.length; i++) {
+	                    trList[1].remove();
+	                }
+	            },
+	            error: function (jqXHR, textStatus, errorThrown) {
+	            }
+	        });
+
+	    }
+
+	    commitBtn.addEventListener("click", sendDataChangeTable);
+
+	    cancelBtn.addEventListener("click", reloadData);
+
 	    function reloadData(e)//click on cancel button
 	    {
-	    	getInterestOfCategory();
+	        getInterestOfCategory();
 	    }
-	    
-	    function compareElement(a,b)
-	    {
-	    	if(a > b)
-	    	{
-	    		return 1;
-	    	}
-	    	else
-	    	{
-	    		return -1;
-	    	}
-	    }
-	
-	    function deleteRowsFromTable(e)
-	    {
-	    	selectedRow = selectedRow.sort(compareElement);
-	        for(i=0;i<selectedRow.length;i++)
-	        {
+
+	    removeBtn.addEventListener("mousedown", deleteRowsFromTable);
+
+	    //удаление элементов из таблицы
+	    function deleteRowsFromTable(e) {
+	        selectedRow = selectedRow.sort(compareElement);//сортируем массив
+	        for (i = 0; i < selectedRow.length; i++) {
 	            tdList = trList[selectedRow[0]].getElementsByTagName('td');
 	            dataDelete.push({ "interestId": tdList[0].innerHTML, "interestName": tdList[1].innerHTML });
-	            trList[selectedRow[0]].remove();
+	            trList[selectedRow[0]].remove();//удаляем первый элемент массива(так как при удалении автоматически уменьшается и количество строк)
 	        }
-	        selectedRow.splice(0,selectedRow.length);
+	        selectedRow.splice(0, selectedRow.length);//освобождаем массив
 	    }
-	
-	    commitBtn.addEventListener("click", sendDataChangeTable);
-	
-	    cancelBtn.addEventListener("click", reloadData);
-	
-	    removeBtn.addEventListener("mousedown",deleteRowsFromTable);
-	    
-	    var textareaInFocus = false;
-	
+
+	    //Компаратор элементов массива(для фукций сортировки)
+	    function compareElement(a, b) {
+	        if (a > b) {
+	            return 1;
+	        }
+	        else {
+	            return -1;
+	        }
+	    }
+
+	    selectBtn.addEventListener("mousedown", showDropDown);
+
+	    //part script for manage own select
+	    function showDropDown() {
+	        document.getElementById("myDropdown").classList.toggle("show");
+	    }
+
+	    spanBtn.addEventListener("mousedown", showDropDownSpan);
+
+	    function showDropDownSpan(e) {
+	        document.getElementById("myDropdown").classList.toggle("show");
+	        e.stopPropagation();
+	    }
+
+	    txtarea.addEventListener("keydown", keyDownTxtArea);
+	    txtarea.addEventListener("mousedown", clickOnTxt);
+
+	    //обработка события нажатия кнопки в txtarea(область для ввода новых данных)
 	    function keyDownTxtArea(e)//keyDown in textArea in table cell
 	    {
-	        if (e.keyCode == 13)
+	        if (e.keyCode == 13)//была нажата клавиша Enter
 	        {
 	            tdList = trList[row].getElementsByTagName('td');
 	            thList = table.getElementsByTagName('th');
 	            tdList[column].innerHTML = txtarea.value;
 	            txtarea.value = "";
 	            txtarea.style.display = "none";
-	            if (row == trList.length - 1) {
+	            if (row == trList.length - 1)//если последнее поле, то добавляем новый ряд
+	            {
 	                dataInsert.push({ "interestId": 0, "interestName": tdList[column].innerHTML });
 	                var elem;
 	                var childElem;
@@ -357,136 +447,160 @@
 	                childElem.innerHTML = "*";
 	                elem.insertBefore(childElem, elem.lastChild);
 	                trList = table.getElementsByTagName('tr')
-	                tdList = trList[row+1].getElementsByTagName('td')
+	                tdList = trList[row + 1].getElementsByTagName('td')
 	                for (i = 1; i < tdList.length; i++) {
 	                    tdList[i].addEventListener("click", clickOnElement);
 	                }
 	            }
-	            else
-	            { 
+	            else {
 	                data.push({ "interestId": tdList[0].innerHTML, "interestName": tdList[column].innerHTML });
 	            }
 	        }
-	        if (e.keyCode == 9)
-            {
-                var trListInner = tableBody.getElementsByTagName("tr");
-                var tdListInner = trListInner[row].getElementsByTagName("td");
-                coordinates = tdListInner[column].getBoundingClientRect();
-                txtarea.style.top = (coordinates.top + 5) + "px";
-                txtarea.style.left = (coordinates.left + 5) + "px";
-                txtarea.style.width = tdListInner[column].clientWidth + "px";
-                txtarea.style.height = tdListInner[column].clientHeight + "px";
-                txtarea.value = tdListInner[column].innerHTML;
-                txtarea.style.display = "inline";
-                row = tdListInner[column].parentElement.rowIndex;
-                column = tdListInner[column].cellIndex;
-                textareaInFocus = true;
-            }
-	    }
-	    
-	    function focusProc(e)
-        {
-            if (textareaInFocus)
-            {
-                txtarea.focus();
-            }
-        }
-
-        function blurProc(e)
-        {
-            if (textareaSelectInFocus)
-            {
-                txtareaSelect.focus();
-            }
-        }
-
-
-        window.addEventListener("blur", blurProc, true);
-
-        window.addEventListener("focus", focusProc, true);
-	
-	    function keyDownTxtAreaSelect(e)//kewdown in textarea in select
-	    {
-	        if (e.keyCode == 13) {
-	        	valueOption = txtareaSelect.value;
-	        	txtareaSelect.value = "";
-	        	txtareaSelect.style.display = "none";
-	            sendDataChangeSelect();
+	        if (e.keyCode == 9)//клавиша Tab
+	        {
+	            var trListInner = tableBody.getElementsByTagName("tr");
+	            var tdListInner = trListInner[row].getElementsByTagName("td");
+	            coordinates = tdListInner[column].getBoundingClientRect();
+	            txtarea.style.top = (coordinates.top + 5) + "px";
+	            txtarea.style.left = (coordinates.left + 5) + "px";
+	            txtarea.style.width = tdListInner[column].clientWidth + "px";
+	            txtarea.style.height = tdListInner[column].clientHeight + "px";
+	            txtarea.value = tdListInner[column].innerHTML;
+	            txtarea.style.display = "inline";
+	            row = tdListInner[column].parentElement.rowIndex;
+	            column = tdListInner[column].cellIndex;
+	            textareaInFocus = true;
 	        }
 	    }
-	
-	
-	    txtarea.addEventListener("keydown", keyDownTxtArea);
-	
-	    txtareaSelect.addEventListener("keydown", keyDownTxtAreaSelect);
-	
-	    function clickOnTxtSelect(e)
-	    {
-	        e.stopPropagation();
-	    }
-	
-	    txtareaSelect.addEventListener("mousedown", clickOnTxtSelect);
-	
-	
+
 	    function clickOnTxt(e) {
 	        e.stopPropagation();
 	    }
-	
-	    txtarea.addEventListener("mousedown", clickOnTxt);
-	    
-	    function flipOnTable(e)
-        {
-            if (selectedRow.length>0)
-            {
-                var currentRow;
-                if (e.keyCode == 38)//if press key 'up'
-                {
-                    if (selectedRow[selectedRow.length - 1] == 1)
-                    {
-                        return;
-                    }
-                    currentRow = selectedRow[selectedRow.length - 1] - 1;
-                }
-                else if (e.keyCode == 40)//if press key 'down'
-                {
-                    if (selectedRow[selectedRow.length - 1] == trList.length - 2)
-                    {
-                        return;
-                    }
-                    currentRow = selectedRow[selectedRow.length - 1] + 1;
-                }
-    	        for(i=0;i<selectedRow.length;i++)
-    	        {
-                    trList[selectedRow[i]].style.backgroundColor = "#FFF";
-    	        }
-    	        selectedRow.splice(0,selectedRow.length);
-                selectedRow.push(currentRow);
-                trList[currentRow].style.backgroundColor = "#AAA";
-                var coordinates = trList[currentRow].getBoundingClientRect();
-                removeBtn.style.top = (coordinates.top) + "px";
-                removeBtn.style.left = (coordinates.left - 40) + "px";//40 it is size button with gliphicon
-                removeBtn.style.display = "inline";
-            }
-        }
 
-        window.addEventListener("keydown",flipOnTable);
-	
-        function existInArray(element, index, array)
+	    txtareaSelect.addEventListener("keydown", keyDownTxtAreaSelect);
+	    txtareaSelect.addEventListener("mousedown", clickOnTxtSelect);
+
+	    //функция-обработчик события нажатия клавиши в поле для ввода новой категории
+	    function keyDownTxtAreaSelect(e)//kewdown in textarea in select
 	    {
-	        if(element==this)
+	        if (e.keyCode == 13)//нажата клавиша Enter
 	        {
+	            valueOption = txtareaSelect.value;
+	            txtareaSelect.value = "";
+	            txtareaSelect.style.display = "none";
+	            sendDataChangeSelect();
+	        }
+	    }
+
+	    function clickOnTxtSelect(e) {
+	        e.stopPropagation();
+	    }
+
+	    window.addEventListener("blur", blurProc, true);
+
+	    //обработчик события снятия фокуса (для окна)(глобальный)
+	    function blurProc(e) {
+	        if (textareaSelectInFocus) {
+	            txtareaSelect.focus();
+	        }
+	    }
+
+	    window.addEventListener("focus", focusProc, true);
+
+	    //обработчик события установки фокуса в окне (глобальный)
+	    function focusProc(e) {
+	        if (textareaInFocus) {
+	            txtarea.focus();
+	        }
+	    }
+
+	    window.addEventListener("keydown", flipOnTable);
+
+	    //переключение по таблие с помощью up и down
+	    function flipOnTable(e) {
+	        if (selectedRow.length > 0) {
+	            var currentRow;
+	            if (e.keyCode == 38)//if press key 'up'
+	            {
+	                if (selectedRow[selectedRow.length - 1] == 1) {
+	                    return;
+	                }
+	                currentRow = selectedRow[selectedRow.length - 1] - 1;
+	            }
+	            else if (e.keyCode == 40)//if press key 'down'
+	            {
+	                if (selectedRow[selectedRow.length - 1] == trList.length - 2) {
+	                    return;
+	                }
+	                currentRow = selectedRow[selectedRow.length - 1] + 1;
+	            }
+	            for (i = 0; i < selectedRow.length; i++) {
+	                trList[selectedRow[i]].style.backgroundColor = "#FFF";
+	            }
+	            selectedRow.splice(0, selectedRow.length);
+	            selectedRow.push(currentRow);
+	            trList[currentRow].style.backgroundColor = "#AAA";
+	            var coordinates = trList[currentRow].getBoundingClientRect();
+	            removeBtn.style.top = (coordinates.top) + "px";
+	            removeBtn.style.left = (coordinates.left - 40) + "px";//40 it is size button with gliphicon
+	            removeBtn.style.display = "inline";
+	        }
+	    }
+
+
+	    document.addEventListener("mouseup", mouseUpOnElement);
+	    document.addEventListener("mousedown", mouseDownOnDocument);
+
+	    //функция-обработчик нажатия кнопкии мыши на документе
+	    function mouseDownOnDocument(e) {
+	        var length = selectedRow.length;
+	        for (i = 0; i < length; i++) {
+	            trList[selectedRow[i]].style.backgroundColor = "#FFF";
+	        }
+	        selectedRow.splice(0, selectedRow.length);//отменяем выделение строк
+	        txtarea.value = "";
+	        txtarea.style.display = "none";//скрытие текстового поля для ввода изменений в таблицу
+	        removeBtn.style.display = "none";//скрытие кнопки удаления строк
+
+	        if (!e.target.matches('.dropbtn')) {
+
+	            hideDropDown();
+	        }//обработка нажатия на самописный селект
+	        txtareaSelect.value = "";
+	        txtareaSelect.style.display = "none";//скрытие поля для ввода новой категории
+
+	        textareaInFocus = false;//сброс флагов
+
+	        textareaSelectInFocus = false;
+
+	    }
+	    
+	    //выдвигаем содержимое селекта
+	    function hideDropDown() {
+	        var dropdowns = document.getElementsByClassName("dropdown-content");
+	        var i;
+	        for (i = 0; i < dropdowns.length; i++) {
+	            var openDropdown = dropdowns[i];
+	            if (openDropdown.classList.contains('show')) {
+	                openDropdown.classList.remove('show');
+	            }
+	        }
+	    }
+
+	    //функция осуществляющая отправленного в качестве параметра элемента массива с заданным (для функции findIndex) 
+	    function existInArray(element, index, array) {
+	        if (element == this) {
 	            return true;
 	        }
 	        return false;
-	    }    
+	    }
 
-	    function mouseDownOnElement(e)
-	    {
+	    //обработчик события нажатия кнопкой мыши на элемент таблицы
+	    function mouseDownOnElement(e) {
 	        mouseBtnDown = true;
-	        if (this.parentElement.rowIndex != trList.length-1)//-1 it is header of table
+	        if (this.parentElement.rowIndex != trList.length - 1)//-1 it is header of table
 	        {
-	            if (selectedRow.findIndex(existInArray, this.parentElement.rowIndex) == -1)
-	            {
+	            if (selectedRow.findIndex(existInArray, this.parentElement.rowIndex) == -1) {
 	                selectedRow.push(this.parentElement.rowIndex);
 	                trList[this.parentElement.rowIndex].style.backgroundColor = "#AAA";
 	                if (selectedRow.length == 1) {
@@ -501,21 +615,19 @@
 	        }
 	        e.stopPropagation();
 	    }
-	
+
+	    //движение курсора в заданном элементе
 	    function mouseMoveInElement(e) {
-	        if (mouseBtnDown)
-	        {
-	            if(selectedRow[selectedRow.length-1]!=this.parentElement.rowIndex)//doing some if we are in new cell
+	        if (mouseBtnDown) {
+	            if (selectedRow[selectedRow.length - 1] != this.parentElement.rowIndex)//doing some if we are in new cell
 	            {
+	                var dif = this.parentElement.rowIndex - selectedRow[selectedRow.length - 1];//разница между текущим элементом и последним
 	                if (selectedRow.length > 1) {
 	                    var prevDif = selectedRow[selectedRow.length - 1] - selectedRow[selectedRow.length - 2];
-	                    var dif = this.parentElement.rowIndex - selectedRow[selectedRow.length - 1];
 	                }
-	                else if (selectedRow.length > 0)
-	                {
-	                    var dif = this.parentElement.rowIndex - selectedRow[selectedRow.length - 1];
+	                else if (selectedRow.length > 0) {
 	                    var prevDif = dif;
-	                }
+	                }//вычисление разницы между последним и предпоследним элементом
 	                if (sameSign(prevDif, dif))//if we go in same way, then...
 	                {
 	                    var step = dif / Math.abs(dif);
@@ -524,8 +636,7 @@
 	                        selectedRow.push(i);
 	                        trList[i].style.backgroundColor = "#AAA";
 	                    }
-	                    if (this.parentElement.rowIndex != trList.length-1)
-	                    {
+	                    if (this.parentElement.rowIndex != trList.length - 1) {
 	                        selectedRow.push(this.parentElement.rowIndex);
 	                        trList[this.parentElement.rowIndex].style.backgroundColor = "#AAA";
 	                    }
@@ -542,62 +653,30 @@
 	            }
 	        }
 	    }
-	
+
+	    //обработчик отжатия кнопки мыши
 	    function mouseUpOnElement(e) {
 	        mouseBtnDown = false;
 	    }
-	
-	    function mouseDownOnDocument(e)
+	    
+        //функция вычисляющая одного ли знака числа
+	    function sameSign(v1, v2)
 	    {
-	        var length = selectedRow.length;
-	        for (i = 0; i < length; i++)
-	        {
-	            trList[selectedRow[i]].style.backgroundColor = "#FFF";
+	        if ((v1 * v2) > 0) {
+	            return true;
 	        }
-	        selectedRow.splice(0, selectedRow.length);
-	        txtarea.value = "";
-	        txtarea.style.display = "none";
-	        removeBtn.style.display = "none";
-	
-	        if (!e.target.matches('.dropbtn')) {
-	
-	            hideDropDown();
-	        }
-	        txtareaSelect.value = "";
-	        txtareaSelect.style.display = "none";
-	        
-	        textareaInFocus = false;
-	        
-	        textareaSelectInFocus = false;
-	
+	        return false;
 	    }
-	
-	    function hideDropDown()
-	    {
-	        var dropdowns = document.getElementsByClassName("dropdown-content");
-	        var i;
-	        for (i = 0; i < dropdowns.length; i++) {
-	            var openDropdown = dropdowns[i];
-	            if (openDropdown.classList.contains('show')) {
-	                openDropdown.classList.remove('show');
-	            }
-	        }
-	    }
-	
-	    document.addEventListener("mouseup", mouseUpOnElement);
-	    document.addEventListener("mousedown", mouseDownOnDocument);
-	
-	
-	
+        
+        //обработка нажатия на элемент таблицы
 	    function clickOnElement(e)//click on table element
 	    {
-	        
+
 	        coordinates = this.getBoundingClientRect();
 	        txtarea.style.top = (coordinates.top+5) + "px";
 	        txtarea.style.left = (coordinates.left + 5) + "px";
 	        txtarea.style.width = this.clientWidth + "px";
 	        txtarea.style.height = this.clientHeight + "px";
-	        //txtarea.innerHTML = this.innerHTML;
 	        txtarea.value = this.innerHTML;
 	        txtarea.style.display = "inline";
 	        txtarea.focus();
@@ -605,12 +684,11 @@
 	        row = this.parentElement.rowIndex;
 	        column = this.cellIndex;
 	    }
-	
-	    var textareaSelectInFocus = false;
-	    
+
+        //обработка нажатия на элемент выдвигаемого списка
 	    function addNewOptionToSelect(e)
 	    {
-	        if (aList[aList.length-1] == this)
+	        if (aList[aList.length-1] == this)//если произошло нажатие на добавление новой категории
 	        {
 	            coordinates = labelSlct.getBoundingClientRect();
 	            txtareaSelect.style.top = coordinates.top + "px";
@@ -621,14 +699,12 @@
 	            hideDropDown();
                 textareaSelectInFocus = true;
 	        }
-	        else
+	        else//произошло нажатие на другие категории
 	        {
 	            if (this != prevSelIndex)
 	            {
 	                changeSelected(this.innerText)
 	            	prevSelIndex = this;
-	            	//var labelList = hideId.getElementsByTagName("label");
-	            	//categoryId = labelList[idSelect.options.selectedIndex].innerHTML;
 	            	categoryName = this.innerText;
 	            	addEventInTable();
 	            	getInterestOfCategory();
@@ -637,56 +713,8 @@
 	        }
         	e.stopPropagation();
 	    }
-        
-        function getInterestOfCategory()//get data of table by category
-        {
-            var trBodyList = tableBody.getElementsByTagName("tr");//delete all old elements
-            var length = trBodyList.length;
-            for (i = 0; i < length; i++) {
-                trBodyList[0].remove();
-            }
 
-            $.ajax({
-                type: 'GET',
-                url: "adminpage/"+categoryName,
-                contentType: 'application/json',
-                dataType:"json",
-                success: function (res) {
-                	var result;
-                	try {
-                	    result = JSON.parse(res); 
-                	} catch (e) {
-                	    result = res;
-                	}
-                	var trBodyList = tableBody.getElementsByTagName("tr");//delete all old elements
-                    var length = trBodyList.length;
-                    for (i = 0; i < length; i++) {
-                        trBodyList[0].remove();
-                    }
-                    var elem;
-                    var childElem;
-                    for (i = 0; i < res.length; i++) {
-                        elem = tableBody.insertRow(i);
-                        childElem = document.createElement('td');
-                        childElem.innerHTML = res[i].interestName;
-                        elem.insertBefore(childElem, elem.firstChild);
-                        childElem = document.createElement('td');
-                        childElem.innerHTML = res[i].interestId;
-                        elem.insertBefore(childElem, elem.lastChild);
-                    }
-                    elem = tableBody.insertRow(res.length);
-                    childElem = document.createElement('td');
-                    childElem.innerHTML = "";
-                    elem.insertBefore(childElem, elem.firstChild);
-                    childElem = document.createElement('td');
-                    childElem.innerHTML = "*";
-                    elem.insertBefore(childElem, elem.lastChild);
-                    addEventInTable();
-                }
-            });
-        }
-
-
+        //добавление события на элементы таблицы
         function addEventInTable()
         {
         	trList = table.getElementsByTagName('tr')
@@ -708,66 +736,7 @@
             }
         }
 
-        function startTable()//start loading table
-        {
-            categoryName = aList[0].innerText;
-            getInterestOfCategory();
-        }
-
-        //startTable();
-
         addEventInTable();
-
-        //part script for manage own select
-        function showDropDown() {
-            document.getElementById("myDropdown").classList.toggle("show");
-        }
-
-
-        function showDropDownSpan(e) {
-            document.getElementById("myDropdown").classList.toggle("show");
-            e.stopPropagation();
-        }
-
-        function changeSelected(value) {
-            labelSlct.innerHTML = value;
-        }
-
-        function selectedOption(e) {
-            changeSelected(this.innerText)
-        }
-        
-        
-        function sendDeleteCategoryCommand(categoryName, element)//send data about change in table
-	    {
-	        $.ajax({
-	            type: 'DELETE',
-	            url: "adminpage/deleteCategory/"+categoryName,
-	            success: function (res) {
-	            	var result;
-	            	try {
-	            	    result = JSON.parse(res); 
-	            	} catch (e) {
-	            	    result = res;
-	            	}
-	            	if(result!="success")
-	            	{
-	            		alert("Some problem with delete category");
-	            		return;
-	            	}
-	                element.parentNode.remove();
-                    labelSlct.innerHTML = "Выбрать категорию интересов";
-                    for(i=1;i<trList.length;i++)
-                    {
-                    	trList[1].remove();	
-                    }
-	            },
-	            error: function (jqXHR, textStatus, errorThrown) {
-	            }
-	        });
-	
-	    }
-        
 
         function deleteCategory(e)
         {
@@ -775,6 +744,7 @@
             e.stopPropagation();
         }
 
+        //назначение обработчиков событий на элементы списка категорий
         var aList = myDropdown.getElementsByTagName('a');
         for (i = 0; i < aList.length-1; i++) {
             aList[i].addEventListener("mousedown", addNewOptionToSelect);
@@ -782,8 +752,7 @@
         }
         aList[aList.length - 1].addEventListener("mousedown", addNewOptionToSelect);
 
-        selectBtn.addEventListener("mousedown", showDropDown);
-        spanBtn.addEventListener("mousedown", showDropDownSpan);
+        
     </script>
 </body>
 </html>

@@ -15,47 +15,37 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface UserLogDAO {
 
-	public String addUser(UserInfo userInfo);
+	public String addUser(UserInfo userInfo,String queryString);
 	
-	public String updateUserInfo(UserInfo userInfo);
+	public String updateUserInfo(UserInfo userInfo, String queryString);
 	
 	public String updateUserInfoPhoto(UserInfo userInfo);
-
-	//public List<UsersLog> listUser();
-
-	//public void removeUser(Integer iduserlog);
 	
-	public boolean existUser(UserInfo userInfo);
+	public boolean existUser(UserInfo userInfo,String queryString);
 	
-	public boolean existUser(String login); 
-	
-	//public List<String> getMessages(String username);
-	
-	//public List<String> getMessages(String username,int mid);
-	
-	//public void addMessage(String username, String message, int mid);
+	public boolean existUser(String login,String queryString); 
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 	
-	public long getIdImg();
+	public long getIdImg(String queryString);
     
-    public void setIdImg(long idImg);
+    public void setIdImg(long idImg,String queryString);
     
-    public List<CategoryInterest> getAllCategory();
+    public List<CategoryInterest> getAllCategory(String queryString);
     
-    public List<Interests> getInterestsByCatId(long categoryId);
+    public List<Interests> getInterestsByCatId(long categoryId,String queryString);
     
-    public List<Interests> getInterestsByCatName(String categoryNAme);
+    public List<Interests> getInterestsByCatName(String categoryName,String queryString);
     
-    public void putInterestsByCatId(long categoryId,List<Interests> interests) throws HibernateException;
+    public void putInterestsByCatId(long categoryId,List<Interests> interests,String queryString) throws HibernateException;
     
-    public List<Long> putInterests(List<Interests> interests, String categoryName) throws HibernateException;
+    public List<Long> putInterests(List<Interests> interests, String categoryName,String queryString) throws HibernateException;
     
-    public void deleteInterests(List<Interests> interests, String categoryName) throws HibernateException;
+    public void deleteInterests(List<Interests> interests, String categoryName, String queryString) throws HibernateException;
     
-    public void deleteCategory(String categoryName) throws HibernateException;
+    public void deleteCategory(String categoryName,String queryString) throws HibernateException;
     
-    public void updateInterests(List<Interests> interests) throws HibernateException;
+    public void updateInterests(List<Interests> interests,String queryString) throws HibernateException;
     
     public void putCategoryInterestByName(String categoryName) throws HibernateException;
 
