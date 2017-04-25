@@ -132,7 +132,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         MessageKey mk = new MessageKey();
         mk.setId_mess(idMess);
         mk.setId(mid + 1);
-        /*Messages mes = new Messages();
+        /*Message mes = new Message();
         mes.setMessageKey(mk);
 		mes.setMessage(message);
 		mes.setRecepient("a");

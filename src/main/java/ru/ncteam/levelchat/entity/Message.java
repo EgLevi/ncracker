@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "MESSAGES")
-public class Messages {
+public class Message {
     @Id
     @Column(name = "MESSAGE_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")

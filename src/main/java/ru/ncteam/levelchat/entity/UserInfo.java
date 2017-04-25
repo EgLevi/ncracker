@@ -61,7 +61,7 @@ public class UserInfo {
     public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    public Set<Messages> messages = new HashSet<Messages>();
+    public Set<Message> messages = new HashSet<Message>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     public Set<PhotoLib> photoLibs = new HashSet<PhotoLib>();
@@ -181,11 +181,11 @@ public class UserInfo {
         this.chatGroups = chatGroups;
     }
 
-    public Set<Messages> getMessages() {
+    public Set<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Messages> messages) {
+    public void setMessages(Set<Message> messages) {
         this.messages = messages;
     }
 

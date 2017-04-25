@@ -33,7 +33,7 @@ public class Chat {
     public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
-    public Set<Messages> messages = new HashSet<Messages>();
+    public Set<Message> messages = new HashSet<Message>();
 
     public long getChatId() {
         return chatId;
@@ -91,11 +91,11 @@ public class Chat {
         this.chatGroups = chatGroups;
     }
 
-    public Set<Messages> getMessages() {
+    public Set<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Messages> messages) {
+    public void setMessages(Set<Message> messages) {
         this.messages = messages;
     }
 }
