@@ -1,6 +1,6 @@
 package ru.ncteam.levelchat.trial;
 
 public interface Trial {
-	public void incCounter();
-	public int getCounter();
+	void incCounter();
+	int getCounter();
 }
