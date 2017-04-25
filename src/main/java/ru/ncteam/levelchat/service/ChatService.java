@@ -1,82 +1,54 @@
 package ru.ncteam.levelchat.service;
 
-
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import ru.ncteam.levelchat.entity.Message;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebListener;
-import java.io.IOException;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.io.*;
+import java.util.List;
 
-@WebListener
-public class ChatService implements ServletContextListener {
+@Service
+public class ChatService {
+    AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
+    @Autowired
+    SessionFactory sessionFactory;
 
-
-    public void contextDestroyed(final ServletContextEvent sce) {
-
+    @Transactional
+    public List getUserInfoByInterests() {
+        return null;
     }
 
-    public void contextInitialized(final ServletContextEvent sce) {
+    public Message getMessagesByIdChat(long id) {
+        String query = "";
+        try {
+            File file = applicationContext.getResource("queries/messageByIdChat.hql").getFile();
+            query = getQueryFromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Message messages = (Message) sessionFactory.getCurrentSession().createQuery(query);
 
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                final Queue<AsyncContext> chatUsers = new ConcurrentLinkedQueue<AsyncContext>();
-                sce.getServletContext().setAttribute("chatUsers", chatUsers);
+        return messages;
+    }
 
-                Queue<Message> messages = new ConcurrentLinkedQueue<Message>();
+    private String getQueryFromFile(File file) {
 
-                sce.getServletContext().setAttribute("messages", messages);
+        BufferedReader reader;
+        StringBuffer query = new StringBuffer();
 
-                Executor messageExecutor = Executors.newCachedThreadPool();
-                final Executor chatExecutor = Executors.newCachedThreadPool();
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String s;
+            while ((s = reader.readLine()) != null) query.append(s);
+            return query.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                while (true) {
-                    if (!messages.isEmpty()) {
-                        final Message message = messages.poll();
-                        messageExecutor.execute(new Runnable() {
-                            public void run() {
-                                while (!chatUsers.isEmpty()) {
-                                    final AsyncContext aCtx = chatUsers.poll();
-                                    chatExecutor.execute(new Runnable() {
-                                        public void run() {
-                                            try {
-                                                ServletResponse response = aCtx.getResponse();
-                                                response.setContentType("text/xml");
-                                                response.getWriter().write(messageAsXml(message));
-                                                aCtx.complete();
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
 
-                                        private String messageAsXml(final Message message) {
-                                            StringBuffer sb = new StringBuffer();
-                                            sb.append("<message>")
-                                                    .append("<username>")
-                                                    .append(message.username)
-                                                    .append("</username>")
-                                                    .append("<text>")
-                                                    .append(message.message)
-                                                    .append("</text>")
-                                                    .append("</message>");
-                                            return sb.toString();
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
-
-        t.start();
+        return null;
     }
 }
-
