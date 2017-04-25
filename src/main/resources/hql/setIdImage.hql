@@ -1,0 +1,1 @@
+update IdImg set value=:value where id=0

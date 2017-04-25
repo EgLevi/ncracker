@@ -2,7 +2,11 @@ package ru.ncteam.levelchat.entity;
 
 
 import javax.persistence.*;
-import java.sql.Blob;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,34 +20,54 @@ public class UserInfo {
     private long user_id;
 
     @Column(name = "NAME", length = 30)
+    @Size(min=1, max=30, message="Имя должно быть от 1 до 20 символов")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String name;
 
+
     @Column(name = "SURNAME", length = 30)
+    @Size(min=1, max=30, message="Фамилия должна быть от 1 до 20 символов")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String surname;
 
     @Column(name = "SEX", length = 1)
     private String sex;
 
     @Column(name = "AGE")
+    @Max(value=150, message="Возраст не может превышать 150 лет")
+    @Min(value=0, message="Возраст не может быть меньше 1 года")
     private int age;
 
+    @Size(min=1, max=30, message="Слишком большое(маленькое) название страны")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "COUNTRY", length = 30)
     private String country;
 
+    @Size(min=1, max=30, message="Слишком большое(маленькое) название города")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "CITY", length = 30)
     private String city;
 
-    @Column(name = "LOGIN", length = 100, unique = true)
+
+    @Column(name = "LOGIN", length = 30, unique = true)
+    @Size(min=1, max=30, message="Логин должен быть от 1 до 20 символов")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String login;
 
-    @Column(name = "PASSWORD", length = 100)
-    private String password;
 
-    @Column(name = "EMAIL", length = 100)
+    @Column(name = "PASSWORD", length = 30)
+    @Size(min=6, max=30, message="Пароль должен быть от 6 до 30 символов")
+    @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    private String password;
+    
+
+    @Column(name = "EMAIL", length = 30)
+    @Size(min=6, max=30, message="Email должен быть от 6 до 30 символов")
+    @Pattern(regexp="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}", message="неправильный Email")
     private String email;
 
     @Column(name = "PHOTO_AVA")
-    private Blob photo_ava;
+    private long photo_ava;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "USERS_ROLES",
@@ -61,7 +85,7 @@ public class UserInfo {
     public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    public Set<Message> messages = new HashSet<Message>();
+    public Set<Messages> messages = new HashSet<Messages>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     public Set<PhotoLib> photoLibs = new HashSet<PhotoLib>();
@@ -149,11 +173,11 @@ public class UserInfo {
         this.email = email;
     }
 
-    public Blob getPhoto_ava() {
+    public long getPhoto_ava() {
         return photo_ava;
     }
 
-    public void setPhoto_ava(Blob photo_ava) {
+    public void setPhoto_ava(long photo_ava) {
         this.photo_ava = photo_ava;
     }
 
@@ -181,11 +205,11 @@ public class UserInfo {
         this.chatGroups = chatGroups;
     }
 
-    public Set<Message> getMessages() {
+    public Set<Messages> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(Set<Messages> messages) {
         this.messages = messages;
     }
 

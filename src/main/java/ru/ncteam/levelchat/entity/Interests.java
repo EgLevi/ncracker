@@ -1,6 +1,9 @@
 package ru.ncteam.levelchat.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,9 +21,11 @@ public class Interests {
 
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID", nullable = false)
+    @JsonIgnore
     private CategoryInterest categoryInterest;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "interest")
+    @JsonIgnore
     public Set<InterestList> interestLists = new HashSet<InterestList>();
 
     public long getInterestId() {

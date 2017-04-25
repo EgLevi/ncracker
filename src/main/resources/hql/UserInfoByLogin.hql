@@ -1,0 +1,1 @@
+from UserInfo where login=:login

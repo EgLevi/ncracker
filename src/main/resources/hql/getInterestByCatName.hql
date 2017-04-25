@@ -1,0 +1,1 @@
+from Interests where categoryInterest.categoryName=:categoryName

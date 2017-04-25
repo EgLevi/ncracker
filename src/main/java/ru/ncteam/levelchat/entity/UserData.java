@@ -26,7 +26,7 @@ public class UserData {
     private UserInfo userInfo;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userData")
-    public Set<Message> messages = new HashSet<Message>();
+    public Set<Messages> messages = new HashSet<Messages>();
 
     public long getDataId() {
         return dataId;
@@ -60,11 +60,11 @@ public class UserData {
         this.userInfo = userInfo;
     }
 
-    public Set<Message> getMessages() {
+    public Set<Messages> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(Set<Messages> messages) {
         this.messages = messages;
     }
 }
