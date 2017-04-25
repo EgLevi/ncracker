@@ -18,8 +18,8 @@
                 dataType: "json",
                 context: document.body,
                 success: function (data) {
-                    var username = $.evalJSON($.toJSON(data)).username;
-                    var text = $.evalJSON($.toJSON(data)).message;
+                    var username = $.evalJSON(data).username;
+                    var text = $.evalJSON(data).message;
                     var history = $('#chat_msgs').text();
                     $('#chat_msgs').html(history + username + ": " + text + "\n");
                     getData();
@@ -31,7 +31,6 @@
             $.post("chat", $("#msgForm").serialize());
             $('#message').val('');
         });
-
         getData();
     });
 </script>

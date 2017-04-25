@@ -1,5 +1,8 @@
 package ru.ncteam.levelchat.trial;
 
+import org.springframework.stereotype.Service;
+
+
 public class TrialImpl implements Trial{
 	
 	public int counter;
