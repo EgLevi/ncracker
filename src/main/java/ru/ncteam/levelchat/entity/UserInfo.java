@@ -55,7 +55,7 @@ public class UserInfo {
     private String login;
 
 
-    @Column(name = "PASSWORD", length = 30)
+    @Column(name = "PASSWORD", length = 60)
     @Size(min=6, max=30, message="Пароль должен быть от 6 до 30 символов")
     @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String password;
@@ -67,7 +67,7 @@ public class UserInfo {
     private String email;
 
     @Column(name = "PHOTO_AVA")
-    private long photo_ava;
+    private String photo_ava;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "USERS_ROLES",
@@ -85,7 +85,7 @@ public class UserInfo {
     public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    public Set<Messages> messages = new HashSet<Messages>();
+    public Set<Message> messages = new HashSet<Message>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     public Set<PhotoLib> photoLibs = new HashSet<PhotoLib>();
@@ -173,11 +173,11 @@ public class UserInfo {
         this.email = email;
     }
 
-    public long getPhoto_ava() {
+    public String getPhoto_ava() {
         return photo_ava;
     }
 
-    public void setPhoto_ava(long photo_ava) {
+    public void setPhoto_ava(String photo_ava) {
         this.photo_ava = photo_ava;
     }
 
@@ -205,11 +205,11 @@ public class UserInfo {
         this.chatGroups = chatGroups;
     }
 
-    public Set<Messages> getMessages() {
+    public Set<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Messages> messages) {
+    public void setMessages(Set<Message> messages) {
         this.messages = messages;
     }
 

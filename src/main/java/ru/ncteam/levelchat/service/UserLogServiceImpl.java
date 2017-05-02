@@ -1,6 +1,5 @@
 package ru.ncteam.levelchat.service;
 
-
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -12,24 +11,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javassist.ClassClassPath;
+import javassist.ClassPath;
 import ru.ncteam.levelchat.dao.UserLogDAO;
 import ru.ncteam.levelchat.entity.CategoryInterest;
 import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
 public class UserLogServiceImpl implements UserLogService {
-	
-	private static String UPLOADED_FOLDER = "C://apache-tomcat-8.5.9//webapps//ru.ncteam.levelchat//resources//images//";
 
 	@Autowired
 	private ApplicationContext appContext;
@@ -58,28 +62,64 @@ public class UserLogServiceImpl implements UserLogService {
         return userLogDAO.updateUserInfo(userInfo, getQuery("hql/updateUserInfo.hql"));
     }
     
-    public String updateUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava) {
-    	long idImg = userLogDAO.getIdImg(getQuery("hql/getIdImage.hql"));
-    	idImg++;
-    	userInfo.setPhoto_ava(idImg);
-    	Path path = Paths.get(UPLOADED_FOLDER + idImg+".jpg");
-    	try {
-			Files.write(path, photo_ava.getBytes());
-			if(userLogDAO.updateUserInfoPhoto(userInfo).equals("success"))
-	    	{
-	    		userLogDAO.setIdImg(idImg,getQuery("hql/setIdImage.hql"));
-	    		return (""+idImg+".jpg");
-	    	}
-	    	else
-	    	{
-	    		return "fail";
-	    	}
-		} catch (IOException e) {
-			return "fail";
-		}
+    public String uploadUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava) {
+    	
+    	StringBuffer fileName = new StringBuffer();
+        StringBuffer dirFile = new StringBuffer();
+        StringBuffer relativeDir = new StringBuffer();
+
+        if (!photo_ava.isEmpty()) {
+            try {
+            	ClassClassPath cp = new ClassClassPath(this.getClass());
+                String projectDir = cp.find(this.getClass().getName()).getPath();
+                projectDir = projectDir.substring(0,projectDir.indexOf("WEB-INF"));
+                fileName.append(getMD5File(photo_ava));//add filename in var
+                fileName.append(getFileExtension(photo_ava));
+
+                relativeDir.append("photo");
+                relativeDir.append(File.separator);
+                relativeDir.append(fileName.substring(0, 2));
+                relativeDir.append(File.separator);
+                relativeDir.append(fileName.substring(2, 4));
+                
+                dirFile.append(projectDir);
+                
+                dirFile.append(relativeDir);
+                fileName.delete(0, 4);
+                
+                //save photo in file system
+                File dir = new File(dirFile.toString());
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                byte[] bytes = photo_ava.getBytes();
+                File uploadedFile = new File(dirFile.toString() + File.separator + fileName.toString());
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadedFile));
+                stream.write(bytes);
+                stream.flush();
+                stream.close();
+
+                return (relativeDir.toString() + File.separator + fileName);
+
+            } catch (Exception e) {
+                return "failed to upload " + fileName + " => " + e.getMessage();
+            }
+        } else {
+            return "failed to upload " + photo_ava.getName() + " because the file was empty.";
+        }
     	
     }
-    
+
+
+    public String updateUserInfoPhoto(UserInfo userInfo, String filename)
+    {
+    	userInfo.setPhoto_ava(filename);
+    	if(!userLogDAO.updateUserInfo(userInfo, getQuery("hql/updateUserInfo.hql")).equals("success"))
+    	{
+    		return "success";
+    	}
+        return "fail";
+    }
     
     public void autoLogin(String username, String password) {
         UserDetails userDetails = userLogDAO.loadUserByUsername(username);
@@ -166,6 +206,37 @@ public class UserLogServiceImpl implements UserLogService {
     		ne=ne;
     	}
     	return null;
+    }
+    
+    
+    private static String getFileExtension(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+            return fileName.substring(fileName.lastIndexOf("."));
+        else return "";
+    }
+    
+    private String getMD5File(MultipartFile file) {
+        byte[] digest = new byte[0];
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.reset();
+            try {
+                messageDigest.update(file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            digest = messageDigest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        BigInteger bigInt = new BigInteger(1, digest);
+        String md5Hex = bigInt.toString(16);
+
+        while (md5Hex.length() < 32) {
+            md5Hex = "0" + md5Hex;
+        }
+        return md5Hex;
     }
     
     

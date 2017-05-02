@@ -59,6 +59,7 @@ public class Initializer  implements WebApplicationInitializer {
         ServletRegistration.Dynamic servlet =
                 servletContext.addServlet(DISPATCHER_SERVLET_NAME, new DispatcherServlet(ctx));
         servlet.addMapping("/");
+        servlet.setAsyncSupported(true);
         //работа с русскими символами
         FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilter());
         encodingFilter.setInitParameter("encoding", "UTF-8");

@@ -18,7 +18,9 @@ public interface UserLogService {
 	
 	public boolean checkLogin(String login);
 	
-	public String updateUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava);
+	public String uploadUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava);
+	
+	public String updateUserInfoPhoto(UserInfo userInfo, String filename);
 
 	//public List<UsersLog> listUser();
 

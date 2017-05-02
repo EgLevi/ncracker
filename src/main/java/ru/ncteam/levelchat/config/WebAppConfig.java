@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import ru.ncteam.levelchat.trial.InMemoryChatRepository;
 import ru.ncteam.levelchat.trial.TrialImpl;
 
 @Configuration
@@ -54,11 +55,17 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/photo/**").addResourceLocations("/photo/");
     }
 
     @Bean
     public BCryptPasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public InMemoryChatRepository getChatRepository() {
+        return new InMemoryChatRepository();
     }
     
     @Bean

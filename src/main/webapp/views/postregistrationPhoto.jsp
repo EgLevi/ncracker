@@ -81,6 +81,7 @@
 	</style>
                 
 	<script type="text/javascript">
+		var relativePath="none";
 		
 		document.getElementById('IFBtn').style.width=document.getElementById('btnSubmit').clientWidth+"px";
 		
@@ -97,12 +98,14 @@
 	            success: function(res) {
 	            	if(res.indexOf("fail")>-1)
 	            	{
-	            		photoError.innerHTML="Изображение должно иметть формат png или jpg";
+	            		photoError.innerHTML=res;
+	            		relativePath = "none"
 	            	}
 	            	else
 	            	{
 		              	var img = document.getElementById("avatar");
 				      	img.src = res;
+				      	relativePath = res;
 	            	}
 	            }
 	          });
@@ -113,7 +116,19 @@
 		
 		$(function() {
 		    $('form').submit(function() {
-		        
+		    	if(relativePath.indexOf("none")>-1)
+		    	{
+					window.location = "/ru.ncteam.levelchat/userpage";
+					return false; // отменяем отправку формы, т.е. перезагрузку страницы
+		    	}
+		    	$.ajax({
+		            type : 'POST',
+		            url : "postregistrationPhoto/save", // url записан в параметре action формы
+		            data : relativePath,
+	                contentType: 'application/json',
+		            success: function(res) {
+		            }
+		          });
 				window.location = "/ru.ncteam.levelchat/userpage";
 				return false; // отменяем отправку формы, т.е. перезагрузку страницы
 		    });
