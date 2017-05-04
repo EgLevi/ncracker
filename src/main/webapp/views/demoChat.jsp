@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf8" pageEncoding="utf8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,19 +19,21 @@
                 dataType: "json",
                 context: document.body,
                 success: function (data) {
-                    var username = $.evalJSON(data).username;
-                    var text = $.evalJSON(data).message;
+                    var json = $.evalJSON($.toJSON(data));
+
+                    var message = json.message;
                     var history = $('#chat_msgs').text();
-                    $('#chat_msgs').html(history + username + ": " + text + "\n");
+                    $('#chat_msgs').html(history + text + "\n");
                     getData();
                 }
             });
         }
 
-        $("#sendMsg").click(function () {
+        $("#sendMsg").click(function (event) {
             $.post("chat", $("#msgForm").serialize());
             $('#message').val('');
         });
+
         getData();
     });
 </script>
@@ -38,15 +41,19 @@
     <h3>Примерчик Чата на AJAX</h3>
     <textarea class="text-area" cols="60" rows="5" id="chat_msgs" name="chat_msgs"></textarea>
     <br/>
-    <form id="msgForm" name="msgForm">
+
+
+    <form:form id="msgForm" name="msgForm">
         <label>
             Username: <input class="text-center" type="text" id="username" name="username" value=""/>
         </label>
         <label>
             Message: <input type="text" id="message" name="message" value=""/>
         </label>
-    </form>
+    </form:form>
     <br/>
+
+
     <input class="btn btn-danger" type="submit" id="sendMsg" name="sendMsg" value="Send message"/>
 </div>
 </body>

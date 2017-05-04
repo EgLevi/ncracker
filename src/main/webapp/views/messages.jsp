@@ -69,7 +69,7 @@
                     <ul class="menu">
 
                         <li><a class="show-1" href="userpageEg.jsp"><i class="fa fa-user"> Главная</i></a></li><br>
-                        <li><a class="show-2" href="messages.jsp"><i class="fa fa-envelope"> Мои Сообщения</i></a></li><br>
+                        <li><a class="show-2" href="message.jsp"><i class="fa fa-envelope"> Мои Сообщения</i></a></li><br>
                         <li><a class="show-3" href="gallery.jsp"><i class="fa fa-camera-retro"> Мои фото</i></a></li> <br>
                         <li><a class="show-4" href="settings.jsp"><i class="fa fa-cogs"> Настройки</i></a></li>
 

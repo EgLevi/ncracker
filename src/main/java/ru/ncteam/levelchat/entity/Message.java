@@ -3,7 +3,7 @@ package ru.ncteam.levelchat.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "MESSAGE")
+@Table(name = "MESSAGES")
 public class Message {
     @Id
     @Column(name = "MESSAGE_ID")
@@ -12,7 +12,7 @@ public class Message {
     private long messageId;
 
     @Column(name = "TWXT_MSG", length = 4000)
-    private String textMessage;
+    private String message;
 
     @ManyToOne
     @JoinColumn(name = "CHAT_ID", nullable = false)
@@ -35,35 +35,38 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public String getTextMessage() {
-        return textMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setTextMessage(String textMessage) {
-        this.textMessage = textMessage;
+    public void setMessage(String textMessage) {
+        this.message = textMessage;
     }
 
     public Chat getChat() {
         return chat;
     }
 
-    public void setChat(Chat chat) {
+    public Message setChat(Chat chat) {
         this.chat = chat;
+        return this;
     }
 
     public UserInfo getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
+    public Message setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+        return this;
     }
 
     public UserData getUserData() {
         return userData;
     }
 
-    public void setUserData(UserData userData) {
+    public Message setUserData(UserData userData) {
         this.userData = userData;
+        return this;
     }
 }
