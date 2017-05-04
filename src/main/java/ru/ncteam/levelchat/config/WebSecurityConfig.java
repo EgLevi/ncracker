@@ -44,8 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .rememberMe()
-                .tokenValiditySeconds(2419200)
-                .rememberMeParameter("remeber_me_parameter")
                 .and()
                 .csrf().disable();
     }

@@ -1,11 +1,6 @@
 package ru.ncteam.levelchat.entity;
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +16,7 @@ public class CategoryInterest {
     @Column(name = "CAT_NAME", length = 60)
     private String categoryName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryInterest",cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryInterest")
     public Set<Interests> interests = new HashSet<Interests>();
 
     public long getCategoryId() {

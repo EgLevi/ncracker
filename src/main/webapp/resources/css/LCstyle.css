@@ -276,6 +276,19 @@ width: 80px;
     border-radius: 10px;
 }
 
+.settings-wrapper {
+    background-color: #e5e8ed;
+    text-align: center;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    height: 260px;
+    width: 260px;
+
+
+}
+
+
 
 .footer {
     overflow: hidden;
@@ -289,8 +302,3 @@ width: 80px;
     color: white;
 }
 
-.hpagephoto
- {
-
-
-}
