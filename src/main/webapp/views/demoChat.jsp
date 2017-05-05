@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,11 +8,12 @@
     <title>Demo CHAT</title>
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/jquery.json.js"></script>
-    <link href="../resources/css/bootstrap_min.css" rel="stylesheet" type="text/css"/>
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <script>
     $(document).ready(function () {
+        var elem = document.getElementById('history');
         function getData() {
             $.ajax({
                 url: "chat",
@@ -20,10 +22,10 @@
                 context: document.body,
                 success: function (data) {
                     var json = $.evalJSON($.toJSON(data));
-
                     var message = json.message;
-                    var history = $('#chat_msgs').text();
-                    $('#chat_msgs').html(history + text + "\n");
+                    $('#chat-history').children('tbody').append('<tr><td>' + message + '</td></tr>');
+
+                    elem.scrollTop = elem.scrollHeight;
                     getData();
                 }
             });
@@ -33,28 +35,42 @@
             $.post("chat", $("#msgForm").serialize());
             $('#message').val('');
         });
-
+        elem.scrollTop = elem.scrollHeight;
         getData();
     });
 </script>
-<div class="text-center">
+<div class="container text-center">
     <h3>Примерчик Чата на AJAX</h3>
-    <textarea class="text-area" cols="60" rows="5" id="chat_msgs" name="chat_msgs"></textarea>
     <br/>
+    <div class="container">
+        <div class="row">
+            <div id="history" class="col-md-6 col-md-offset-3"
+                 style="overflow: scroll;overflow-x:hidden; height: 300pt">
+                <table id="chat-history" class="table text-justify" style="white-space: pre-wrap">
+                    <tbody>
+                    <c:forEach items="${messages}" var="msg">
+                        <tr>
+                            <td>${msg.message}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
 
+                <br/>
 
-    <form:form id="msgForm" name="msgForm">
-        <label>
-            Username: <input class="text-center" type="text" id="username" name="username" value=""/>
-        </label>
-        <label>
-            Message: <input type="text" id="message" name="message" value=""/>
-        </label>
-    </form:form>
-    <br/>
+            </div>
 
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <form:form id="msgForm" name="msgForm">
+                        <textarea placeholder="Введите сообщение" id="message" type="text" name="message" style="width: 100%" value=""></textarea>
+                    </form:form>
+                    <input class="btn btn-danger" type="submit" id="sendMsg" name="sendMsg" value="Send message"/>
+                </div>
+            </div>
+        </div>
 
-    <input class="btn btn-danger" type="submit" id="sendMsg" name="sendMsg" value="Send message"/>
+    </div>
 </div>
 </body>
 </html>

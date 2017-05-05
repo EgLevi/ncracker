@@ -15,15 +15,15 @@ public class Message {
     private String message;
 
     @ManyToOne
-    @JoinColumn(name = "CHAT_ID", nullable = false)
+    @JoinColumn(name = "CHAT_ID")
     private Chat chat;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(name = "USER_ID")
     private UserInfo userInfo;
 
     @ManyToOne
-    @JoinColumn(name = "DATA_ID", nullable = false)
+    @JoinColumn(name = "DATA_ID")
     private UserData userData;
 
 

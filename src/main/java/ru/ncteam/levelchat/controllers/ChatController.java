@@ -7,33 +7,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
+import ru.ncteam.levelchat.dao.MessageDAO;
 import ru.ncteam.levelchat.entity.Message;
 import ru.ncteam.levelchat.listener.ChatPublisher;
 
+import java.util.List;
 import java.util.Queue;
 
 @Controller
 public class ChatController {
     @Autowired
-    ChatPublisher publisher;
+    private ChatPublisher publisher;
 
     @Autowired
-    Queue<DeferredResult<String>> deferredResults;
+    private Queue<DeferredResult<String>> deferredResults;
 
     @Autowired
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    private MessageDAO messageDAO;
 
     @RequestMapping(value = "/demoChat", method = RequestMethod.GET)
     public ModelAndView demo() {
         Message message = new Message();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", message);
+        List<Message> messages = messageDAO.getAll();
+        modelAndView.addObject("messages", messages);
         modelAndView.setViewName("demoChat");
         return modelAndView;
     }
@@ -58,14 +66,14 @@ public class ChatController {
     @Async
     @EventListener
     void handle(Message event) throws JsonProcessingException {
-        System.out.println("Сообщение отправлено из лисенера: " + event.getMessage());
+        System.out.println("Listener: " + event.getMessage());
 
         ObjectMapper mapper = new ObjectMapper();
         Message message = new Message();
         message.setMessage(event.getMessage());
         String jsonInString = mapper.writeValueAsString(message);
 
-        sessionFactory.getCurrentSession().save(message);
+        messageDAO.create(message);
 
         for (DeferredResult<String> result : deferredResults) {
             result.setResult(jsonInString);

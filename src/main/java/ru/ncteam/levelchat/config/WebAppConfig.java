@@ -1,11 +1,9 @@
 package ru.ncteam.levelchat.config;
 
-import org.osgi.service.io.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -21,7 +19,6 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @ComponentScan("ru.ncteam.levelchat")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
-
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -32,11 +29,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    /**
-     * Supports FileUploads.
-     *
-     * @return
-     */
     @Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();

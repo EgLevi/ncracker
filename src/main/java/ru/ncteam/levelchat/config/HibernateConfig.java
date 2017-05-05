@@ -52,7 +52,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean getSessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"ru.ncteam.levelchat"});
+        sessionFactory.setPackagesToScan("ru.ncteam.levelchat");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
@@ -77,7 +77,7 @@ public class HibernateConfig {
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.hbm2ddl.auto", "create");
+        properties.put("hibernate.hbm2ddl.auto", "update");
         properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
         //properties.put("hibernate.query.startup_check", "false");
         properties.put("javax.persistence.validation.mode", "none");
