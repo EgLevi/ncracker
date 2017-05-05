@@ -73,25 +73,25 @@ public class UserInfo {
     @JoinTable(name = "USERS_ROLES",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
-    private Set<Role> roles = new HashSet<Role>();
+    private Set<Role> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "USER_INTEREST",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "INTEREST_ID")})
-    private Set<Interests> interests = new HashSet<Interests>();
+    private Set<Interests> interests = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
+    private Set<ChatGroup> chatGroups = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    public Set<Message> messages = new HashSet<Message>();
+    public Set<Message> messages = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    public Set<PhotoLib> photoLibs = new HashSet<PhotoLib>();
+    private Set<PhotoLib> photoLibs = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    public Set<UserData> userDatas = new HashSet<UserData>();
+    private Set<UserData> userDatas = new HashSet<>();
 
     public long getUser_id() {
         return user_id;

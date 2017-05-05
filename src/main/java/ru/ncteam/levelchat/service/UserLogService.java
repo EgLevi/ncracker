@@ -12,43 +12,43 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UserLogService {
 
-	public String addUser(UserInfo userInfo);
-	
-	public String updateUserInfo(UserInfo userInfo);
-	
-	public boolean checkLogin(String login);
-	
-	public String uploadUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava);
-	
-	public String updateUserInfoPhoto(UserInfo userInfo, String filename);
+    String addUser(UserInfo userInfo);
 
-	//public List<UsersLog> listUser();
+    String updateUserInfo(UserInfo userInfo);
 
-	//public void removeUser(Integer iduserlog);
-	
+    boolean checkLogin(String login);
+
+    String uploadUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava);
+
+    String updateUserInfoPhoto(UserInfo userInfo, String filename);
+
+    //public List<UsersLog> listUser();
+
+    //public void removeUser(Integer iduserlog);
+
     //public List<String> getMessages(String username);
-    
+
     //public List<String> getMessages(String username, int mid);
-    
+
     //public void addMessage(String username, String message, int mid);
-    
-    public void autoLogin(String username, String password);
-    
+
+    void autoLogin(String username, String password);
+
     public List<CategoryInterest> getAllCategory();
-    
+
     public List<Interests> getInterestsByCatId(long categoryId);
-    
+
     public List<Interests> getInterestsByCatName(String categoryName);
-    
+
     public void putInterestsByCatId(long categoryId, List<Interests> interests) throws HibernateException;
-    
+
     public List<Long> putInterests(List<Interests> interests, String categoryName) throws HibernateException;
-    
-    public void deleteInterests(List<Interests> interests,String categoryName) throws HibernateException;
-    
+
+    public void deleteInterests(List<Interests> interests, String categoryName) throws HibernateException;
+
     public void deleteCategory(String categoryName) throws HibernateException;
-    
+
     public void updateInterests(List<Interests> interests) throws HibernateException;
-    
+
     public void putCategoryInterestByName(String categoryName) throws HibernateException;
 }

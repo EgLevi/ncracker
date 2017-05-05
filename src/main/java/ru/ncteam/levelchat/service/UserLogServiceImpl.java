@@ -135,7 +135,7 @@ public class UserLogServiceImpl implements UserLogService {
         }
         catch(Exception e)
         {
-        	e=e;
+        	e.getMessage();
         }
     }
     
@@ -199,11 +199,11 @@ public class UserLogServiceImpl implements UserLogService {
 		} 
     	catch (IOException e) 
     	{
-    		e=e;
+    		e.getMessage();
 		}
     	catch(Exception ne)
     	{
-    		ne=ne;
+            ne.getMessage();
     	}
     	return null;
     }
