@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import ru.ncteam.levelchat.trial.InMemoryChatRepository;
 
 @Configuration
 @EnableWebMvc
@@ -39,6 +40,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/photo/**").addResourceLocations("/photo/");
     }
 
     @Override
@@ -49,6 +51,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public InMemoryChatRepository getChatRepository() {
+        return new InMemoryChatRepository();
     }
 
     @Bean

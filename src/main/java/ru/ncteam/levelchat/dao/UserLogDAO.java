@@ -19,17 +19,13 @@ public interface UserLogDAO {
 	
 	public String updateUserInfo(UserInfo userInfo, String queryString);
 	
-	public String updateUserInfoPhoto(UserInfo userInfo);
+	//public String updateUserInfoPhoto(UserInfo userInfo);
 	
 	public boolean existUser(UserInfo userInfo,String queryString);
 	
 	public boolean existUser(String login,String queryString); 
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
-	
-	public long getIdImg(String queryString);
-    
-    public void setIdImg(long idImg,String queryString);
     
     public List<CategoryInterest> getAllCategory(String queryString);
     

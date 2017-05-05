@@ -26,7 +26,6 @@ public class Message {
     @JoinColumn(name = "DATA_ID")
     private UserData userData;
 
-
     public long getMessageId() {
         return messageId;
     }

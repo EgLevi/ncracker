@@ -1,15 +1,28 @@
 package ru.ncteam.levelchat.controllers;
 
+import java.util.logging.*;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.service.UserLogService;
+import ru.ncteam.levelchat.trial.ChatRepository;
+import ru.ncteam.levelchat.trial.NoSuchMessages;
+import ru.ncteam.levelchat.trial.Trial;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,16 +37,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.context.request.async.DeferredResult;
 
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 public class UserLogController {
 	@Autowired
 	private UserLogService userLogService;
 	
+	private static Logger log = Logger.getLogger("h");
 	
 	@RequestMapping("/login")
 	public String login() {
@@ -232,30 +249,41 @@ public class UserLogController {
 	
 	@RequestMapping(value = "/postregistrationPhoto",method = RequestMethod.POST)
 	@ResponseBody
-	public String updateUserInfoPhoto(@RequestParam(value = "photo_ava", required=false) MultipartFile photo_ava) {
+	public String uploadUserInfoPhoto(@RequestParam(value = "photo_ava", required=false) MultipartFile photo_ava) {
 		if (!photo_ava.isEmpty()) {
 			if(!(photo_ava.getContentType().equals("image/jpeg") || photo_ava.getContentType().equals("image/png")))
 			{
-				return "fail";
+				return "wrong format of photo";
 			}
 	            try {
 		                User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		        		UserInfo userInfo = new UserInfo();
 		        		userInfo.setLogin(user.getUsername());
-		        		String str = userLogService.updateUserInfoPhoto(userInfo,photo_ava);
-		        		if(!str.equals("fail"))
-		        		{
-		        			return ("resources/images/"+str);
-		        		}
-		        		return "fail";
+		        		String str = userLogService.uploadUserInfoPhoto(userInfo,photo_ava);
+		        		return str;
 	            } catch (Exception e) {
 	            	return "fail";
 	            }
 	        } else {
-	        	return "fail";
+	        	return "failed your photo is empty";
 	        }
-		
-
-		
 	}
+	
+	@RequestMapping(value = "/postregistrationPhoto/save",method = RequestMethod.POST)
+	@ResponseBody
+	public String updateUserInfoPhoto(@RequestBody String relativePath, HttpServletRequest request) {
+		try 
+		{
+            User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    		UserInfo userInfo = new UserInfo();
+    		userInfo.setLogin(user.getUsername());
+    		String str = userLogService.updateUserInfoPhoto(userInfo,relativePath);
+    		return str;
+		} 
+		catch (Exception e) 
+		{
+			return "fail";
+		}
+	}
+	
 }

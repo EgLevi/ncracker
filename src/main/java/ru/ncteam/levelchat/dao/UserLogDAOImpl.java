@@ -85,7 +85,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         }
     }
 	
-	@Transactional
+	/*@Transactional
     public String updateUserInfoPhoto(UserInfo userInfo) {
 
     	try {
@@ -99,7 +99,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         } catch (HibernateException e) {
             return e.getMessage();
         }
-    }
+    }*/
 	
 
     @Transactional
@@ -127,6 +127,11 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             userInfo = (UserInfo) query.uniqueResult();
             roles = userInfo.getRoles();
         } catch (HibernateException e) {
+        	e=e;
+        }
+        catch(Exception e1)
+        {
+        	e1=e1;
         }
 
         Iterator<Role> it = roles.iterator();
@@ -139,32 +144,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         return user;
     }
 
-    @Transactional
-    public long getIdImg(String queryString) {
-    	try{
-        	Query query = sessionFactory.getCurrentSession().createQuery(queryString);
-        	List<Long> ll = query.list();
-        	long idImg = ((Long)query.list().get(0)).longValue();
-            return idImg;
-    	}
-    	catch(Exception e)
-    	{
-    		e=e;
-    		return 0;
-    	}
-    }
-    
-    @Transactional
-    public void setIdImg(long idImg,String queryString) {
-    	
-    	try {
-            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
-            query.setLong("value", idImg);
-            query.executeUpdate();
-        } catch (HibernateException e) {
-           
-        }
-    }
     
     @Transactional
     public List<CategoryInterest> getAllCategory(String queryString) {
