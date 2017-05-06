@@ -49,10 +49,11 @@
             $.post("chat/${chatId}", $("#msgForm").serialize());
             $('#message').val('');
 
-
-            if ($('#file').files.length != 0) {
+            var file = $('#file').val();
+            console.log(file);
+            if (file != '') {
                 var formData = new FormData();
-                formData.append('msgForm', $('input[type=file]')[0].files[0]);
+                formData.append('file', $('input[type=file]')[0].files[0]);
                 console.log("form data " + formData);
                 $.ajax({
                     url: 'upload',
@@ -67,8 +68,8 @@
                         alert(err);
                     }
                 });
-            }
 
+            }
         });
 
         $('form#msgForm input[type="text"]').each(function () {
@@ -91,7 +92,8 @@
                 <div id="chat-history" class="col-sm-12">
                     <c:forEach items="${messages}" var="msg">
                         <div class="col-md-12">
-                            <div class="col-md-3 col-sm-3 col-xs-3 text-right"><label>${msg.userInfo.login}</label></div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 text-right"><label>${msg.userInfo.login}</label>
+                            </div>
                             <div class="col-md-9 col-sm-9 col-xs-9 ws">${msg.message}</div>
                         </div>
                     </c:forEach>
@@ -106,6 +108,7 @@
                         <input id="file" type="file" name="file"/>
                     </form:form>
                     <input class="btn btn-danger" type="submit" id="sendMsg" name="sendMsg" value="Send message"/>
+                    <label id="labe"></label>
                 </div>
             </div>
         </div>

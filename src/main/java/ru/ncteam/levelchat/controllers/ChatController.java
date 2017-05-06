@@ -108,7 +108,7 @@ public class ChatController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/chats/upload", method = RequestMethod.POST)
     @ResponseBody
     public String upload(@RequestParam("file") MultipartFile file) {
         return util.uploadFile(file);
