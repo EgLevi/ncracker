@@ -29,10 +29,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	http
                 .authorizeRequests()
-                .antMatchers("/","/index*"
+                .antMatchers(
+                        "/"
+                        ,"/index*"
                         ,"/userpage*"
                         ,"/postregistration"
-                        ,"/postregistrationPhoto").hasAnyRole("USER","ADMIN")
+                        ,"/postregistrationPhoto"
+                        ,"/chats*").hasAnyRole("USER","ADMIN")
                 .antMatchers("/adminpage*").hasRole("ADMIN")
                 .and()
                 .formLogin()
@@ -52,12 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
     }
-    
-    /*@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //auth.authenticationProvider((AuthenticationProvider) userLogDAOImpl);
-        auth.userDetailsService((UserDetailsService)userLogDAOImpl);
-    }*/
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

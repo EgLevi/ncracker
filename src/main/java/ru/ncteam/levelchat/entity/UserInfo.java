@@ -50,12 +50,12 @@ public class UserInfo {
 
 
     @Column(name = "LOGIN", length = 30, unique = true)
-    @Size(min=1, max=30, message="Логин должен быть от 1 до 20 символов")
+    @Size(message="Логин должен быть от 1 до 20 символов")
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String login;
 
 
-    @Column(name = "PASSWORD", length = 60)
+    @Column(name = "PASSWORD", length = 255)
     @Size(min=6, max=30, message="Пароль должен быть от 6 до 30 символов")
     @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String password;

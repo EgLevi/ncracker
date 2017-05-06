@@ -16,8 +16,8 @@ public class Levels {
     @Column(name = "NAME_LEVEL", length = 100)
     private String nameLevel;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "level")
-    public Set<Chat> chats = new HashSet<Chat>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "level")
+    private Set<Chat> chats = new HashSet<>();
 
     public long getLevelId() {
         return levelId;

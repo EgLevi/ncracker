@@ -29,11 +29,11 @@ public class Chat {
     @Column(name = "PERSONAL_CHAT")
     private boolean isPersonalChat;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
     public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
-    public Set<Message> messages = new HashSet<Message>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
+    public Set<Message> messages = new HashSet<>();
 
     public long getChatId() {
         return chatId;

@@ -1,1 +1,1 @@
-from Message m where m.chat.id=:chatId
+from Message m where m.chat.chatId=:chatId

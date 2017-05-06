@@ -11,24 +11,7 @@
 <body>
 <script>
     $(document).ready(function () {
-        $("#submit").click(function () {
-            var formData = new FormData();
-            formData.append('file', $('input[type=file]')[0].files[0]);
-            console.log("form data " + formData);
-            $.ajax({
-                url: 'upload',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function (data) {
-                    $("#labe").html(data)
-                },
-                error: function (err) {
-                    alert(err);
-                }
-            });
-        });
+
     })
 </script>
 <h1>Привет. Просто показать как работает загрузка файла на сервер</h1>

@@ -44,11 +44,18 @@ public class MessageDAO extends AbstractDAO<Message, Long> {
     @Transactional
     public boolean create(Message entity) {
         try {
-            sessionFactory.getCurrentSession().save(entity);
+            sessionFactory.getCurrentSession().saveOrUpdate(entity);
             return true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
         return false;
+    }
+
+    @Transactional
+    public List<Message> allMessagesByChatId(Long id) {
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/messageByIdChat.hql"));
+        query.setParameter("chatId", id);
+        return query.list();
     }
 }

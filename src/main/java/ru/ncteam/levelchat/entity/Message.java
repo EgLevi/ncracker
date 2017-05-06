@@ -1,5 +1,7 @@
 package ru.ncteam.levelchat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,14 +16,17 @@ public class Message {
     @Column(name = "TWXT_MSG", length = 4000)
     private String message;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "CHAT_ID")
     private Chat chat;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private UserInfo userInfo;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "DATA_ID")
     private UserData userData;

@@ -19,6 +19,7 @@ import ru.ncteam.levelchat.entity.CategoryInterest;
 import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.Role;
 import ru.ncteam.levelchat.entity.UserInfo;
+import ru.ncteam.levelchat.utils.ApplicationUtil;
 
 
 import java.util.*;
@@ -237,6 +238,5 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         categoryInterest.setCategoryName(categoryName);
         sessionFactory.getCurrentSession().save(categoryInterest);
     }
-
 
 }

@@ -1,25 +1,23 @@
 package ru.ncteam.levelchat.utils;
 
+import javassist.ClassClassPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Component
 public class ApplicationUtil {
 
-    @Autowired
-    private ApplicationContext appContext;
-
     public String getStringFromFile(String pathname) {
         File file;
         BufferedReader reader;
-        file = new File(getClass().getClassLoader().getResource("hql/allMessages.hql").getFile());
+        file = new File(getClass().getClassLoader().getResource(pathname).getFile());
         StringBuilder query = new StringBuilder();
 
         try {
@@ -32,6 +30,90 @@ public class ApplicationUtil {
         }
 
         return null;
+    }
+
+    public String uploadFile(MultipartFile file) {
+
+        StringBuffer fileName = new StringBuffer();
+        StringBuffer dirFile = new StringBuffer();
+        StringBuffer relativeDir = new StringBuffer();
+
+        if (!file.isEmpty()) {
+            try {
+                ClassClassPath cp = new ClassClassPath(this.getClass());
+                String projectDir = cp.find(this.getClass().getName()).getPath();
+                projectDir = projectDir.substring(0, projectDir.indexOf("WEB-INF"));
+                fileName.append(getMD5File(file));//add filename in var
+                fileName.append(getFileExtension(file));
+
+                relativeDir.append("uploads");
+                relativeDir.append(File.separator);
+                relativeDir.append(fileName.substring(0, 2));
+                relativeDir.append(File.separator);
+                relativeDir.append(fileName.substring(2, 4));
+
+                dirFile.append(projectDir);
+
+                dirFile.append(relativeDir);
+                fileName.delete(0, 4);
+
+                File dir = new File(dirFile.toString());
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                byte[] bytes = file.getBytes();
+                File uploadedFile = new File(dir.getAbsolutePath() + File.separator + fileName);
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploadedFile));
+                stream.write(bytes);
+                stream.flush();
+                stream.close();
+
+                return relativeDir.toString() + File.separator + fileName;
+
+            } catch (Exception e) {
+                return "You failed to upload " + fileName + " => " + e.getMessage();
+            }
+        } else {
+            return "You failed to upload " + fileName + " because the file was empty.";
+        }
+    }
+
+    /**
+     * @param file
+     * @return extension of file
+     */
+    private static String getFileExtension(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+            return fileName.substring(fileName.lastIndexOf("."));
+        else return "";
+    }
+
+    /**
+     * @param file
+     * @return md5 hash of file
+     */
+    private String getMD5File(MultipartFile file) {
+        byte[] digest = new byte[0];
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.reset();
+            try {
+                messageDigest.update(file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            digest = messageDigest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        BigInteger bigInt = new BigInteger(1, digest);
+        String md5Hex = bigInt.toString(16);
+
+        while (md5Hex.length() < 32) {
+            md5Hex = "0" + md5Hex;
+        }
+        return md5Hex;
     }
 
 }
