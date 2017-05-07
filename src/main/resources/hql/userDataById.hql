@@ -1,0 +1,1 @@
+from UserData where dataId = :dataId

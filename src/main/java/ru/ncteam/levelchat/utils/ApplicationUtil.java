@@ -32,6 +32,11 @@ public class ApplicationUtil {
         return null;
     }
 
+    /**
+     *
+     * @param file
+     * @return ссылку на файл
+     */
     public String uploadFile(MultipartFile file) {
 
         StringBuffer fileName = new StringBuffer();
@@ -71,16 +76,16 @@ public class ApplicationUtil {
                 return relativeDir.toString() + File.separator + fileName;
 
             } catch (Exception e) {
-                return "You failed to upload " + fileName + " => " + e.getMessage();
+                return null;
             }
         } else {
-            return "You failed to upload " + fileName + " because the file was empty.";
+            return null;
         }
     }
 
     /**
      * @param file
-     * @return extension of file
+     * @return расширение файла
      */
     private static String getFileExtension(MultipartFile file) {
         String fileName = file.getOriginalFilename();
@@ -91,7 +96,7 @@ public class ApplicationUtil {
 
     /**
      * @param file
-     * @return md5 hash of file
+     * @return md5 hash файла
      */
     private String getMD5File(MultipartFile file) {
         byte[] digest = new byte[0];
