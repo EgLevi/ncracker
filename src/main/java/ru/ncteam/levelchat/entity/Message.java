@@ -10,17 +10,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
     @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long messageId;
-    
-    @Column(name = "ID_IN_CHAT")
-    private long id;
 
-    public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	@Column(name = "TEXT_MSG", length = 4000)
     private String textMessage;

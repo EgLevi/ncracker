@@ -19,7 +19,7 @@ public interface UserLogDAO {
 	
 	public String updateUserInfo(UserInfo userInfo, String queryString);
 	
-	//public String updateUserInfoPhoto(UserInfo userInfo);
+	public String updateUserInfoPhoto(UserInfo userInfo, String queryString);
 	
 	public boolean existUser(UserInfo userInfo,String queryString);
 	
@@ -44,5 +44,8 @@ public interface UserLogDAO {
     public void updateInterests(List<Interests> interests,String queryString) throws HibernateException;
     
     public void putCategoryInterestByName(String categoryName) throws HibernateException;
+
+    public UserInfo getUserByLogin(String login,String queryString) throws HibernateException;
+
 
 }

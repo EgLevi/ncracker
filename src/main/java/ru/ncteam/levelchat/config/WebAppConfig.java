@@ -22,8 +22,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import ru.ncteam.levelchat.trial.InMemoryChatRepository;
-import ru.ncteam.levelchat.trial.TrialImpl;
 
 @Configuration
 @EnableWebMvc
@@ -62,11 +60,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     public BCryptPasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
-    @Bean
-    public InMemoryChatRepository getChatRepository() {
-        return new InMemoryChatRepository();
-    }
+
     
     @Bean
     public MappingJackson2HttpMessageConverter jacksonHttpMessageConverter() {

@@ -1,28 +1,19 @@
 package ru.ncteam.levelchat.controllers;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.*;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
+import ru.ncteam.levelchat.entity.CategoryInterest;
 import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.service.UserLogService;
-import ru.ncteam.levelchat.trial.ChatRepository;
-import ru.ncteam.levelchat.trial.NoSuchMessages;
-import ru.ncteam.levelchat.trial.Trial;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,13 +28,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.context.request.async.DeferredResult;
 
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 public class UserLogController {
@@ -64,6 +53,13 @@ public class UserLogController {
 	
 	@RequestMapping("/userpage")
 	public String userPage(Map<String, Object> map) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserInfo userInfo = userLogService.getUserByLogin(user.getUsername());
+		if(userInfo.getPhoto_ava()==null)
+		{
+			userInfo.setPhoto_ava("photo/ava.png");
+		}
+		map.put("userInfo",userInfo);
 		return "userpage";
 	}
 	 
@@ -94,6 +90,33 @@ public class UserLogController {
 	public List<Interests> getInterestsByName(@PathVariable String categoryName) {
 		List<Interests> listInterests = userLogService.getInterestsByCatName(categoryName); 
 		return listInterests;
+	}
+
+	@RequestMapping(value = "/search")
+	public String getSearchPage() {
+		return "search";
+	}
+
+	@RequestMapping(value = "/search/getCategories",method = RequestMethod.GET)
+	@ResponseBody
+	public List<CategoryInterest> getCategories() {
+		List<CategoryInterest> listCategories = userLogService.getAllCategory();
+		return listCategories;
+	}
+
+	@RequestMapping(value = "/search/getInterests/{categoryName}",method = RequestMethod.GET)
+	@ResponseBody
+	public List<Interests> getInterestsByNameForSearch(@PathVariable String categoryName) {
+		List<Interests> listInterests = userLogService.getInterestsByCatName(categoryName);
+		return listInterests;
+	}
+
+
+	@RequestMapping(value = "/search",method = RequestMethod.POST)
+	@ResponseBody
+	public String putInterestsForSearch(@RequestBody ArrayList<Interests> interests,
+								  BindingResult result) {
+		return "success";
 	}
 	
 	
@@ -209,10 +232,11 @@ public class UserLogController {
 		return "postregistration";
 	}
 	
-	@RequestMapping(value = "/postregistration", method = RequestMethod.POST)
-	public String updateUserInfo(@ModelAttribute("usersLog") @Valid UserInfo userInfo,
-			BindingResult result,
-			Model model) {
+	@RequestMapping(value = "/edituserinfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateUserInfo(@RequestBody @Valid UserInfo userInfo,
+			BindingResult result) {
+		Map<String, Object> map = new ConcurrentHashMap<String, Object>();
 		if(result.hasErrors())
 		{
 			String code;
@@ -222,14 +246,14 @@ public class UserLogController {
 				code = listErrors.get(i).getCode();
 				if(!code.equals("typeMismatch"))
 				{
-					model.addAttribute(listErrors.get(i).getField()+"Error", listErrors.get(i).getDefaultMessage());
+					map.put(listErrors.get(i).getField()+"Error", listErrors.get(i).getDefaultMessage());
 				}
 				else
 				{
-					model.addAttribute(listErrors.get(i).getField()+"Error", "Недопустимое значение");
+					map.put(listErrors.get(i).getField()+"Error", "Недопустимое значение");
 				}
 			}
-			return "postregistration";
+			return map;
 		}
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		userInfo.setSex(userInfo.getSex().substring(0, 1));
@@ -237,9 +261,10 @@ public class UserLogController {
 
 		if(userLogService.updateUserInfo(userInfo).equals("success"))
 		{
-			return "postregistrationPhoto";
+			return null;
 		}
-		return "redirect:/postregistration?error";
+		map.put("DataBaseError","DataBaseError");
+		return map;
 	}
 	
 	@RequestMapping("/postregistrationPhoto")

@@ -76,7 +76,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             query.setParameter("surname", userInfo.getSurname());
             query.setParameter("age", userInfo.getAge());
             query.setParameter("sex", userInfo.getSex());
-            query.setParameter("photo_ava", userInfo.getPhoto_ava());
             query.setParameter("login", userInfo.getLogin());
             query.executeUpdate();
             return "success";
@@ -85,21 +84,19 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         }
     }
 	
-	/*@Transactional
-    public String updateUserInfoPhoto(UserInfo userInfo) {
+	@Transactional
+    public String updateUserInfoPhoto(UserInfo userInfo, String queryString) {
 
     	try {
-            Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
-            		+ "photo_ava=:photo_ava "
-            		+ "where login=:login");
-            query.setLong("photo_ava", userInfo.getPhoto_ava());
-            query.setString("login", userInfo.getLogin());
+            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+            query.setParameter("photo_ava", userInfo.getPhoto_ava());
+            query.setParameter("login", userInfo.getLogin());
             query.executeUpdate();
             return "success";
         } catch (HibernateException e) {
             return e.getMessage();
         }
-    }*/
+    }
 	
 
     @Transactional
@@ -259,6 +256,14 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     	CategoryInterest categoryInterest = new CategoryInterest();
     	categoryInterest.setCategoryName(categoryName);
     	sessionFactory.getCurrentSession().save(categoryInterest);
+    }
+
+    @Transactional
+    public UserInfo getUserByLogin(String login,String queryString) throws HibernateException
+    {
+        Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+        query.setParameter("login", login);
+        return (UserInfo)query.uniqueResult();
     }
     
 

@@ -82,9 +82,9 @@
                 
 	<script type="text/javascript">
 		var relativePath="none";
-		
+
 		document.getElementById('IFBtn').style.width=document.getElementById('btnSubmit').clientWidth+"px";
-		
+
 		function sendPhoto()
 		{
 			var formData = new FormData($('form')[0]);
@@ -112,8 +112,6 @@
 		}
 		
 		selectPhoto.addEventListener("change",sendPhoto);
-		
-		
 		$(function() {
 		    $('form').submit(function() {
 		    	if(relativePath.indexOf("none")>-1)
@@ -129,7 +127,7 @@
 		            success: function(res) {
 		            }
 		          });
-				window.location = "/ru.ncteam.levelchat/userpage";
+				window.location = "/userpage";
 				return false; // отменяем отправку формы, т.е. перезагрузку страницы
 		    });
 		  });

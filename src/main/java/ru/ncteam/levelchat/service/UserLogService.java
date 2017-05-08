@@ -51,4 +51,7 @@ public interface UserLogService {
     public void updateInterests(List<Interests> interests) throws HibernateException;
     
     public void putCategoryInterestByName(String categoryName) throws HibernateException;
+
+    public UserInfo getUserByLogin(String login) throws HibernateException;
+
 }
