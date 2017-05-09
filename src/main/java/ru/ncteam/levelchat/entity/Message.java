@@ -3,16 +3,17 @@ package ru.ncteam.levelchat.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "MESSAGES")
-public class Messages {
+@Table(name = "MESSAGE")
+public class Message {
     @Id
     @Column(name = "MESSAGE_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
     @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long messageId;
 
-    @Column(name = "TWXT_MSG", length = 4000)
-    private long textMessage;
+
+	@Column(name = "TEXT_MSG", length = 4000)
+    private String textMessage;
 
     @ManyToOne
     @JoinColumn(name = "CHAT_ID", nullable = false)
@@ -23,7 +24,7 @@ public class Messages {
     private UserInfo userInfo;
 
     @ManyToOne
-    @JoinColumn(name = "DATA_ID", nullable = false)
+    @JoinColumn(name = "DATA_ID", nullable = true)
     private UserData userData;
 
     public long getMessageId() {
@@ -34,11 +35,11 @@ public class Messages {
         this.messageId = messageId;
     }
 
-    public long getTextMessage() {
+    public String getTextMessage() {
         return textMessage;
     }
 
-    public void setTextMessage(long textMessage) {
+    public void setTextMessage(String textMessage) {
         this.textMessage = textMessage;
     }
 

@@ -81,6 +81,10 @@ public class HibernateConfig {
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
         properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+        //properties.put("hibernate.query.startup_check", "false");
+        properties.put("javax.persistence.validation.mode", "none");
+        //properties.put("hibernate.validator.autoregister_listeners", "false");
+        //properties.put("hibernate.validator.apply_to_ddl", "false");
         return properties;
     }
 }

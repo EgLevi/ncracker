@@ -12,12 +12,7 @@
          <link rel="stylesheet" type="text/css" href="resources/css/LCstyle.css">  
     </head>
     <body style="background-attachment:fixed" topmargin="10">
-        <header>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                      <!-- header Nav Start -->
-                        <nav class="navbar navbar-default"> <!-- navbar-default navbar-static-top-->
+        <div class="navbar navbar-default"> <!-- navbar-default navbar-static-top-->
                             <div class="container-fluid">
                               <!-- Brand and toggle get grouped for better mobile display -->
                                 <div class="navbar-header">
@@ -27,27 +22,23 @@
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
                                     </button>
-                                    <a class="navbar-brand" href="index.html">
-                                      <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
+                                    <a class="navbar-brand" href="http://localhost:8081/ru.ncteam.levelchat/index.html">
+                                      <img src="resources/images/logo4.png" alt="Logo" height="40" align="top">
                                     </a>
                                 </div>
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right">
-                                      <li><a href="index.html">Главная</a></li>
-                                      <li><a href="#">Поддержка</a></li>
-                                      <li><a href="#">О нас</a></li>
-                                      <li><a href="contact.html">Контакты</a></li>
+                                      <li><a href="http://localhost:8081/ru.ncteam.levelchat/index.html">Главная</a></li>
+                                      <li><a href="http://localhost:8081/ru.ncteam.levelchat/postregistration#">Поддержка</a></li>
+                                      <li><a href="http://localhost:8081/ru.ncteam.levelchat/postregistration#">О нас</a></li>
+                                      <li><a href="http://localhost:8081/ru.ncteam.levelchat/contact.html">Контакты</a></li>
                                     </ul>
                                 </div><!-- /.navbar-collapse -->
                               </div><!-- /.container-fluid -->
-                          </nav>
-                      </div>
-                  </div>
-              </div>
-        </header><!-- header close -->
-        <div class="container-fluid" style="padding-right: 500px;padding-left: 500px;">
-            <div class="row col-md-12">
+                          </div>
+        <div class="container-fluid" style="width:730px;">
+            <div class="row col-md-12" style="width:430px; margin:auto;">
                 <div class="panel panel-primary" style="background-color:#e5e8ed">
                   <div class="panel-heading" style="background-color:#e5e8ed">
                     <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
@@ -55,19 +46,25 @@
                   <div class="panel-body">
                     <form:form method="post" action="j_spring_security_check">
                       <div class="form-group">
+                      	<label for="j_username">Логин</label>
                         <input type="text" class="form-control" name="j_username" placeholder="Имя пользователя">
                       </div>
                       <div class="form-group">
+                      	<label for="j_password">Пароль</label>
                         <input type="password" class="form-control" name="j_password" placeholder="Пароль">
                       </div>
                       <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Войти</button>
                       </div>
-                    </form:form>
+                      <div class="form-group">
+                        <input id="remember_me" name="remeber_me_parameter" type="checkbox"/>
+						<label for="remember_me" class="inline">Запомнить</label>
+                      </div>
                     <div class="login-help">
                       <a href="registration" style="color:#777777">Регистрация</a> 
                       <a href="adminpage" style="color:#777777">Войти как админ</a>
                     </div>
+                    </form:form>
                   </div>
                 </div>
 

@@ -1,0 +1,1 @@
+update UserInfo set email=:email, country=:country, city=:city, name=:name, surname=:surname, age=:age, sex=:sex where login=:login
