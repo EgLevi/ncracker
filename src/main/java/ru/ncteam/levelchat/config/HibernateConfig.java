@@ -17,6 +17,7 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.Properties;
 
 @Configuration
@@ -50,6 +51,7 @@ public class HibernateConfig {
 
     @Bean
     public LocalSessionFactoryBean getSessionFactory() {
+    	Locale.setDefault(Locale.ENGLISH);
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan(new String[]{"ru.ncteam.levelchat"});

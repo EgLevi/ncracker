@@ -4,6 +4,8 @@ package ru.ncteam.levelchat.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ncteam.levelchat.dao.UserLogDAO;
+import ru.ncteam.levelchat.entity.CategoryInterest;
+import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 
 import java.io.File;
@@ -41,7 +43,16 @@ public class UserLogServiceImpl implements UserLogService {
     public void removeUser(Integer iduserlog) {
         userLogDAO.removeUser(iduserlog);
     }*/
-
+    
+    public List<Interests> getListInterests(CategoryInterest name)
+    {
+    	return userLogDAO.getListInterests(name);
+    }
+    
+    public CategoryInterest getCategorie(String name)
+    {
+    	return userLogDAO.getCategorie(name);
+    }
 
     public List<String> getMessages(String username) {
         return userLogDAO.getMessages(username);
@@ -49,6 +60,21 @@ public class UserLogServiceImpl implements UserLogService {
 
     public List<String> getMessages(String username, int mid) {
         return userLogDAO.getMessages(username, mid);
+    }
+    
+    public void addInter(Interests inter)
+    {
+    	System.out.println(userLogDAO.addInterest(inter));
+    }
+    
+    public void addCategoryInterests(CategoryInterest catInteres)
+    {
+    	System.out.println(userLogDAO.addCategory(catInteres));    	
+    }
+    
+    public List<CategoryInterest> getCategories()
+    {
+    	return userLogDAO.getCategory();
     }
 
     public void addMessage(String username, String messages, int mid) {
