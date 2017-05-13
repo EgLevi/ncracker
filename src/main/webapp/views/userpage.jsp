@@ -228,10 +228,12 @@
                 <hr>
 
                 <label>Возраст: ${userInfo.age}</label><br>
-                <label>Город: ${userInfo.city}</label><br>
                 <label>Пол: ${userInfo.sex}</label><br>
+                <label>Email: ${userInfo.email}</label><br>
+                <label>Страна: ${userInfo.country}</label><br>
+                <label>Город: ${userInfo.city}</label><br>
 
-                <hr>
+                <hr style="margin-bottom:0px;">
                 <button id="edituserinfoBtn" type="button" class="btn btn-link">Редактировать</button>
 
 
@@ -473,13 +475,35 @@
 
     function sendUserInfo()
     {
-        var formData = {"name":document.getElementsByName("name")[0].value,
-            "surname":document.getElementsByName("surname")[0].value,
-            "sex":document.getElementsByName("sex")[0].value,
-            "age":document.getElementsByName("age")[0].value,
-            "country":document.getElementsByName("country")[0].value,
-            "city":document.getElementsByName("city")[0].value,
-            "email":document.getElementsByName("email")[0].value};
+        var formData={};
+        if(document.getElementsByName("name")[0].value!="")
+        {
+            formData.name=document.getElementsByName("name")[0].value;
+        }
+        if(document.getElementsByName("surname")[0].value!="")
+        {
+            formData.surname=document.getElementsByName("surname")[0].value;
+        }
+        if(document.getElementsByName("sex")[0].value!="")
+        {
+            formData.sex=document.getElementsByName("sex")[0].value;
+        }
+        if(document.getElementsByName("country")[0].value!="")
+        {
+            formData.country=document.getElementsByName("country")[0].value;
+        }
+        if(document.getElementsByName("city")[0].value!="")
+        {
+            formData.city=document.getElementsByName("city")[0].value;
+        }
+        if(document.getElementsByName("age")[0].value!="")
+        {
+            formData.age=document.getElementsByName("age")[0].value;
+        }
+        if(document.getElementsByName("email")[0].value!="")
+        {
+            formData.email=document.getElementsByName("email")[0].value;
+        }
         $.ajax({
             type : 'POST',
             url : "edituserinfo", // url записан в параметре action формы
@@ -496,11 +520,46 @@
                 if(result == "")
                 {
                     var listLabel = userinfotable.getElementsByTagName("label");
-                    listLabel[0].innerHTML = "Возраст: " + document.getElementsByName("age")[0].value;
-                    listLabel[1].innerHTML = "Город: " + document.getElementsByName("city")[0].value;
-                    listLabel[2].innerHTML = "Пол: " + document.getElementsByName("sex")[0].value;
+                    if(document.getElementsByName("age")[0].value=="")
+                    {
+                        listLabel[0].innerHTML = "Возраст: " + document.getElementsByName("age")[0].value;
+                    }
+                    if(document.getElementsByName("sex")[0].value=="")
+                    {
+                        listLabel[1].innerHTML = "Пол: " + document.getElementsByName("sex")[0].value;
+                    }
+                    if(document.getElementsByName("email")[0].value=="")
+                    {
+                        listLabel[2].innerHTML = "Email: " + document.getElementsByName("email")[0].value;
+                    }
+                    if(document.getElementsByName("country")[0].value=="")
+                    {
+                        listLabel[1].innerHTML = "Страна: " + document.getElementsByName("country")[0].value;
+                    }
+                    if(document.getElementsByName("city")[0].value=="")
+                    {
+                        listLabel[1].innerHTML = "Город: " + document.getElementsByName("city")[0].value;
+                    }
                     var username = userinfotable.getElementsByTagName("h1");
-                    username[0].innerHTML = document.getElementsByName("name")[0].value + document.getElementsByName("surname")[0].value;
+                    var innerStr = username[0].innerHTML;
+                    var name = innerStr.substr(0,innerStr.indexOf(" "));
+                    var surname = innerStr.substr(innerStr.indexOf(" "),innerStr.length);
+                    if(document.getElementsByName("name")[0].value!= "")
+                    {
+                        username[0].innerHTML = document.getElementsByName("name")[0].value;
+                    }
+                    else
+                    {
+                        username[0].innerHTML=name;
+                    }
+                    if(document.getElementsByName("surname")[0].value!= "")
+                    {
+                        username[0].innerHTML = username[0].innerHTML +" " +document.getElementsByName("surname")[0].value;
+                    }
+                    else
+                    {
+                        username[0].innerHTML = username[0].innerHTML + " " + surname;
+                    }
                     resetErrorLabels();
                     closeEditUserInfoBtn.click();
                     return;

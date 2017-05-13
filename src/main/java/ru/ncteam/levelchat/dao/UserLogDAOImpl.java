@@ -1,7 +1,7 @@
 package ru.ncteam.levelchat.dao;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,17 +65,102 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
     
 	@Transactional
-    public String updateUserInfo(UserInfo userInfo,String queryString) {
+    public String updateUserInfo(UserInfo userInfo) {
 
     	try {
+    	    //создаем переменную buf для динамического формирования запроса
+            StringBuffer buf = new StringBuffer();
+            buf.append("update UserInfo set");
+            boolean flag=false;
+            if(userInfo.getEmail()!=null)
+            {
+                buf.append(" email=:email");
+                flag=true;
+            }
+            if(userInfo.getCountry()!=null)
+            {
+                if(flag)
+                {
+                    buf.append(" ,");
+                }
+                buf.append(" country=:country");
+                flag=true;
+            }
+            if(userInfo.getCity()!=null)
+            {
+                if(flag)
+                {
+                    buf.append(" ,");
+                }
+                buf.append(" city=:city");
+                flag=true;
+            }
+            if(userInfo.getName()!=null)
+            {
+                if(flag)
+                {
+                    buf.append(" ,");
+                }
+                buf.append(" name=:name");
+                flag=true;
+            }
+            if(userInfo.getSurname()!=null)
+            {
+                if(flag)
+                {
+                    buf.append(" ,");
+                }
+                buf.append(" surname=:surname");
+                flag=true;
+            }
+            if(userInfo.getAge()!=null)
+            {
+                if(flag)
+                {
+                    buf.append(" ,");
+                }
+                buf.append(" age=:age");
+                flag=true;
+            }
+            if(userInfo.getSex()!=null)
+            {
+                if(flag)
+                {
+                    buf.append(" ,");
+                }
+                buf.append(" sex=:sex");
+            }
+            buf.append(" where login=:login");
+            String queryString = buf.toString();
             Query query=sessionFactory.getCurrentSession().createQuery(queryString);
-            query.setParameter("email", userInfo.getEmail());
-            query.setParameter("country", userInfo.getCountry());
-            query.setParameter("city", userInfo.getCity());
-            query.setParameter("name", userInfo.getName());
-            query.setParameter("surname", userInfo.getSurname());
-            query.setParameter("age", userInfo.getAge());
-            query.setParameter("sex", userInfo.getSex());
+            if(userInfo.getEmail()!=null)
+            {
+                query.setParameter("email", userInfo.getEmail());
+            }
+            if(userInfo.getCountry()!=null)
+            {
+                query.setParameter("country", userInfo.getCountry());
+            }
+            if(userInfo.getCity()!=null)
+            {
+                query.setParameter("city", userInfo.getCity());
+            }
+            if(userInfo.getName()!=null)
+            {
+                query.setParameter("name", userInfo.getName());
+            }
+            if(userInfo.getSurname()!=null)
+            {
+                query.setParameter("surname", userInfo.getSurname());
+            }
+            if(userInfo.getAge()!=null)
+            {
+                query.setParameter("age", userInfo.getAge());
+            }
+            if(userInfo.getSex()!=null)
+            {
+                query.setParameter("sex", userInfo.getSex());
+            }
             query.setParameter("login", userInfo.getLogin());
             query.executeUpdate();
             return "success";

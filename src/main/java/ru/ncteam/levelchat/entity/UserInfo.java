@@ -40,7 +40,7 @@ public class UserInfo {
     @Column(name = "AGE")
     @Max(value=150, message="Возраст не может превышать 150 лет")
     @Min(value=0, message="Возраст не может быть меньше 1 года")
-    private int age;
+    private Integer age;
 
     @Size(min=0, max=30, message="Слишком большое(маленькое) название страны")
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
@@ -138,7 +138,7 @@ public class UserInfo {
         this.sex = sex;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 

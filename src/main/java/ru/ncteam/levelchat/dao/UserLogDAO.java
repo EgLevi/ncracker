@@ -17,7 +17,7 @@ public interface UserLogDAO {
 
 	public String addUser(UserInfo userInfo,String queryString);
 	
-	public String updateUserInfo(UserInfo userInfo, String queryString);
+	public String updateUserInfo(UserInfo userInfo);
 	
 	public String updateUserInfoPhoto(UserInfo userInfo, String queryString);
 	
