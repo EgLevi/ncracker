@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	http
                 .authorizeRequests()
-                .antMatchers("/","/index*","/userpage*","/postregistration","/postregistrationPhoto","/search*").hasAnyRole("USER","ADMIN")
+                .antMatchers("/","/index*","/userpage*","/chats*","/postregistration","/postregistrationPhoto","/search*").hasAnyRole("USER","ADMIN")
                 .antMatchers("/adminpage*").hasRole("ADMIN")
                 .and()
                 .formLogin()
@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenValiditySeconds(2419200)
                 .rememberMeParameter("remeber_me_parameter")
                 .and()
-                .csrf().ignoringAntMatchers("/","/index*","/userpage*","/postregistration","/postregistrationPhoto","/adminpage*","/adminpage/**");
+                .csrf().ignoringAntMatchers("/","/index*","/userpage*","/registration*","/registration/**","/postregistration","/postregistrationPhoto","/adminpage*","/adminpage/**","/chats/**","/chats*");
     }
     
     /*@Override

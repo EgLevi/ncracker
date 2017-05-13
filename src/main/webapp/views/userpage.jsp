@@ -7,7 +7,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <script src="resources/js/jquery-1.4.2.min.js" type="text/javascript" ></script>
+    <script src="resources/js/jquery-3.2.0.min.js"></script>
+    <script src="resources/js/jquery.json.js"></script>
     <script src="resources/js/jquery.timers.js" type="text/javascript" ></script>
     <script src="resources/js/main.js" type="text/javascript" ></script>
 
@@ -89,10 +90,10 @@
 
                     <ul class="menu">
 
-                        <li><a class="show-1" href="/userpage"><i class="fa fa-user"> Главная</i></a></li><br>
-                        <li><a class="show-2" href="/messages"><i class="fa fa-envelope"> Мои Сообщения</i></a></li><br>
-                        <li><a class="show-3" href="/gallery"><i class="fa fa-camera-retro"> Мои фото</i></a></li> <br>
-                        <li><a class="show-4" href="/settings"><i class="fa fa-cogs"> Настройки</i></a></li>
+                        <li><a id="menuMain" class="show-1" href=""><i class="fa fa-user"> Главная</i></a></li><br>
+                        <li><a id="menuMyMessage" class="show-2" href=""><i class="fa fa-envelope"> Мои Сообщения</i></a></li><br>
+                        <li><a id="menuPhoto" class="show-3" href=""><i class="fa fa-camera-retro"> Мои фото</i></a></li> <br>
+                        <li><a id="menuSettings" class="show-4" href=""><i class="fa fa-cogs"> Настройки</i></a></li>
 
                     </ul> <!-- /.menu -->
 
@@ -233,7 +234,53 @@
 
         </div>
 
+    <div id="chatPanel" class="col-md-8 col-sm-12" style="display:none;">
+        <div class="panel panel-default">
+            <div class="panel-heading">Header (что-нибудь о чате)</div>
+            <div id="chatHistory" class="panel-body table-responsive" style="height: 300px;">
 
+            </div>
+            <div class="panel-footer" style="position:relative; height: 120px;">
+                <div style="position:absolute; top:23px;">
+                        <textarea id="message" name="message" class="form-control" rows="3" style="resize: none; width: 500px;"></textarea>
+                </div>
+                <form id="fileForm" method="post" enctype="multipart/form-data">
+                    <div class="btn-group-vertical" style="position:absolute; top:30px; left:530px;">
+                        <div class="inputFile" style="height:48px;">
+                            <label style="margin-bottom: 0px;">
+	                            <span class="btn fileinput-button" style="border-left-width: 0px; padding-left: 0px; padding-right: 0px; border-right-width: 0px;">
+	                                <img src="resources/images/fileload2.png" alt="Logo" height="40" align="top">
+	                                <input id="file" name="file" type="file" multiple="">
+	                            </span>
+                            </label>
+                        </div>
+                        <div id="progressConteiner" class="progress" style="width:40px; height: 7px;">
+                            <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+                        </div>
+                        <div id="successLoad" style="width:13px;margin:auto; display:none"><span class="glyphicon glyphicon-ok" style="color:#00FF00;"></span></div>
+                        <div id="badLoad" style="width:13px;margin:auto; display:none"><span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></div>
+                    </div>
+                </form>
+                <div id="sendMsg" style="position:absolute; top:40px; left:580px;">
+                    <button type="button" class="btn btn-primary">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div id="chatListPanel" class="col-md-8 col-sm-12" style="display:none;">
+        <div class="panel panel-default">
+            <div class="panel-heading">Список чатов</div>
+            <div class="panel-body table-responsive" style="">
+                <div id="listChats" class="btn-group-vertical" style="width:100%">
+                    <c:forEach items="${chats}" var="chat">
+                        <div class="btn btn-default"><label style="display: none;">${chat.chatId}</label>${chat.nameChat}</div>
+                    </c:forEach>
+                </div>
+                <div class="panel-footer" style="">
+                </div>
+            </div>
+        </div>
 
 
 
@@ -398,6 +445,218 @@
             return false; // отменяем отправку формы, т.е. перезагрузку страницы
         });
     });
+</script>
+
+
+<script type="text/javascript">
+    var dataLink = null;
+    var dataId = -1;
+    var chatId = -1;
+    function getParent(el){
+        return el.parentElement || el.parentNode;
+    }
+
+    function clickOnImg()
+    {
+        var parent = getParent(getParent(this));
+        var link = parent.getElementsByTagName("a")[0];
+        link.click();
+    }
+
+    function getData() {
+        $.ajax({
+            url: "chats/"+chatId+"/chat",
+            type: "GET",
+            dataType: "json",
+            context: document.body,
+            error: function () {
+                getData();
+            },
+            success: function (data) {
+                var result;
+                try {
+                    result = JSON.parse(data);
+                } catch (e) {
+                    result = data;
+                }
+                if (result.link != null) {
+                    $('#chatHistory').append('<div class="media">'+
+                                                '<div class="media-left">'+
+                                                    '<img src="'+result.userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
+                                                '</div>'+
+                                                '<div class="media-body">'+
+                                                    '<h3 class="media-heading" style="font-weight: 600;">'+result.username+'</h3>'+
+                                                    '<p>'+result.textMessage+'</p>'+
+                                                '</div>'+
+                                                '<div class="media-left">'+
+                                                    '<span class="btn"><img class="hrefImg" src = "resources/images/prikreplen.png" alt = "Logo" height = "40" align = "top"></span>'+
+                                                    '<a href="' + result.link + '" download style="display:none;"></a>'+
+                                                '</div>'+
+                                            '</div>');
+                    var imgs = document.getElementsByClassName("hrefImg");
+                    var lastAddElement = imgs[imgs.length-1];
+                    lastAddElement.addEventListener("click",clickOnImg);
+                }
+                else
+                {
+                    $('#chatHistory').append('<div class="media">'+
+                        '<div class="media-left">'+
+                        '<img src="'+result.userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
+                        '</div>'+
+                        '<div class="media-body">'+
+                        '<h3 class="media-heading" style="font-weight: 600;">'+result.username+'</h3>'+
+                        '<p>'+result.textMessage+'</p>'+
+                        '</div>'+
+                        '</div>');
+                }
+                getData();
+            }
+        });
+    }
+
+    function clickOnSendMdgBtn()
+    {
+        var formData = {message:{textMessage: message.value}, dataId:dataId};
+        badLoad.style.display = "none";
+        successLoad.style.display = "none";
+        progressConteiner.style.display = "";
+        progressBar.style.width = 0 + "%";
+        $.ajax({
+            url: "chats/"+chatId+"/chat",
+            contentType:"application/json",
+            data: JSON.stringify(formData),
+            type: 'POST',
+        });
+        message.value = '';
+        //$('#file').val('');
+        dataId = -1;
+    }
+    sendMsg.addEventListener("click",clickOnSendMdgBtn);
+
+    function fileUploaded()
+    {
+        var formData = new FormData($('#fileForm')[0]);
+
+        $.ajax({
+            type : 'POST',
+            url : "chats/upload",
+            data : formData,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                var result;
+                try {
+                    result = JSON.parse(res);
+                } catch (e) {
+                    result = res;
+                }
+                dataId = result.dataId;
+                dataLink = result.dataLink;
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+                badLoad.style.display = "";
+                progressConteiner.style.display = "none";
+            },
+            xhr: function(){
+                var xhr = $.ajaxSettings.xhr(); // получаем объект XMLHttpRequest
+                xhr.upload.addEventListener('progress', function(evt){ // добавляем обработчик события progress (onprogress)
+                    if(evt.lengthComputable) { // если известно количество байт
+                        // высчитываем процент загруженного
+                        var percentComplete = Math.ceil(evt.loaded / evt.total * 100);
+                        // устанавливаем значение в атрибут value тега <progress>
+                        // и это же значение альтернативным текстом для браузеров, не поддерживающих <progress>
+                        progressBar.style.width = percentComplete + "%";
+                        if(percentComplete == 100)
+                        {
+                            successLoad.style.display = "";
+                            progressConteiner.style.display = "none";
+                        }
+                    }
+                }, false);
+                return xhr;
+            }
+        });
+    }
+
+    file.addEventListener("change",fileUploaded);
+
+    /*$("#file").change(function (event) {
+        var file = $('#file').val();
+        console.log(file);
+
+        if (file != '') {
+            var formData = new FormData();
+            formData.append('file', $('input[type=file]')[0].files[0]);
+            $.ajax({
+                url: 'upload',
+                data: formData,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (data) {
+                    var json = $.evalJSON($.toJSON(data));
+                    dataId = json.dataId;
+                    dataLink = json.dataLink;
+                    $('#labe').html("Success upload");
+                },
+                error: function (err) {
+                    alert("Не удалось загрузить файл на сервер");
+                }
+            });
+
+        }
+
+    });*/
+
+
+    //elem.scrollTop = elem.scrollHeight;
+
+
+
+
+    function showChatPanel()
+    {
+        var label = this.getElementsByTagName("label")[0];
+        chatId = label.innerHTML;
+        editUserInfoTable.style.display = "none";
+        userAvaTable.style.display = "none";
+        userinfotable.style.display = "none";
+        chatPanel.style.display = "";
+        chatListPanel.style.display = "none";
+        getData();
+    }
+
+    function addEventOnChats()
+    {
+        var buttons = listChats.getElementsByTagName('div');
+        for(i=0;i<buttons.length;i++)
+        {
+            buttons[i].addEventListener("click",showChatPanel);
+        }
+    }
+
+    addEventOnChats();
+
+    function showChatListPanel(event)
+    {
+        editUserInfoTable.style.display = "none";
+        userAvaTable.style.display = "none";
+        userinfotable.style.display = "none";
+        chatPanel.style.display = "none";
+        chatListPanel.style.display = "";
+        event.preventDefault();
+    }
+
+    menuMyMessage.addEventListener("click",showChatListPanel);
+
+
+
+
+
+
+
 </script>
 </body>
 </html>

@@ -1,7 +1,8 @@
 package ru.ncteam.levelchat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,19 +15,17 @@ public class UserData {
     @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long dataId;
 
-    @Column(name = "DATA")
-    private Blob data;
-
-    @ManyToOne
-    @JoinColumn(name = "TYPE", nullable = false)
-    private TypeData type;
+    @Column(name = "DATA_LINK")
+    private String dataLink;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
+    @JsonIgnore
     private UserInfo userInfo;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userData")
-    public Set<Message> messages = new HashSet<Message>();
+    @JsonIgnore
+    private Set<Message> messages = new HashSet<Message>();
 
     public long getDataId() {
         return dataId;
@@ -36,20 +35,12 @@ public class UserData {
         this.dataId = dataId;
     }
 
-    public Blob getData() {
-        return data;
+    public String getDataLink() {
+        return dataLink;
     }
 
-    public void setData(Blob data) {
-        this.data = data;
-    }
-
-    public TypeData getType() {
-        return type;
-    }
-
-    public void setType(TypeData type) {
-        this.type = type;
+    public void setDataLink(String dataLink) {
+        this.dataLink = dataLink;
     }
 
     public UserInfo getUserInfo() {

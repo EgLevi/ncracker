@@ -1,5 +1,7 @@
 package ru.ncteam.levelchat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +19,7 @@ public class Levels {
     private String nameLevel;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "level")
+    @JsonIgnore
     public Set<Chat> chats = new HashSet<Chat>();
 
     public long getLevelId() {

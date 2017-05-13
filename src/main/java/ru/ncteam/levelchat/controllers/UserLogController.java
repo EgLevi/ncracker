@@ -50,18 +50,6 @@ public class UserLogController {
 	public String startPage() {
 		return "userpage";
 	}
-	
-	@RequestMapping("/userpage")
-	public String userPage(Map<String, Object> map) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserInfo userInfo = userLogService.getUserByLogin(user.getUsername());
-		if(userInfo.getPhoto_ava()==null)
-		{
-			userInfo.setPhoto_ava("photo/ava.png");
-		}
-		map.put("userInfo",userInfo);
-		return "userpage";
-	}
 	 
 	 
 	@RequestMapping(value = "/adminpage",method = RequestMethod.GET)
@@ -91,34 +79,6 @@ public class UserLogController {
 		List<Interests> listInterests = userLogService.getInterestsByCatName(categoryName); 
 		return listInterests;
 	}
-
-	@RequestMapping(value = "/search")
-	public String getSearchPage() {
-		return "search";
-	}
-
-	@RequestMapping(value = "/search/getCategories",method = RequestMethod.GET)
-	@ResponseBody
-	public List<CategoryInterest> getCategories() {
-		List<CategoryInterest> listCategories = userLogService.getAllCategory();
-		return listCategories;
-	}
-
-	@RequestMapping(value = "/search/getInterests/{categoryName}",method = RequestMethod.GET)
-	@ResponseBody
-	public List<Interests> getInterestsByNameForSearch(@PathVariable String categoryName) {
-		List<Interests> listInterests = userLogService.getInterestsByCatName(categoryName);
-		return listInterests;
-	}
-
-
-	@RequestMapping(value = "/search",method = RequestMethod.POST)
-	@ResponseBody
-	public String putInterestsForSearch(@RequestBody ArrayList<Interests> interests,
-								  BindingResult result) {
-		return "success";
-	}
-	
 	
 	@RequestMapping(value = "/adminpage/update",method = RequestMethod.POST)
 	@ResponseBody
@@ -232,83 +192,10 @@ public class UserLogController {
 		return "postregistration";
 	}
 	
-	@RequestMapping(value = "/edituserinfo", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> updateUserInfo(@RequestBody @Valid UserInfo userInfo,
-			BindingResult result) {
-		Map<String, Object> map = new ConcurrentHashMap<String, Object>();
-		if(result.hasErrors())
-		{
-			String code;
-			List<FieldError> listErrors = result.getFieldErrors();
-			for (int i=0;i<listErrors.size();i++)
-			{
-				code = listErrors.get(i).getCode();
-				if(!code.equals("typeMismatch"))
-				{
-					map.put(listErrors.get(i).getField()+"Error", listErrors.get(i).getDefaultMessage());
-				}
-				else
-				{
-					map.put(listErrors.get(i).getField()+"Error", "Недопустимое значение");
-				}
-			}
-			return map;
-		}
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		userInfo.setSex(userInfo.getSex().substring(0, 1));
-		userInfo.setLogin(user.getUsername());
-
-		if(userLogService.updateUserInfo(userInfo).equals("success"))
-		{
-			return null;
-		}
-		map.put("DataBaseError","DataBaseError");
-		return map;
-	}
-	
 	@RequestMapping("/postregistrationPhoto")
 	public String postRegistrationPhotoPage() {
 		return "postregistrationPhoto";
 	}
-	
-	@RequestMapping(value = "/postregistrationPhoto",method = RequestMethod.POST)
-	@ResponseBody
-	public String uploadUserInfoPhoto(@RequestParam(value = "photo_ava", required=false) MultipartFile photo_ava) {
-		if (!photo_ava.isEmpty()) {
-			if(!(photo_ava.getContentType().equals("image/jpeg") || photo_ava.getContentType().equals("image/png")))
-			{
-				return "wrong format of photo";
-			}
-	            try {
-		                User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		        		UserInfo userInfo = new UserInfo();
-		        		userInfo.setLogin(user.getUsername());
-		        		String str = userLogService.uploadUserInfoPhoto(userInfo,photo_ava);
-		        		return str;
-	            } catch (Exception e) {
-	            	return "fail";
-	            }
-	        } else {
-	        	return "failed your photo is empty";
-	        }
-	}
-	
-	@RequestMapping(value = "/postregistrationPhoto/save",method = RequestMethod.POST)
-	@ResponseBody
-	public String updateUserInfoPhoto(@RequestBody String relativePath, HttpServletRequest request) {
-		try 
-		{
-            User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    		UserInfo userInfo = new UserInfo();
-    		userInfo.setLogin(user.getUsername());
-    		String str = userLogService.updateUserInfoPhoto(userInfo,relativePath);
-    		return str;
-		} 
-		catch (Exception e) 
-		{
-			return "fail";
-		}
-	}
+
 	
 }

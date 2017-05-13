@@ -1,26 +1,25 @@
 package ru.ncteam.levelchat.config;
 
-import javax.servlet.MultipartConfigElement;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
+
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
+
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 @Configuration
@@ -54,6 +53,12 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/photo/**").addResourceLocations("/photo/");
+        registry.addResourceHandler("/uploads/**").addResourceLocations("/uploads/");
+    }
+
+    @Override
+    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+        configurer.setDefaultTimeout(1000 * 60 * 5L);
     }
 
     @Bean
@@ -67,6 +72,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     	MappingJackson2HttpMessageConverter jacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
     	jacksonHttpMessageConverter.setPrettyPrint(true);
         return jacksonHttpMessageConverter;
+    }
+
+    @Bean
+    public HashMap<Long, ConcurrentLinkedQueue<DeferredResult<String>>> getHashMap() {
+        return new HashMap<Long, ConcurrentLinkedQueue<DeferredResult<String>>>();
     }
     
 }
