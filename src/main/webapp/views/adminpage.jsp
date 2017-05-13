@@ -109,10 +109,14 @@
 
     <button type="button" id="removeBtn" data-title="Удалить строки" class="btn btn-default" style="position:absolute; margin-bottom:0px; height: 34px; display:none;"><span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></button>
 
+    <form action="/logout" id="logout" method="post">
+        <!--<input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}" />-->
+    </form>
 
     <div class="container indent-top">
         <div class="panel panel-default control-main">
-            <div class="panel-heading">
+            <div class="panel-heading" style="position:relative;">
                 <div class="input-group element-center">
                     <div class="dropdown indent-down">
                         <label id="labelSlct" class="label-content">Выбрать категорию интересов</label>
@@ -128,6 +132,11 @@
                     </div>
                     <button type="button" id="commitBtn" data-title="Сохранить изменения" class="btn btn-default btn-default-hover" style="margin-bottom:0px; height: 34px;"><span class="glyphicon glyphicon-ok" style="color:#00FF00;"></span></button>
                     <button type="button" id="cancelBtn" data-title="Отменить" class="btn btn-default btn-default-hover" style="margin-bottom:0px; height: 34px;"><span class="glyphicon glyphicon-repeat" style="color:#FF0000;"></span></button>
+
+                </div>
+                <div style="position:absolute; left:770px;top:15px;">
+                    <a href="/userpage" style="margin-left: 50px;">На страничку пользователя</a>
+                    <a href="#" onclick="document.getElementById('logout').submit();" style="margin-left: 10px;">Выйти</a>
                 </div>
             </div>
             <div class="panel-body table-responsive" style="height:480px;">

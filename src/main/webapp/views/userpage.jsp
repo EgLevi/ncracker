@@ -63,12 +63,17 @@
             </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
+        <form action="/logout" id="logout" method="post">
+            <!--<input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}" />-->
+        </form>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/userpage">Главная</a></li>
                 <li><a href="http://localhost:8081/ru.ncteam.levelchat/postregistration#">Поддержка</a></li>
                 <li><a href="http://localhost:8081/ru.ncteam.levelchat/postregistration#">О нас</a></li>
                 <li><a href="http://localhost:8081/ru.ncteam.levelchat/contact.html">Контакты</a></li>
+                <li><a href="#" onclick="document.getElementById('logout').submit();">Выйти</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -91,6 +96,7 @@
                     <ul class="menu">
 
                         <li><a id="menuMain" class="show-1" href=""><i class="fa fa-user"> Главная</i></a></li><br>
+                        <li><a id="menuSearch" class="show-4" href=""><i class="fa fa-cogs">Поиск</i></a></li>
                         <li><a id="menuMyMessage" class="show-2" href=""><i class="fa fa-envelope"> Мои Сообщения</i></a></li><br>
                         <li><a id="menuPhoto" class="show-3" href=""><i class="fa fa-camera-retro"> Мои фото</i></a></li> <br>
                         <li><a id="menuSettings" class="show-4" href=""><i class="fa fa-cogs"> Настройки</i></a></li>
@@ -105,7 +111,7 @@
 
         </div> <!-- /.col-md-2 col-sm-12-->
 
-        <div id="editUserInfoTable" class="col-md-3 col-sm-12" style="width:430px; margin:auto; display:none;">
+        <div id="editUserInfoTable" class="col-md-3 col-sm-12 removableElement" style="width:430px; margin:auto; display:none;">
             <div class="panel panel-primary" style="background-color:#e5e8ed">
                 <div class="panel-heading" style="background-color:#e5e8ed">
                     <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
@@ -165,7 +171,7 @@
 
         </div> <!-- /.col-md-2 col-sm-12-->
 
-        <div id="userAvaTable" class="col-md-3 col-sm-12" style="">
+        <div id="userAvaTable" class="col-md-3 col-sm-12 removableElement" style="">
 
             <div class="photo-wrapper">
 
@@ -213,7 +219,7 @@
                 </div>
             </div>
         </div>
-        <div id="userinfotable" class="col-md-6 col-sm-12" style="">
+        <div id="userinfotable" class="col-md-6 col-sm-12 removableElement" style="">
 
 
             <div class="info-wrapper">
@@ -234,7 +240,7 @@
 
         </div>
 
-    <div id="chatPanel" class="col-md-8 col-sm-12" style="display:none;">
+    <div id="chatPanel" class="col-md-8 col-sm-12 removableElement" style="display:none;">
         <div class="panel panel-default">
             <div class="panel-heading">Header (что-нибудь о чате)</div>
             <div id="chatHistory" class="panel-body table-responsive" style="height: 300px;">
@@ -268,7 +274,7 @@
         </div>
     </div>
 
-   <div id="chatListPanel" class="col-md-8 col-sm-12" style="display:none;">
+   <div id="chatListPanel" class="col-md-8 col-sm-12 removableElement" style="display:none;">
         <div class="panel panel-default">
             <div class="panel-heading">Список чатов</div>
             <div class="panel-body table-responsive" style="">
@@ -281,10 +287,81 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
+
+   <div id="searchPanel" class="col-md-8 col-sm-12 removableElement" style="display:none;">
+       <div class="panel panel-primary" style="background-color:#e5e8ed; width: 400px; height:483px;">
+           <div class="panel-heading" style="background-color:#e5e8ed">
+               <div style="width:80%; margin:auto; text-align: center; transform:scale(1.5);">
+                   <img src="resources/images/search-title.png" alt="Logo" height="40" align="top">
+               </div>
+           </div>
+           <div class="panel-body table-responsive" style="height: 420px">
+               <div style="width:40%; margin-left: auto;margin-right: auto;margin-top: 100px;">
+                   <div class="btn" style="transform:scale(2); width:100%; margin:auto;">
+                       <!--<button type="button" class="btn btn-primary btn-block btn-lg" ></button>-->
+                       <img src="resources/images/search.png" alt="Logo" height="40" align="top">
+                   </div>
+                   <div style="margin-top: 15px">
+                       <div style="width:100%; margin-left: auto; margin-right: auto;text-align:center">
+                           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#searchModal">параметры поиска</button>
+                           <!-- Modal -->
+                           <div class="modal fade" id="searchModal" role="dialog" style="position:absolute; left:-100px;">
+                               <div class="modal-dialog my-modal-dialog" style="">
+                                   <div class="panel panel-primary" style="background-color:#e5e8ed; width: 400px; height:483px;">
+                                       <div class="panel-heading" style="background-color:#e5e8ed">
+                                           <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                           <img src="resources/images/interest_for_search.png" alt="Logo" height="40" align="top" style="transform: scale(1);">
+                                       </div>
+                                       <div class="panel-body" style="height: 75%">
+                                           <div>
+                                               <div style="width:100px;margin:auto;">
+                                                   <label class="fontface" style="text-align: center">Выбранные интересы</label>
+                                               </div>
+                                               <div id="listInterest" style="overflow: auto; height:55px;">
+                                                   <div id="flistelement" class="listSelInterest" style="display: none;">
+                                                       <label id="flabel" style="display: none;">0</label>
+                                                       <span id="fspan" class="label fontface selInterest">Default Label</span>
+                                                       <div id="fbtn" class="btn remBtn"><span class="glyphicon glyphicon-remove"></span></div>
+                                                   </div>
+                                               </div>
+                                               <div style="margin-top:20px">
+                                                   <label class="fontface">Категория</label>
+                                                   <select id="category" class="form-control fontface" style="width:100%">
+                                                   </select>
+
+                                                   <div style="margin-top:10px;"><label class="fontface">Интересы</label></div>
+                                                   <div class="table-responsive" style="height: 130px;">
+                                                       <div id="interests" class="btn-group-vertical table-responsive" style="width:100%;">
+                                                           <div id="fdivinterest">
+                                                               <label id="flabelinterest" style="display:none">0</label>
+                                                               <button id="finterest" type="button" class="btn btn-default fontface" style="display:none; width:100%">Apple</button>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="panel-footer" style="background-color:#e5e8ed;">
+                                           <div style="margin-left:auto; width:35%">
+                                               <button id="okBtn" type="button" class="btn btn-primary">OK</button>
+                                               <button id="cancelBtn" type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+
+                       </div>
+                   </div>
+
+               </div>
+
+           </div>
+       </div>
+   </div>
+
+
 </div>
 </div>
 
@@ -307,6 +384,37 @@
 
         display: none;/* скрываем input file */
 
+    }
+</style>
+
+<style>
+
+    .remBtn
+    {
+        padding-left: 0px;
+        padding-right: 5px;
+        padding-top: 0px;
+    }
+    .selInterest
+    {
+        color: grey;
+        border-style: solid;
+        border-top-width: 2px;
+        border-bottom-width: 2px;
+        border-right-width: 2px;
+        border-color: #337ab7;
+        border-left-width: 2px;
+    }
+    .fontface
+    {
+        font-family: "segoe ui";
+    }
+    .my-modal-dialog
+    {
+        top:0px;
+        left:15px;
+        margin-top:0px;
+        margin-bottom:0px;
     }
 </style>
 
@@ -620,11 +728,12 @@
     {
         var label = this.getElementsByTagName("label")[0];
         chatId = label.innerHTML;
-        editUserInfoTable.style.display = "none";
-        userAvaTable.style.display = "none";
-        userinfotable.style.display = "none";
+        var remEl = $(".removableElement");
+        for(i=0;i<remEl.length;i++)
+        {
+            remEl[i].style.display = "none";
+        }
         chatPanel.style.display = "";
-        chatListPanel.style.display = "none";
         getData();
     }
 
@@ -641,15 +750,43 @@
 
     function showChatListPanel(event)
     {
-        editUserInfoTable.style.display = "none";
-        userAvaTable.style.display = "none";
-        userinfotable.style.display = "none";
-        chatPanel.style.display = "none";
+        var remEl = $(".removableElement");
+        for(i=0;i<remEl.length;i++)
+        {
+            remEl[i].style.display = "none";
+        }
         chatListPanel.style.display = "";
         event.preventDefault();
     }
 
     menuMyMessage.addEventListener("click",showChatListPanel);
+
+    function showSearchPanel(event)
+    {
+        var remEl = $(".removableElement");
+        for(i=0;i<remEl.length;i++)
+        {
+            remEl[i].style.display = "none";
+        }
+        searchPanel.style.display="";
+        event.preventDefault();
+    }
+
+    menuSearch.addEventListener("click",showSearchPanel);
+
+    function showMainPanels(event)
+    {
+        var remEl = $(".removableElement");
+        for(i=0;i<remEl.length;i++)
+        {
+            remEl[i].style.display = "none";
+        }
+        userinfotable.style.display="";
+        userAvaTable.style.display="";
+        event.preventDefault();
+    }
+
+    menuMain.addEventListener("click",showMainPanels);
 
 
 
@@ -658,5 +795,201 @@
 
 
 </script>
+
+<script type="text/javascript">
+    function SearchScriptObject()
+    {
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+
+        $.ajaxSetup({
+            headers: {csrfHeader:csrfToken}
+        });
+
+        var data=[];
+
+        function clearListSelectedInterest()
+        {
+            var childList = listInterest.getElementsByClassName("listSelInterest");
+            var length=childList.length;
+            for(i=0;i<length-1;i++)
+            {
+                childList[1].remove();
+            }
+        }
+
+        function clickOnOkBtn(e)
+        {
+            if (data.length > 0)//если есть данные на обновление, то посылаем соответствующий запрос
+            {
+                $.ajax({
+                    type: 'POST',
+                    url: "search",
+                    headers:{'X-CSRF-TOKEN':csrfToken},
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (res) {
+                        cancelBtn.click();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                    }
+                });
+                data = [];
+                clearListSelectedInterest()
+            }
+            else
+            {
+                cancelBtn.click();
+            }
+        }
+
+        okBtn.addEventListener("click",clickOnOkBtn);
+
+
+
+        function getParent(el){
+            return el.parentElement || el.parentNode;
+        }
+
+
+        function deleteInterest(e)
+        {
+            var listBtn = listInterest.getElementsByClassName("btn");
+            var index;
+            for(i=0;i<listBtn.length;i++)
+            {
+                if(listBtn[i]==this)
+                {
+                    index=i;
+                    break;
+                }
+            }
+            if(!!index)
+            {
+                var parent = getParent(listBtn[index]);
+                var indexInData = indexDataByInterestId(parent.getElementsByTagName("label")[0].innerHTML);
+                data.splice(indexInData,1);
+                parent.remove();
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        function existInData(interestId)
+        {
+            for(i=0;i<data.length;i++)
+            {
+                if(data[i].interestId == interestId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function indexDataByInterestId(interestId)
+        {
+            for(i=0;i<data.length;i++)
+            {
+                if(data[i].interestId == interestId)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        function clickOnInterest(e)
+        {
+            var parentEl = getParent(this);
+            if(!existInData(parentEl.getElementsByTagName("label")[0].innerHTML))
+            {
+                var element = $("#flistelement").clone();
+                element[0].getElementsByTagName("label")[0].innerHTML = parentEl.getElementsByTagName("label")[0].innerHTML;
+                element[0].getElementsByTagName("span")[0].innerHTML = this.innerHTML;
+                element[0].style.display = "inline";
+                element[0].getElementsByTagName("div")[0].addEventListener("click",deleteInterest);
+                listInterest.appendChild(element[0]);
+                //если такого элемента нет, то вносим его в список интересов
+                data.push({ "interestId": parentEl.getElementsByTagName("label")[0].innerHTML, "interestName": this.innerHTML });
+            }
+        }
+
+        function getInterestsByCategory(e)
+        {
+            $.ajax({
+                type: 'GET',
+                url: "search/getInterests/"+category.options[category.selectedIndex].innerText,
+                contentType: 'application/json',
+                dataType: "json",
+                success: function (res) {
+                    var result;
+                    try {
+                        result = JSON.parse(res);
+                    } catch (e) {
+                        result = res;
+                    }
+
+                    var childList = interests.getElementsByTagName("div");
+                    var length=childList.length;
+                    for(i=0;i<length-1;i++)
+                    {
+                        childList[1].remove();
+                    }
+
+                    var element;
+
+                    for (i = 0; i < result.length; i++) {
+                        element = $("#fdivinterest").clone();
+                        element[0].getElementsByTagName("label")[0].innerHTML=result[i].interestId;
+                        element[0].getElementsByTagName("button")[0].innerHTML = result[i].interestName;
+                        element[0].getElementsByTagName("button")[0].addEventListener("click",clickOnInterest);
+                        element[0].getElementsByTagName("button")[0].style.display = "block";
+                        interests.appendChild(element[0]);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                }
+            });
+        }
+
+        category.addEventListener("change",getInterestsByCategory);
+
+        function getCategory()
+        {
+
+            $.ajax({
+                type: 'GET',
+                url: "search/getCategories",
+                contentType: 'application/json',
+                dataType: "json",
+                success: function (res) {
+                    var result;
+                    try {
+                        result = JSON.parse(res);
+                    } catch (e) {
+                        result = res;
+                    }
+                    var element;
+                    for (i = 0; i < result.length; i++) {
+                        element = document.createElement("option");
+                        element.innerHTML=result[i].categoryName;
+                        category.append(element);
+                    }
+                    category.options[0].select=true;
+                    getInterestsByCategory();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                }
+            });
+        }
+
+        getCategory();
+    }
+    var searchObj = new SearchScriptObject();
+</script>
+
 </body>
 </html>
