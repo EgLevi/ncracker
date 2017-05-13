@@ -24,7 +24,7 @@ public class CategoryInterest {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryInterest",cascade=CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
-    public Set<Interests> interests = new HashSet<Interests>();
+    public Set<Interests> interests = new HashSet<>();
 
     public long getCategoryId() {
         return categoryId;

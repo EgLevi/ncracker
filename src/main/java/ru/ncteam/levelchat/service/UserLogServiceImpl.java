@@ -200,8 +200,7 @@ public class UserLogServiceImpl implements UserLogService {
     		File file  = res.getFile();
     		byte[] fileContent = ByteBuffer.allocate((int)file.length()).array();
     		long actualLength = is.read(fileContent, 0, fileContent.length);
-    		String query = new String(fileContent,0,(int)actualLength);
-    		return query;
+            return new String(fileContent,0,(int)actualLength);
 		} 
     	catch (IOException e) 
     	{
