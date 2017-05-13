@@ -76,6 +76,19 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             query.setParameter("surname", userInfo.getSurname());
             query.setParameter("age", userInfo.getAge());
             query.setParameter("sex", userInfo.getSex());
+            query.setParameter("login", userInfo.getLogin());
+            query.executeUpdate();
+            return "success";
+        } catch (HibernateException e) {
+            return e.getMessage();
+        }
+    }
+	
+	@Transactional
+    public String updateUserInfoPhoto(UserInfo userInfo, String queryString) {
+
+    	try {
+            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
             query.setParameter("photo_ava", userInfo.getPhoto_ava());
             query.setParameter("login", userInfo.getLogin());
             query.executeUpdate();
@@ -84,23 +97,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             return e.getMessage();
         }
     }
-
-	/*@Transactional
-    public String updateUserInfoPhoto(UserInfo userInfo) {
-
-    	try {
-            Query query=sessionFactory.getCurrentSession().createQuery("update UserInfo set "
-            		+ "photo_ava=:photo_ava "
-            		+ "where login=:login");
-            query.setLong("photo_ava", userInfo.getPhoto_ava());
-            query.setString("login", userInfo.getLogin());
-            query.executeUpdate();
-            return "success";
-        } catch (HibernateException e) {
-            return e.getMessage();
-        }
-    }*/
-
+	
 
     @Transactional
     public boolean existUser(UserInfo userInfo, String queryString) {
@@ -146,7 +143,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             return query.getResultList();
         } catch (HibernateException e) {
             return null;
-
         }
     }
 
@@ -238,5 +234,14 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         categoryInterest.setCategoryName(categoryName);
         sessionFactory.getCurrentSession().save(categoryInterest);
     }
+
+    @Transactional
+    public UserInfo getUserByLogin(String login,String queryString) throws HibernateException
+    {
+        Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+        query.setParameter("login", login);
+        return (UserInfo)query.uniqueResult();
+    }
+
 
 }

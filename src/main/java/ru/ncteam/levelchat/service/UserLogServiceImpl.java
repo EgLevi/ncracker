@@ -114,7 +114,7 @@ public class UserLogServiceImpl implements UserLogService {
     public String updateUserInfoPhoto(UserInfo userInfo, String filename)
     {
     	userInfo.setPhoto_ava(filename);
-    	if(!userLogDAO.updateUserInfo(userInfo, getQuery("hql/updateUserInfo.hql")).equals("success"))
+    	if(!userLogDAO.updateUserInfoPhoto(userInfo, getQuery("hql/updateUserInfoPhoto.hql")).equals("success"))
     	{
     		return "success";
     	}
@@ -172,7 +172,7 @@ public class UserLogServiceImpl implements UserLogService {
     
     public void deleteCategory(String categoryName) throws HibernateException
     {
-    	userLogDAO.deleteCategory(categoryName, getQuery("hql/getInterestByCatName.hql"));
+    	userLogDAO.deleteCategory(categoryName, getQuery("hql/CategoryInterestByName.hql"));
     }
     
     public void updateInterests(List<Interests> interests) throws HibernateException
@@ -184,6 +184,12 @@ public class UserLogServiceImpl implements UserLogService {
     {
     	userLogDAO.putCategoryInterestByName(categoryName);
     }
+
+    public UserInfo getUserByLogin(String login) throws HibernateException
+    {
+        return userLogDAO.getUserByLogin(login,getQuery("hql/UserInfoByLogin.hql"));
+    }
+
     
     private String getQuery(String filename)
     {

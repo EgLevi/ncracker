@@ -2,6 +2,7 @@ package ru.ncteam.levelchat.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -22,6 +23,7 @@ public class CategoryInterest {
     private String categoryName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryInterest",cascade=CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
     public Set<Interests> interests = new HashSet<Interests>();
 
     public long getCategoryId() {

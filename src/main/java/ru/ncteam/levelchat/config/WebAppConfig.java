@@ -53,6 +53,8 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    
+
 
     @Bean
     public MappingJackson2HttpMessageConverter jacksonHttpMessageConverter() {

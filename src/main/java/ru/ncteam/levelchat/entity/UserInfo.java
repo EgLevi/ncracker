@@ -1,6 +1,8 @@
 package ru.ncteam.levelchat.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -20,14 +22,14 @@ public class UserInfo {
     private long user_id;
 
     @Column(name = "NAME", length = 30)
-    @Size(min=1, max=30, message="Имя должно быть от 1 до 20 символов")
-    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Size(min=0, max=30, message="Имя должно быть от 1 до 20 символов")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     private String name;
 
 
     @Column(name = "SURNAME", length = 30)
-    @Size(min=1, max=30, message="Фамилия должна быть от 1 до 20 символов")
-    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Size(min=0, max=30, message="Фамилия должна быть от 1 до 20 символов")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     private String surname;
 
     @Column(name = "SEX", length = 1)
@@ -38,13 +40,13 @@ public class UserInfo {
     @Min(value=0, message="Возраст не может быть меньше 1 года")
     private int age;
 
-    @Size(min=1, max=30, message="Слишком большое(маленькое) название страны")
-    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Size(min=0, max=30, message="Слишком большое(маленькое) название страны")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "COUNTRY", length = 30)
     private String country;
 
-    @Size(min=1, max=30, message="Слишком большое(маленькое) название города")
-    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
+    @Size(min=0, max=30, message="Слишком большое(маленькое) название города")
+    @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "CITY", length = 30)
     private String city;
 
@@ -62,8 +64,8 @@ public class UserInfo {
     
 
     @Column(name = "EMAIL", length = 30)
-    @Size(min=6, max=30, message="Email должен быть от 6 до 30 символов")
-    @Pattern(regexp="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}", message="неправильный Email")
+    @Size(min=0, max=30, message="Email должен быть от 6 до 30 символов")
+    @Pattern(regexp="[[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}]{0,1}", message="неправильный Email")
     private String email;
 
     @Column(name = "PHOTO_AVA")
@@ -73,25 +75,31 @@ public class UserInfo {
     @JoinTable(name = "USERS_ROLES",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
-    private Set<Role> roles = new HashSet<>();
+    @JsonIgnore
+    private Set<Role> roles = new HashSet<Role>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "USER_INTEREST",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "INTEREST_ID")})
-    private Set<Interests> interests = new HashSet<>();
+    @JsonIgnore
+    private Set<Interests> interests = new HashSet<Interests>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private Set<ChatGroup> chatGroups = new HashSet<>();
+    @JsonIgnore
+    public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    public Set<Message> messages = new HashSet<>();
+    @JsonIgnore
+    public Set<Message> messages = new HashSet<Message>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    private Set<PhotoLib> photoLibs = new HashSet<>();
+    @JsonIgnore
+    public Set<PhotoLib> photoLibs = new HashSet<PhotoLib>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
-    private Set<UserData> userDatas = new HashSet<>();
+    @JsonIgnore
+    public Set<UserData> userDatas = new HashSet<UserData>();
 
     public long getUser_id() {
         return user_id;
