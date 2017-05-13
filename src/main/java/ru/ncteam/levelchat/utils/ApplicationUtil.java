@@ -51,6 +51,7 @@ public class ApplicationUtil {
                 fileName.append(getMD5File(file));//add filename in var
                 fileName.append(getFileExtension(file));
 
+                relativeDir.append(File.separator);
                 relativeDir.append("uploads");
                 relativeDir.append(File.separator);
                 relativeDir.append(fileName.substring(0, 2));

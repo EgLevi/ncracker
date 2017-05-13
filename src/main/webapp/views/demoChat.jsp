@@ -28,7 +28,7 @@
                         //$('#chat-history').append('<div class="row"> <div class="col-md-12"> <div class="col-md-3 col-sm-3 col-xs-3 text-right"> <label>' + json.username + '</label> </div> <div class="col-md-9 col-sm-9 col-xs-9 ws">' + json.message + '</div> </div> </div>');
                         if (json.link != null)
                             $('#chat-history')
-                                .append('<div class="row"><div class="col-md-12"><div class="row"><div class="col-md-3 col-sm-3 col-xs-3 text-right"><label>' + json.username + '</label></div><div class="col-md-9 col-sm-9 col-xs-9 ws">' + json.message + '</div></div><div class="row"> <div class="col-md-offset-3 linked-file"> <a href="' + json.link + '"> <img width="30pt" class="img-thumbnail" src="https://image.flaticon.com/icons/png/512/0/532.png"> </a> </div> </div> </div> </div>');
+                                .append('<div class="row"><div class="col-md-12"><div class="row"><div class="col-md-3 col-sm-3 col-xs-3 text-right"><label>' + json.username + '</label></div><div class="col-md-9 col-sm-9 col-xs-9 ws">' + json.message + '</div></div><div class="row"> <div class="col-md-offset-3 linked-file"> <a href="/' + json.link + '"> <img width="30pt" class="img-thumbnail" src="https://image.flaticon.com/icons/png/512/0/532.png"> </a> </div> </div> </div> </div>');
                         else
                             $('#chat-history').append('<div class="row"><div class="col-md-12"><div class="row"><div class="col-md-3 col-sm-3 col-xs-3 text-right"><label>' + json.username + '</label></div><div class="col-md-9 col-sm-9 col-xs-9 ws">' + json.message + '</div></div></div></div>');
 
