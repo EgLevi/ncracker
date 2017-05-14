@@ -363,6 +363,15 @@
        </div>
    </div>
 
+        <div id="myPhotoPanel" class="col-md-8 col-sm-12 removableElement" style="display:none;">
+            <div class="panel panel-primary" style="background-color:#e5e8ed; width: 580px; height:483px;">
+                <div class="panel-heading" style="background-color:#e5e8ed">
+                    <h3 style="color:#000000">Мои Фото</h3>
+                </div>
+                <div id="myPhotoContent" class="panel-body table-responsive" style="height: 420px">
+                </div>
+            </div>
+        </div>
 
 </div>
 </div>
@@ -520,23 +529,23 @@
                 if(result == "")
                 {
                     var listLabel = userinfotable.getElementsByTagName("label");
-                    if(document.getElementsByName("age")[0].value=="")
+                    if(document.getElementsByName("age")[0].value!="")
                     {
                         listLabel[0].innerHTML = "Возраст: " + document.getElementsByName("age")[0].value;
                     }
-                    if(document.getElementsByName("sex")[0].value=="")
+                    if(document.getElementsByName("sex")[0].value!="")
                     {
                         listLabel[1].innerHTML = "Пол: " + document.getElementsByName("sex")[0].value;
                     }
-                    if(document.getElementsByName("email")[0].value=="")
+                    if(document.getElementsByName("email")[0].value!="")
                     {
                         listLabel[2].innerHTML = "Email: " + document.getElementsByName("email")[0].value;
                     }
-                    if(document.getElementsByName("country")[0].value=="")
+                    if(document.getElementsByName("country")[0].value!="")
                     {
                         listLabel[1].innerHTML = "Страна: " + document.getElementsByName("country")[0].value;
                     }
-                    if(document.getElementsByName("city")[0].value=="")
+                    if(document.getElementsByName("city")[0].value!="")
                     {
                         listLabel[1].innerHTML = "Город: " + document.getElementsByName("city")[0].value;
                     }
@@ -847,7 +856,43 @@
 
     menuMain.addEventListener("click",showMainPanels);
 
+    function getUserPhotos()
+    {
+        $.ajax({
+            url: "userPhoto",
+            type: "GET",
+            dataType: "json",
+            error: function(jqXHR, textStatus, errorThrown) {
+            },
+            success: function (data) {
+                var result;
+                try {
+                    result = JSON.parse(data);
+                } catch (e) {
+                    result = data;
+                }
+                for (i=0; i<result.length; i++)
+                {
+                    $('#myPhotoContent').append('<img src="'+result[i]+'" class="media-object" ' +
+                        'style="width:120px; height:80px; display: inline-block; margin-top: 10px; margin-left:10px;">');
+                }
+            }
+        });
+    }
 
+    function showMyPhotoPanel(event)
+    {
+        var remEl = $(".removableElement");
+        for(i=0;i<remEl.length;i++)
+        {
+            remEl[i].style.display = "none";
+        }
+        myPhotoPanel.style.display="";
+        getUserPhotos();
+        event.preventDefault();
+    }
+
+    menuPhoto.addEventListener("click",showMyPhotoPanel);
 
 
 

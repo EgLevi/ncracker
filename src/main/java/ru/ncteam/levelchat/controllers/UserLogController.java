@@ -45,13 +45,7 @@ public class UserLogController {
 	public String login() {
 		return "login";
 	}
-	
-	@RequestMapping("/")
-	public String startPage() {
-		return "userpage";
-	}
-	 
-	 
+
 	@RequestMapping(value = "/adminpage",method = RequestMethod.GET)
 	public String adminPage(Map<String, Object> map) {
 		map.put("categoryInterestsList", userLogService.getAllCategory());
@@ -168,7 +162,7 @@ public class UserLogController {
 		if(userLogService.addUser(userInfo).equals("success"))
 		{
 			userLogService.autoLogin(userInfo.getLogin(), userPassword);
-			return "postregistration";
+			return "redirect:/userpage";
 		}
 		else
 		{

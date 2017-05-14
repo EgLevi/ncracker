@@ -67,7 +67,7 @@ public class UserInfo {
 
     @Column(name = "EMAIL", length = 30)
     @Size(min=0, max=30, message="Email должен быть от 6 до 30 символов")
-    @Pattern(regexp="[[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}]{0,1}", message="неправильный Email")
+    @Pattern(regexp="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}|^$", message="неправильный Email")
     private String email;
 
     @Column(name = "PHOTO_AVA")
