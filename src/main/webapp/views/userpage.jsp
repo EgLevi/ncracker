@@ -709,6 +709,20 @@
     }
     sendMsg.addEventListener("click",clickOnSendMdgBtn);
 
+    function enterDown(event)
+    {
+        if(!event.shiftKey)
+        {
+            if(event.keyCode == 13)
+            {
+                sendMsg.click();
+                event.preventDefault();
+            }
+        }
+    }
+
+    document.addEventListener("keydown",enterDown);
+
     function fileUploaded()
     {
         var formData = new FormData($('#fileForm')[0]);
