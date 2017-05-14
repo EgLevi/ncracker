@@ -87,7 +87,6 @@ public class UserInfo {
     @JsonIgnore
     private Set<Interests> interests = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "USER_CHAT",

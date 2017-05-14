@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/jquery.json.js"></script>
-    <link href="../resources/css/bootstrap_min.css" rel="stylesheet" type="text/css"/>
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <title>Upload file to server</title>
 </head>
 <body>
