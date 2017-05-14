@@ -2,6 +2,8 @@ package ru.ncteam.levelchat.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -87,7 +89,11 @@ public class UserInfo {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnore
-    private Set<ChatGroup> chatGroups = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable(name = "USER_CHAT",
+            joinColumns = {@JoinColumn(name = "USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "CHAT_ID")})
+    public Set<Chat> chats = new HashSet<Chat>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     @JsonIgnore
@@ -99,7 +105,7 @@ public class UserInfo {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     @JsonIgnore
-    private Set<UserData> userDatas = new HashSet<>();
+    private Set<UserData> userData = new HashSet<>();
 
     public long getUser_id() {
         return user_id;
@@ -205,12 +211,13 @@ public class UserInfo {
         this.interests = interests;
     }
 
-    public Set<ChatGroup> getChatGroups() {
-        return chatGroups;
+    @JsonIgnore
+    public Set<Chat> getChat() {
+        return chats;
     }
 
-    public void setChatGroups(Set<ChatGroup> chatGroups) {
-        this.chatGroups = chatGroups;
+    public void setChatGroups(Set<Chat> chats) {
+        this.chats = chats;
     }
 
     public Set<Message> getMessages() {
@@ -229,11 +236,11 @@ public class UserInfo {
         this.photoLibs = photoLibs;
     }
 
-    public Set<UserData> getUserDatas() {
-        return userDatas;
+    public Set<UserData> getUserData() {
+        return userData;
     }
 
-    public void setUserDatas(Set<UserData> userDatas) {
-        this.userDatas = userDatas;
+    public void setUserData(Set<UserData> userDatas) {
+        this.userData = userDatas;
     }
 }

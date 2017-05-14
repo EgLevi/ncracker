@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -14,6 +15,11 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+
+
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 
 @Configuration
 @EnableWebMvc
@@ -61,6 +67,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         MappingJackson2HttpMessageConverter jacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
         jacksonHttpMessageConverter.setPrettyPrint(true);
         return jacksonHttpMessageConverter;
+    }
+
+    @Bean
+    public HashMap<Long, ConcurrentLinkedQueue<DeferredResult<String>>> getHashMap() {
+        return new HashMap<Long, ConcurrentLinkedQueue<DeferredResult<String>>>();
     }
 
 }

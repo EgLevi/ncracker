@@ -3,6 +3,8 @@ package ru.ncteam.levelchat.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
+import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.listener.ChatPublisher;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -79,9 +82,14 @@ public class ChatController {
 
     @RequestMapping(value = "/chats/{chatId}/chat", method = RequestMethod.POST)
     @ResponseBody
-    protected void doPost(@ModelAttribute Message message,
-                          @RequestParam Long dataId,
-                          @PathVariable Long chatId) {
+    protected void doPost(@RequestBody String request,
+                          @PathVariable Long chatId) throws JsonProcessingException, ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(request);
+        Long dataId = (Long) json.get("dataId");
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        Message message = gson.fromJson(gson.toJson(json.get("message")), Message.class);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         message.setChat(chatDAO.getEntityById(chatId));
         message.setUserInfo(userInfoDAO.getUserInfoByLogin(user.getUsername()));
@@ -91,14 +99,14 @@ public class ChatController {
         publisher.sendMessage(message);
     }
 
-    @RequestMapping(value = "/chats", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/chats", method = RequestMethod.GET)
     protected ModelAndView selectChat() {
         ModelAndView modelAndView = new ModelAndView();
         List<Chat> chats = chatDAO.getAllChatsByLogin();
         modelAndView.setViewName("selectChat");
         modelAndView.addObject("chats", chats);
         return modelAndView;
-    }
+    }*/
 
     @RequestMapping(value = "/chats/{idChat}", method = RequestMethod.GET)
     protected ModelAndView gotoChat(@PathVariable Long idChat) {
@@ -138,6 +146,15 @@ public class ChatController {
         String jsonInString = mapper.writeValueAsString(event);
         JSONParser parser = new JSONParser();
         JSONObject json = (JSONObject) parser.parse(jsonInString);
+        //теперь нам нужно достать из json userInfo, чтобы не отправлять клиенту лишней информации
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        UserInfo userInfo = gson.fromJson(gson.toJson(json.get("userInfo")), UserInfo.class);
+        userInfo.setPassword("");//не отправляем клиенту пароль
+        //теперь необходимо вставить userInfo обратно в json
+        jsonInString = mapper.writeValueAsString(userInfo);
+        json.put("userInfo", (JSONObject) parser.parse(jsonInString));
+
         json.put("username", event.getUserInfo().getLogin());
         if (event.getUserData() != null) {
             json.put("link", event.getUserData().getDataLink());

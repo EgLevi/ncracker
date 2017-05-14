@@ -1,36 +1,75 @@
 package ru.ncteam.levelchat.service;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.async.DeferredResult;
-import ru.ncteam.levelchat.utils.ApplicationUtil;
+import ru.ncteam.levelchat.dao.ChatDAO;
+import ru.ncteam.levelchat.entity.Chat;
+import ru.ncteam.levelchat.entity.UserInfo;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Service
+@Scope("singleton")
 public class ChatService {
 
     @Autowired
-    private SessionFactory sessionFactory;
+    ChatDAO chatDAO;
 
-    @Autowired
-    private ApplicationUtil util;
+    private static ConcurrentHashMap<Long, List<String>> map = new ConcurrentHashMap<Long,List<String>>();
 
-    @Bean
-    public HashMap<Long, ConcurrentLinkedQueue<DeferredResult<String>>> getResultMap(){
-        return new HashMap<>();
+    private long maxSizeMap;
+
+    public long getMaxSizeMap()
+    {
+        return maxSizeMap;
     }
 
-    @Transactional
-    public List getUserInfoByInterests() {
-        return null;
+    public void setMaxSizeMap(long size)
+    {
+        maxSizeMap = size;
     }
+
+    public ChatService()
+    {
+        maxSizeMap = -1;
+    }
+
+    public ChatService(long size)
+    {
+        //расширяемый
+        if (size>0)
+        {
+            maxSizeMap = size;
+        }
+        else
+        {
+            maxSizeMap=size;
+        }
+    }
+
+    private void getAllChatsGroupInformation()
+    {
+        List<Chat> chats = chatDAO.getAllWithUsers();
+        List<String> listLogin = new CopyOnWriteArrayList<String>();
+        for(Chat chat : chats)
+        {
+            for(UserInfo user : chat.getUsers())
+            {
+                listLogin.add(user.getLogin());
+            }
+            map.put(chat.getChatId(),listLogin);
+            listLogin.clear();
+        }
+    }
+
+    public void addUserInChat(Long chatId, String login)
+    {
+    }
+
+
+
 
 }

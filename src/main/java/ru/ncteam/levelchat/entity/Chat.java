@@ -1,5 +1,9 @@
 package ru.ncteam.levelchat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,11 +33,19 @@ public class Chat {
     @Column(name = "PERSONAL_CHAT")
     private boolean isPersonalChat;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
-    public Set<ChatGroup> chatGroups = new HashSet<ChatGroup>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
-    public Set<Message> messages = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable(name = "USER_CHAT",
+            joinColumns = {@JoinColumn(name = "CHAT_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
+    @JsonIgnoreProperties(allowSetters=true)
+    @JsonBackReference
+    public Set<UserInfo> users = new HashSet<UserInfo>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
+    @JsonIgnore
+    public Set<Message> messages = new HashSet<Message>();
 
     public long getChatId() {
         return chatId;
@@ -83,12 +95,13 @@ public class Chat {
         isPersonalChat = personalChat;
     }
 
-    public Set<ChatGroup> getChatGroups() {
-        return chatGroups;
+    @JsonIgnore
+    public Set<UserInfo> getUsers() {
+        return users;
     }
 
-    public void setChatGroups(Set<ChatGroup> chatGroups) {
-        this.chatGroups = chatGroups;
+    public void setUsers(Set<UserInfo> users) {
+        this.users = users;
     }
 
     public Set<Message> getMessages() {

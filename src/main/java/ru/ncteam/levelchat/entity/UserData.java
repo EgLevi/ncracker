@@ -1,5 +1,7 @@
 package ru.ncteam.levelchat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,10 +20,12 @@ public class UserData {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
+    @JsonIgnore
     private UserInfo userInfo;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userData")
-    private Set<Message> messages = new HashSet<>();
+    @JsonIgnore
+    private Set<Message> messages = new HashSet<Message>();
 
     public long getDataId() {
         return dataId;

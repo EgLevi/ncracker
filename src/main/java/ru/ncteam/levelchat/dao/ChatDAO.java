@@ -20,7 +20,19 @@ public class ChatDAO extends AbstractDAO<Chat, Long> {
     @Override
     @Transactional
     public List<Chat> getAll() {
-        return null;
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/allChat.hql"));
+        return query.list();
+    }
+
+    @Transactional
+    public List<Chat> getAllWithUsers() {
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/allChat.hql"));
+        List<Chat> chats = query.list();
+        for(Chat chat : chats)
+        {
+            chat.getUsers();
+        }
+        return chats;
     }
 
     @Override
@@ -55,5 +67,18 @@ public class ChatDAO extends AbstractDAO<Chat, Long> {
         Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/allUserChatsByLogin.hql"));
         query.setParameter("login", user.getUsername());
         return query.list();
+    }
+
+
+    @Transactional
+    public boolean addUserInChat(Long chatId, Long userId) {
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/addUserInChat_sql.hql"));
+        query.setParameter("userId", userId);
+        query.setParameter("chatId", chatId);
+        if(query.executeUpdate()>0)
+        {
+            return true;
+        }
+        return false;
     }
 }

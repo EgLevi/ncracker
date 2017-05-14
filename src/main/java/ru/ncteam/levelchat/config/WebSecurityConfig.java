@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	http
                 .authorizeRequests()
-                .antMatchers("/","/index*","/userpage*","/postregistration","/postregistrationPhoto","/search*").hasAnyRole("USER","ADMIN")
+                .antMatchers("/","/logout*","/index*","/userpage*","/chats*","/postregistration","/postregistrationPhoto","/search*").hasAnyRole("USER","ADMIN")
                 .antMatchers("/adminpage*").hasRole("ADMIN")
                 .and()
                 .formLogin()
@@ -38,14 +38,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")
                 .successHandler(getAuthenticationSuccessHandlerImpl())
                 .and()
-                .logout()
+                .logout().logoutSuccessUrl("/login?logout")
+                .logoutUrl("/logout")
+                .deleteCookies("CookieForRemember")
+                .deleteCookies("JSESSIONID")
                 .permitAll()
                 .and()
                 .rememberMe()
+                .rememberMeCookieName("CookieForRemember")
                 .tokenValiditySeconds(2419200)
                 .rememberMeParameter("remeber_me_parameter")
                 .and()
-                .csrf().ignoringAntMatchers("/","/index*","/userpage*","/postregistration","/postregistrationPhoto","/adminpage*","/adminpage/**");
+                .csrf().ignoringAntMatchers("/","/logout*","/index*","/userpage*","/registration*","/registration/**","/postregistration","/postregistrationPhoto","/adminpage*","/adminpage/**","/chats/**","/chats*");
     }
 
     @Autowired
@@ -55,8 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Bean
     public AuthenticationSuccessHandlerImpl getAuthenticationSuccessHandlerImpl() {
-    	AuthenticationSuccessHandlerImpl successHandler = new AuthenticationSuccessHandlerImpl(); 
-        return successHandler;
+        return new AuthenticationSuccessHandlerImpl();
     }
     
 }
