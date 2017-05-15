@@ -1,5 +1,10 @@
 package ru.ncteam.levelchat.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,21 +15,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.ncteam.levelchat.entity.CategoryInterest;
-import ru.ncteam.levelchat.entity.Interests;
-import ru.ncteam.levelchat.entity.UserInfo;
+import ru.ncteam.levelchat.entity.*;
 import ru.ncteam.levelchat.service.UserLogService;
-import ru.ncteam.levelchat.entity.Chat;
 import ru.ncteam.levelchat.dao.ChatDAO;
 import ru.ncteam.levelchat.dao.UserInfoDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 @Controller
@@ -40,7 +40,7 @@ public class UserpageController {
 	private UserLogService userLogService;
 
 	
-	@RequestMapping("/userpage")
+	@RequestMapping(value = {"/userpage","/"})
 	public String userPage(Map<String, Object> map) {
 		SecurityContextHolder.getContext().getAuthentication();
 		Authentication a;
@@ -156,6 +156,41 @@ public class UserpageController {
     		return str;
 		} 
 		catch (Exception e) 
+		{
+			return "fail";
+		}
+	}
+
+
+	@RequestMapping(value = "/userPhoto",method = RequestMethod.GET)
+	@ResponseBody
+	public String getUserPhoto() {
+		try
+		{
+			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			List<UserData> data = userInfoDAO.getUserData(user.getUsername());
+			Iterator<UserData> it = data.iterator();
+			UserData userData;
+			String link;
+			while(it.hasNext())
+			{
+				userData = it.next();
+				link = userData.getDataLink();
+				if(link.indexOf(".jpg")<0)
+				{
+					data.remove(userData);
+				}
+			}
+			List<String> listLink  = new CopyOnWriteArrayList<String>();
+			it = data.iterator();
+			while(it.hasNext())
+			{
+				listLink.add(it.next().getDataLink());
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.writeValueAsString(listLink);
+		}
+		catch (Exception e)
 		{
 			return "fail";
 		}

@@ -100,6 +100,7 @@ public class Chat {
         isPersonalChat = personalChat;
     }
 
+
     public void setUsers(Set<UserInfo> users) {
         this.users = users;
     }

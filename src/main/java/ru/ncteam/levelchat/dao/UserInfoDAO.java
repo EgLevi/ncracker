@@ -5,6 +5,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ncteam.levelchat.entity.UserData;
 import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
 import ru.ncteam.levelchat.entity.Chat;
@@ -59,6 +60,18 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
         Set<Chat> chats = userInfo.getChat();
         List<Chat> result = new CopyOnWriteArrayList<Chat>();
         result.addAll(chats);
+        return result;
+    }
+
+    @Transactional
+    public List<UserData> getUserData(String login) throws HibernateException
+    {
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/UserInfoByLogin.hql"));
+        query.setParameter("login", login);
+        UserInfo userInfo = (UserInfo) query.getSingleResult();
+        Set<UserData> data = userInfo.getUserData();
+        List<UserData> result = new CopyOnWriteArrayList<UserData>();
+        result.addAll(data);
         return result;
     }
 }

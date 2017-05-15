@@ -228,10 +228,12 @@
                 <hr>
 
                 <label>Возраст: ${userInfo.age}</label><br>
-                <label>Город: ${userInfo.city}</label><br>
                 <label>Пол: ${userInfo.sex}</label><br>
+                <label>Email: ${userInfo.email}</label><br>
+                <label>Страна: ${userInfo.country}</label><br>
+                <label>Город: ${userInfo.city}</label><br>
 
-                <hr>
+                <hr style="margin-bottom:0px;">
                 <button id="edituserinfoBtn" type="button" class="btn btn-link">Редактировать</button>
 
 
@@ -361,6 +363,15 @@
        </div>
    </div>
 
+        <div id="myPhotoPanel" class="col-md-8 col-sm-12 removableElement" style="display:none;">
+            <div class="panel panel-primary" style="background-color:#e5e8ed; width: 580px; height:483px;">
+                <div class="panel-heading" style="background-color:#e5e8ed">
+                    <h3 style="color:#000000">Мои Фото</h3>
+                </div>
+                <div id="myPhotoContent" class="panel-body table-responsive" style="height: 420px">
+                </div>
+            </div>
+        </div>
 
 </div>
 </div>
@@ -473,13 +484,35 @@
 
     function sendUserInfo()
     {
-        var formData = {"name":document.getElementsByName("name")[0].value,
-            "surname":document.getElementsByName("surname")[0].value,
-            "sex":document.getElementsByName("sex")[0].value,
-            "age":document.getElementsByName("age")[0].value,
-            "country":document.getElementsByName("country")[0].value,
-            "city":document.getElementsByName("city")[0].value,
-            "email":document.getElementsByName("email")[0].value};
+        var formData={};
+        if(document.getElementsByName("name")[0].value!="")
+        {
+            formData.name=document.getElementsByName("name")[0].value;
+        }
+        if(document.getElementsByName("surname")[0].value!="")
+        {
+            formData.surname=document.getElementsByName("surname")[0].value;
+        }
+        if(document.getElementsByName("sex")[0].value!="")
+        {
+            formData.sex=document.getElementsByName("sex")[0].value;
+        }
+        if(document.getElementsByName("country")[0].value!="")
+        {
+            formData.country=document.getElementsByName("country")[0].value;
+        }
+        if(document.getElementsByName("city")[0].value!="")
+        {
+            formData.city=document.getElementsByName("city")[0].value;
+        }
+        if(document.getElementsByName("age")[0].value!="")
+        {
+            formData.age=document.getElementsByName("age")[0].value;
+        }
+        if(document.getElementsByName("email")[0].value!="")
+        {
+            formData.email=document.getElementsByName("email")[0].value;
+        }
         $.ajax({
             type : 'POST',
             url : "edituserinfo", // url записан в параметре action формы
@@ -496,11 +529,46 @@
                 if(result == "")
                 {
                     var listLabel = userinfotable.getElementsByTagName("label");
-                    listLabel[0].innerHTML = "Возраст: " + document.getElementsByName("age")[0].value;
-                    listLabel[1].innerHTML = "Город: " + document.getElementsByName("city")[0].value;
-                    listLabel[2].innerHTML = "Пол: " + document.getElementsByName("sex")[0].value;
+                    if(document.getElementsByName("age")[0].value!="")
+                    {
+                        listLabel[0].innerHTML = "Возраст: " + document.getElementsByName("age")[0].value;
+                    }
+                    if(document.getElementsByName("sex")[0].value!="")
+                    {
+                        listLabel[1].innerHTML = "Пол: " + document.getElementsByName("sex")[0].value;
+                    }
+                    if(document.getElementsByName("email")[0].value!="")
+                    {
+                        listLabel[2].innerHTML = "Email: " + document.getElementsByName("email")[0].value;
+                    }
+                    if(document.getElementsByName("country")[0].value!="")
+                    {
+                        listLabel[1].innerHTML = "Страна: " + document.getElementsByName("country")[0].value;
+                    }
+                    if(document.getElementsByName("city")[0].value!="")
+                    {
+                        listLabel[1].innerHTML = "Город: " + document.getElementsByName("city")[0].value;
+                    }
                     var username = userinfotable.getElementsByTagName("h1");
-                    username[0].innerHTML = document.getElementsByName("name")[0].value + document.getElementsByName("surname")[0].value;
+                    var innerStr = username[0].innerHTML;
+                    var name = innerStr.substr(0,innerStr.indexOf(" "));
+                    var surname = innerStr.substr(innerStr.indexOf(" "),innerStr.length);
+                    if(document.getElementsByName("name")[0].value!= "")
+                    {
+                        username[0].innerHTML = document.getElementsByName("name")[0].value;
+                    }
+                    else
+                    {
+                        username[0].innerHTML=name;
+                    }
+                    if(document.getElementsByName("surname")[0].value!= "")
+                    {
+                        username[0].innerHTML = username[0].innerHTML +" " +document.getElementsByName("surname")[0].value;
+                    }
+                    else
+                    {
+                        username[0].innerHTML = username[0].innerHTML + " " + surname;
+                    }
                     resetErrorLabels();
                     closeEditUserInfoBtn.click();
                     return;
@@ -640,6 +708,20 @@
         dataId = -1;
     }
     sendMsg.addEventListener("click",clickOnSendMdgBtn);
+
+    function enterDown(event)
+    {
+        if(!event.shiftKey)
+        {
+            if(event.keyCode == 13)
+            {
+                sendMsg.click();
+                event.preventDefault();
+            }
+        }
+    }
+
+    document.addEventListener("keydown",enterDown);
 
     function fileUploaded()
     {
@@ -788,7 +870,43 @@
 
     menuMain.addEventListener("click",showMainPanels);
 
+    function getUserPhotos()
+    {
+        $.ajax({
+            url: "userPhoto",
+            type: "GET",
+            dataType: "json",
+            error: function(jqXHR, textStatus, errorThrown) {
+            },
+            success: function (data) {
+                var result;
+                try {
+                    result = JSON.parse(data);
+                } catch (e) {
+                    result = data;
+                }
+                for (i=0; i<result.length; i++)
+                {
+                    $('#myPhotoContent').append('<img src="'+result[i]+'" class="media-object" ' +
+                        'style="width:120px; height:80px; display: inline-block; margin-top: 10px; margin-left:10px;">');
+                }
+            }
+        });
+    }
 
+    function showMyPhotoPanel(event)
+    {
+        var remEl = $(".removableElement");
+        for(i=0;i<remEl.length;i++)
+        {
+            remEl[i].style.display = "none";
+        }
+        myPhotoPanel.style.display="";
+        getUserPhotos();
+        event.preventDefault();
+    }
+
+    menuPhoto.addEventListener("click",showMyPhotoPanel);
 
 
 

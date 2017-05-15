@@ -45,19 +45,13 @@ public class UserLogController {
 	public String login() {
 		return "login";
 	}
-	
-	@RequestMapping("/")
-	public String startPage() {
-		return "userpage";
-	}
-
 
 	@RequestMapping(value = "/adminpage",method = RequestMethod.GET)
 	public String adminPage(Map<String, Object> map) {
 		map.put("categoryInterestsList", userLogService.getAllCategory());
 		return "adminpage";
 	}
-
+	
 	@RequestMapping(value = "/adminpage",method = RequestMethod.POST)
 	@ResponseBody
 	public String putCategoryInterest(@RequestBody String categoryName) {
@@ -71,15 +65,15 @@ public class UserLogController {
 			return "fail";
 		}
 	}
-
-
+	
+	
 	@RequestMapping(value = "/adminpage/{categoryName}",method = RequestMethod.GET)
 	@ResponseBody
 	public List<Interests> getInterestsByName(@PathVariable String categoryName) {
-		List<Interests> listInterests = userLogService.getInterestsByCatName(categoryName);
+		List<Interests> listInterests = userLogService.getInterestsByCatName(categoryName); 
 		return listInterests;
 	}
-
+	
 	@RequestMapping(value = "/adminpage/update",method = RequestMethod.POST)
 	@ResponseBody
 	public String updateInterests(@RequestBody ArrayList<Interests> interests,
@@ -94,7 +88,7 @@ public class UserLogController {
 			return "fail";
 		}
 	}
-
+	
 	@RequestMapping(value = "/adminpage/put/{categoryName}",method = RequestMethod.POST)
 	@ResponseBody
 	public List<Long> putInterests(@PathVariable String categoryName,
@@ -109,7 +103,7 @@ public class UserLogController {
 			return null;
 		}
 	}
-
+	
 	@RequestMapping(value = "/adminpage/delete/{categoryName}",method = RequestMethod.DELETE)
 	@ResponseBody
 	public String deleteInterests(@PathVariable String categoryName,
@@ -125,7 +119,7 @@ public class UserLogController {
 			return "fail";
 		}
 	}
-
+	
 	@RequestMapping(value = "/adminpage/deleteCategory/{categoryName}",method = RequestMethod.DELETE)
 	@ResponseBody
 	public String deleteCategory(@PathVariable String categoryName) {
@@ -139,13 +133,13 @@ public class UserLogController {
 			return "fail";
 		}
 	}
-
-
+	
+	
 	@RequestMapping("/registration")
 	public String registrationPage() {
 		return "registration";
 	}
-
+	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public String addContact(@ModelAttribute("usersLog") @Valid UserInfo userInfo,
 			BindingResult result,
@@ -168,7 +162,7 @@ public class UserLogController {
 		if(userLogService.addUser(userInfo).equals("success"))
 		{
 			userLogService.autoLogin(userInfo.getLogin(), userPassword);
-			return "postregistration";
+			return "redirect:/userpage";
 		}
 		else
 		{
@@ -176,7 +170,7 @@ public class UserLogController {
 			return "registration";
 		}
 	}
-
+	
 	@RequestMapping(value = "/registration/check", method = RequestMethod.POST)
 	@ResponseBody
 	public String checkLogin(@RequestParam(value = "login", required=false) String login) {
@@ -186,12 +180,12 @@ public class UserLogController {
 		}
 		return "fail";
 	}
-
+	
 	@RequestMapping("/postregistration")
 	public String postRegistrationPage() {
 		return "postregistration";
 	}
-
+	
 	@RequestMapping("/postregistrationPhoto")
 	public String postRegistrationPhotoPage() {
 		return "postregistrationPhoto";

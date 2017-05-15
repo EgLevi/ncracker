@@ -2,8 +2,6 @@ package ru.ncteam.levelchat.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -40,7 +38,7 @@ public class UserInfo {
     @Column(name = "AGE")
     @Max(value=150, message="Возраст не может превышать 150 лет")
     @Min(value=0, message="Возраст не может быть меньше 1 года")
-    private int age;
+    private Integer age;
 
     @Size(max=30, message="Слишком большое(маленькое) название страны")
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
@@ -66,8 +64,8 @@ public class UserInfo {
     
 
     @Column(name = "EMAIL", length = 30)
-    @Size(max=30, message="Email должен быть от 6 до 30 символов")
-    @Pattern(regexp="[[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}]{0,1}", message="неправильный Email")
+    @Size(min=0, max=30, message="Email должен быть от 6 до 30 символов")
+    @Pattern(regexp="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}|^$", message="неправильный Email")
     private String email;
 
     @Column(name = "PHOTO_AVA")
@@ -138,7 +136,7 @@ public class UserInfo {
         this.sex = sex;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 

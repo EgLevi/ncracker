@@ -59,7 +59,7 @@ public class UserLogServiceImpl implements UserLogService {
     }
     
     public String updateUserInfo(UserInfo userInfo) {
-        return userLogDAO.updateUserInfo(userInfo, getQuery("hql/updateUserInfo.hql"));
+        return userLogDAO.updateUserInfo(userInfo);
     }
     
     public String uploadUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava) {
