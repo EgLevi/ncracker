@@ -42,6 +42,6 @@ public interface UserLogService {
 
     void putCategoryInterestByName(String categoryName) throws HibernateException;
 
-    public UserInfo getUserByLogin(String login) throws HibernateException;
+    UserInfo getUserByLogin(String login) throws HibernateException;
 
 }

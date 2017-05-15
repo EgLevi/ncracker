@@ -55,17 +55,6 @@ public class ChatController {
     @Autowired
     private UserDataDAO userDataDAO;
 
-    @RequestMapping(value = "/demoChat", method = RequestMethod.GET)
-    public ModelAndView demo() {
-        Message message = new Message();
-        ModelAndView modelAndView = new ModelAndView();
-        List<Message> messages = messageDAO.getAll();
-        modelAndView.addObject("messages", messages);
-        modelAndView.setViewName("demoChat");
-        return modelAndView;
-    }
-
-
     @RequestMapping(value = "/chats/{chatId}/chat", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     DeferredResult<String> chatGet(@PathVariable Long chatId) {
@@ -98,15 +87,6 @@ public class ChatController {
 
         publisher.sendMessage(message);
     }
-
-    /*@RequestMapping(value = "/chats", method = RequestMethod.GET)
-    protected ModelAndView selectChat() {
-        ModelAndView modelAndView = new ModelAndView();
-        List<Chat> chats = chatDAO.getAllChatsByLogin();
-        modelAndView.setViewName("selectChat");
-        modelAndView.addObject("chats", chats);
-        return modelAndView;
-    }*/
 
     @RequestMapping(value = "/chats/{idChat}", method = RequestMethod.GET)
     protected ModelAndView gotoChat(@PathVariable Long idChat) {
@@ -153,14 +133,14 @@ public class ChatController {
         userInfo.setPassword("");//не отправляем клиенту пароль
         //теперь необходимо вставить userInfo обратно в json
         jsonInString = mapper.writeValueAsString(userInfo);
-        json.put("userInfo", (JSONObject) parser.parse(jsonInString));
+        json.put("userInfo", parser.parse(jsonInString));
 
         json.put("username", event.getUserInfo().getLogin());
         if (event.getUserData() != null) {
             json.put("link", event.getUserData().getDataLink());
         }
 
-            messageDAO.create(event);
+        messageDAO.create(event);
         ConcurrentLinkedQueue<DeferredResult<String>> results = deferredResultMap.get(event.getChat().getChatId());
         for (DeferredResult<String> result : results) {
             result.setResult(json.toString());

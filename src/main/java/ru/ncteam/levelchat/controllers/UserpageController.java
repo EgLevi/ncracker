@@ -1,13 +1,8 @@
 package ru.ncteam.levelchat.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -15,23 +10,23 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.ncteam.levelchat.entity.*;
-import ru.ncteam.levelchat.service.UserLogService;
 import ru.ncteam.levelchat.dao.ChatDAO;
 import ru.ncteam.levelchat.dao.UserInfoDAO;
+import ru.ncteam.levelchat.entity.*;
+import ru.ncteam.levelchat.service.UserLogService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 @Controller
 public class UserpageController {
-
-    @Autowired
-    private ChatDAO chatDAO;
 
     @Autowired
     private UserInfoDAO userInfoDAO;
@@ -64,15 +59,13 @@ public class UserpageController {
     @RequestMapping(value = "/search/getCategories", method = RequestMethod.GET)
     @ResponseBody
     public List<CategoryInterest> getCategories() {
-        List<CategoryInterest> listCategories = userLogService.getAllCategory();
-        return listCategories;
+        return userLogService.getAllCategory();
     }
 
     @RequestMapping(value = "/search/getInterests/{categoryName}", method = RequestMethod.GET)
     @ResponseBody
     public List<Interests> getInterestsByNameForSearch(@PathVariable String categoryName) {
-        List<Interests> listInterests = userLogService.getInterestsByCatName(categoryName);
-        return listInterests;
+        return userLogService.getInterestsByCatName(categoryName);
     }
 
 
@@ -92,16 +85,16 @@ public class UserpageController {
     @ResponseBody
     public Map<String, Object> updateUserInfo(@RequestBody @Valid UserInfo userInfo,
                                               BindingResult result) {
-        Map<String, Object> map = new ConcurrentHashMap<String, Object>();
+        Map<String, Object> map = new ConcurrentHashMap<>();
         if (result.hasErrors()) {
             String code;
             List<FieldError> listErrors = result.getFieldErrors();
-            for (int i = 0; i < listErrors.size(); i++) {
-                code = listErrors.get(i).getCode();
+            for (FieldError listError : listErrors) {
+                code = listError.getCode();
                 if (!code.equals("typeMismatch")) {
-                    map.put(listErrors.get(i).getField() + "Error", listErrors.get(i).getDefaultMessage());
+                    map.put(listError.getField() + "Error", listError.getDefaultMessage());
                 } else {
-                    map.put(listErrors.get(i).getField() + "Error", "Недопустимое значение");
+                    map.put(listError.getField() + "Error", "Недопустимое значение");
                 }
             }
             return map;
@@ -128,8 +121,7 @@ public class UserpageController {
                 User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 UserInfo userInfo = new UserInfo();
                 userInfo.setLogin(user.getUsername());
-                String str = userLogService.uploadUserInfoPhoto(userInfo, photo_ava);
-                return str;
+                return userLogService.uploadUserInfoPhoto(userInfo, photo_ava);
             } catch (Exception e) {
                 return "fail";
             }
@@ -145,8 +137,7 @@ public class UserpageController {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             UserInfo userInfo = new UserInfo();
             userInfo.setLogin(user.getUsername());
-            String str = userLogService.updateUserInfoPhoto(userInfo, relativePath);
-            return str;
+            return userLogService.updateUserInfoPhoto(userInfo, relativePath);
         } catch (Exception e) {
             return "fail";
         }
@@ -165,11 +156,11 @@ public class UserpageController {
             while (it.hasNext()) {
                 userData = it.next();
                 link = userData.getDataLink();
-                if (link.indexOf(".jpg") < 0) {
+                if (!link.contains(".jpg")) {
                     data.remove(userData);
                 }
             }
-            List<String> listLink = new CopyOnWriteArrayList<String>();
+            List<String> listLink = new CopyOnWriteArrayList<>();
             it = data.iterator();
             while (it.hasNext()) {
                 listLink.add(it.next().getDataLink());

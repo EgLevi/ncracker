@@ -1,5 +1,6 @@
 package ru.ncteam.levelchat.service;
 
+import javassist.ClassClassPath;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -10,24 +11,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import javassist.ClassClassPath;
-import javassist.ClassPath;
 import ru.ncteam.levelchat.dao.UserLogDAO;
 import ru.ncteam.levelchat.entity.CategoryInterest;
 import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -35,44 +26,43 @@ import java.util.List;
 @Service
 public class UserLogServiceImpl implements UserLogService {
 
-	@Autowired
-	private ApplicationContext appContext;
-	
-	@Autowired
+    @Autowired
+    private ApplicationContext appContext;
+
+    @Autowired
     private UserLogDAO userLogDAO;
-	
-	@Autowired
+
+    @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public void setUserLogDAO(UserLogDAO userLogDAO) {
         this.userLogDAO = userLogDAO;
     }
-    
-    
-    public boolean checkLogin(String login)
-    {
-    	return userLogDAO.existUser(login,getQuery("hql/UserInfoByLogin.hql"));
+
+
+    public boolean checkLogin(String login) {
+        return userLogDAO.existUser(login, getQuery("hql/UserInfoByLogin.hql"));
     }
 
     public String addUser(UserInfo userInfo) {
-        return userLogDAO.addUser(userInfo,getQuery("hql/UserInfoByLogin.hql"));
+        return userLogDAO.addUser(userInfo, getQuery("hql/UserInfoByLogin.hql"));
     }
-    
+
     public String updateUserInfo(UserInfo userInfo) {
         return userLogDAO.updateUserInfo(userInfo);
     }
-    
+
     public String uploadUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava) {
-    	
-    	StringBuffer fileName = new StringBuffer();
+
+        StringBuffer fileName = new StringBuffer();
         StringBuffer dirFile = new StringBuffer();
         StringBuffer relativeDir = new StringBuffer();
 
         if (!photo_ava.isEmpty()) {
             try {
-            	ClassClassPath cp = new ClassClassPath(this.getClass());
+                ClassClassPath cp = new ClassClassPath(this.getClass());
                 String projectDir = cp.find(this.getClass().getName()).getPath();
-                projectDir = projectDir.substring(0,projectDir.indexOf("WEB-INF"));
+                projectDir = projectDir.substring(0, projectDir.indexOf("WEB-INF"));
                 fileName.append(getMD5File(photo_ava));//add filename in var
                 fileName.append(getFileExtension(photo_ava));
 
@@ -81,12 +71,12 @@ public class UserLogServiceImpl implements UserLogService {
                 relativeDir.append(fileName.substring(0, 2));
                 relativeDir.append(File.separator);
                 relativeDir.append(fileName.substring(2, 4));
-                
+
                 dirFile.append(projectDir);
-                
+
                 dirFile.append(relativeDir);
                 fileName.delete(0, 4);
-                
+
                 //save photo in file system
                 File dir = new File(dirFile.toString());
                 if (!dir.exists()) {
@@ -107,120 +97,100 @@ public class UserLogServiceImpl implements UserLogService {
         } else {
             return "failed to upload " + photo_ava.getName() + " because the file was empty.";
         }
-    	
+
     }
 
 
-    public String updateUserInfoPhoto(UserInfo userInfo, String filename)
-    {
-    	userInfo.setPhoto_ava(filename);
-    	if(!userLogDAO.updateUserInfoPhoto(userInfo, getQuery("hql/updateUserInfoPhoto.hql")).equals("success"))
-    	{
-    		return "success";
-    	}
+    public String updateUserInfoPhoto(UserInfo userInfo, String filename) {
+        userInfo.setPhoto_ava(filename);
+        if (!userLogDAO.updateUserInfoPhoto(userInfo, getQuery("hql/updateUserInfoPhoto.hql")).equals("success")) {
+            return "success";
+        }
         return "fail";
     }
-    
+
     public void autoLogin(String username, String password) {
         UserDetails userDetails = userLogDAO.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-        
+
         if (authenticationToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
-        
-        try{
-        	authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        }
-        catch(Exception e)
-        {
-        	e.getMessage();
+
+        try {
+            authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        } catch (Exception e) {
+            e.getMessage();
         }
     }
-    
-    public List<CategoryInterest> getAllCategory()
-    {
-    	return userLogDAO.getAllCategory(getQuery("hql/allCategory.hql"));
-    }
-    
-    public List<Interests> getInterestsByCatId(long categoryId)
-    {
-    	return userLogDAO.getInterestsByCatId(categoryId,getQuery("hql/getInterestsByCatId.hql"));
-    }
-    
-    public List<Interests> getInterestsByCatName(String categoryName)
-    {
-    	
-    	return userLogDAO.getInterestsByCatName(categoryName, getQuery("hql/getInterestByCatName.hql"));
-    }
-    
-    public void putInterestsByCatId(long categoryId, List<Interests> interests) throws HibernateException
-    {
-    	userLogDAO.putInterestsByCatId(categoryId,interests,getQuery("hql/putInterestsByCatId.hql"));
-    }
-    
-    public List<Long> putInterests(List<Interests> interests, String categoryName) throws HibernateException
-    {
-    	return userLogDAO.putInterests(interests, categoryName, getQuery("hql/CategoryInterestByName.hql"));
-    }
-    
-    public void deleteInterests(List<Interests> interests,String categoryName) throws HibernateException
-    {
-    	userLogDAO.deleteInterests(interests,categoryName,getQuery("hql/CategoryInterestByName.hql"));
-    }
-    
-    public void deleteCategory(String categoryName) throws HibernateException
-    {
-    	userLogDAO.deleteCategory(categoryName, getQuery("hql/CategoryInterestByName.hql"));
-    }
-    
-    public void updateInterests(List<Interests> interests) throws HibernateException
-    {
-    	userLogDAO.updateInterests(interests,getQuery("hql/updateInterests.hql"));
-    }
-    
-    public void putCategoryInterestByName(String categoryName)  throws HibernateException
-    {
-    	userLogDAO.putCategoryInterestByName(categoryName);
+
+    public List<CategoryInterest> getAllCategory() {
+        return userLogDAO.getAllCategory(getQuery("hql/allCategory.hql"));
     }
 
-    public UserInfo getUserByLogin(String login) throws HibernateException
-    {
-        return userLogDAO.getUserByLogin(login,getQuery("hql/UserInfoByLogin.hql"));
+    public List<Interests> getInterestsByCatId(long categoryId) {
+        return userLogDAO.getInterestsByCatId(categoryId, getQuery("hql/getInterestsByCatId.hql"));
     }
 
-    
-    private String getQuery(String filename)
-    {
-    	try 
-    	{
-        	Resource res = appContext.getResource("classpath:"+filename);
-    		InputStream is = res.getInputStream();
-    		File file  = res.getFile();
-    		byte[] fileContent = ByteBuffer.allocate((int)file.length()).array();
-    		long actualLength = is.read(fileContent, 0, fileContent.length);
-            return new String(fileContent,0,(int)actualLength);
-		} 
-    	catch (IOException e) 
-    	{
-    		e.getMessage();
-		}
-    	catch(Exception ne)
-    	{
+    public List<Interests> getInterestsByCatName(String categoryName) {
+
+        return userLogDAO.getInterestsByCatName(categoryName, getQuery("hql/getInterestByCatName.hql"));
+    }
+
+    public void putInterestsByCatId(long categoryId, List<Interests> interests) throws HibernateException {
+        userLogDAO.putInterestsByCatId(categoryId, interests, getQuery("hql/putInterestsByCatId.hql"));
+    }
+
+    public List<Long> putInterests(List<Interests> interests, String categoryName) throws HibernateException {
+        return userLogDAO.putInterests(interests, categoryName, getQuery("hql/CategoryInterestByName.hql"));
+    }
+
+    public void deleteInterests(List<Interests> interests, String categoryName) throws HibernateException {
+        userLogDAO.deleteInterests(interests, categoryName, getQuery("hql/CategoryInterestByName.hql"));
+    }
+
+    public void deleteCategory(String categoryName) throws HibernateException {
+        userLogDAO.deleteCategory(categoryName, getQuery("hql/CategoryInterestByName.hql"));
+    }
+
+    public void updateInterests(List<Interests> interests) throws HibernateException {
+        userLogDAO.updateInterests(interests, getQuery("hql/updateInterests.hql"));
+    }
+
+    public void putCategoryInterestByName(String categoryName) throws HibernateException {
+        userLogDAO.putCategoryInterestByName(categoryName);
+    }
+
+    public UserInfo getUserByLogin(String login) throws HibernateException {
+        return userLogDAO.getUserByLogin(login, getQuery("hql/UserInfoByLogin.hql"));
+    }
+
+
+    private String getQuery(String filename) {
+        try {
+            Resource res = appContext.getResource("classpath:" + filename);
+            InputStream is = res.getInputStream();
+            File file = res.getFile();
+            byte[] fileContent = ByteBuffer.allocate((int) file.length()).array();
+            long actualLength = is.read(fileContent, 0, fileContent.length);
+            return new String(fileContent, 0, (int) actualLength);
+        } catch (IOException e) {
+            e.getMessage();
+        } catch (Exception ne) {
             ne.getMessage();
-    	}
-    	return null;
+        }
+        return null;
     }
-    
-    
+
+
     private static String getFileExtension(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
             return fileName.substring(fileName.lastIndexOf("."));
         else return "";
     }
-    
+
     private String getMD5File(MultipartFile file) {
         byte[] digest = new byte[0];
         try {
@@ -243,6 +213,6 @@ public class UserLogServiceImpl implements UserLogService {
         }
         return md5Hex;
     }
-    
-    
+
+
 }

@@ -27,8 +27,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ComponentScan("ru.ncteam.levelchat")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
-	
-	@Bean
+
+    @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/views/");
@@ -38,10 +38,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    /**
-     * Supports FileUploads.
-     * @return 
-     */
     @Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
@@ -66,17 +62,17 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    
+
     @Bean
     public MappingJackson2HttpMessageConverter jacksonHttpMessageConverter() {
-    	MappingJackson2HttpMessageConverter jacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-    	jacksonHttpMessageConverter.setPrettyPrint(true);
+        MappingJackson2HttpMessageConverter jacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
+        jacksonHttpMessageConverter.setPrettyPrint(true);
         return jacksonHttpMessageConverter;
     }
 
     @Bean
     public HashMap<Long, ConcurrentLinkedQueue<DeferredResult<String>>> getHashMap() {
-        return new HashMap<Long, ConcurrentLinkedQueue<DeferredResult<String>>>();
+        return new HashMap<>();
     }
-    
+
 }

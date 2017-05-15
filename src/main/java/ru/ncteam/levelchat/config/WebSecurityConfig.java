@@ -16,18 +16,18 @@ import ru.ncteam.levelchat.dao.UserLogDAO;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
+
+    @Autowired
     private UserLogDAO userLogDAOImpl;
-	
-	@Autowired
+
+    @Autowired
     private PasswordEncoder bcryptEncoder;
-	
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http
+        http
                 .authorizeRequests()
-                .antMatchers("/","/logout*","/index*","/userpage*","/chats*","/postregistration","/postregistrationPhoto","/search*").hasAnyRole("USER","ADMIN")
+                .antMatchers("/", "/logout*", "/index*", "/userpage*", "/chats*", "/postregistration", "/postregistrationPhoto", "/search*").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/adminpage*").hasRole("ADMIN")
                 .and()
                 .formLogin()
@@ -49,17 +49,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenValiditySeconds(2419200)
                 .rememberMeParameter("remeber_me_parameter")
                 .and()
-                .csrf().ignoringAntMatchers("/","/logout*","/index*","/userpage*","/registration*","/registration/**","/postregistration","/postregistrationPhoto","/adminpage*","/adminpage/**","/chats/**","/chats*");
+                .csrf().ignoringAntMatchers("/", "/logout*", "/index*", "/userpage*", "/registration*", "/registration/**", "/postregistration", "/postregistrationPhoto", "/adminpage*", "/adminpage/**", "/chats/**", "/chats*");
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    	auth.userDetailsService((UserDetailsService)userLogDAOImpl).passwordEncoder(bcryptEncoder);
+        auth.userDetailsService((UserDetailsService) userLogDAOImpl).passwordEncoder(bcryptEncoder);
     }
-    
+
     @Bean
     public AuthenticationSuccessHandlerImpl getAuthenticationSuccessHandlerImpl() {
         return new AuthenticationSuccessHandlerImpl();
     }
-    
+
 }
