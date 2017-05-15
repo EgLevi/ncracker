@@ -115,7 +115,7 @@ public class ChatController {
         for (Chat chat : chats) {
             if (chat.getChatId() == idChat) {
                 List<Message> messages = messageDAO.allMessagesByChatId(idChat);
-                modelAndView.setViewName("demoChat");
+                modelAndView.setViewName("chat");
                 modelAndView.addObject("messages", messages);
                 modelAndView.addObject("chatId", idChat);
                 return modelAndView;

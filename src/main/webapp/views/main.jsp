@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login</title>
+    <title>Title</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
@@ -27,6 +27,20 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li><a href="#">Home</a></li>
+                <li class="active"><a href="#">Messages</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group input-group">
+                    <input type="text" class="form-control" placeholder="Search..">
+                    <span class="input-group-btn">
+            <button class="btn btn-default" type="button">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+          </span>
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
             </ul>
         </div>
     </div>
@@ -34,10 +48,12 @@
 
 <div class="container text-center">
     <div class="row">
+        <div class="col-sm-3 well">
+            #LeftColumn
+        </div>
 
-        <div class="col-sm-6 col-sm-offset-3">
-            <div class="panel well"
-            <jsp:include page="modules/loginModule.jsp"/>
+        <div class="col-sm-9">
+            #Content
         </div>
 
 

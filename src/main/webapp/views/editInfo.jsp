@@ -37,7 +37,7 @@
 
         <div class="col-sm-6 col-sm-offset-3">
             <div class="panel well"
-            <jsp:include page="modules/loginModule.jsp"/>
+            <jsp:include page="modules/editInfoModule.jsp"/>
         </div>
 
 
