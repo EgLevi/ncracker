@@ -14,19 +14,16 @@ public class Message {
     private long messageId;
 
     @Column(name = "TWXT_MSG", length = 4000)
-    private String message;
+    private String textMessage;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "CHAT_ID")
     private Chat chat;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private UserInfo userInfo;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "DATA_ID")
     private UserData userData;
@@ -39,12 +36,12 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public String getMessage() {
-        return message;
+    public String getTextMessage() {
+        return textMessage;
     }
 
-    public void setMessage(String textMessage) {
-        this.message = textMessage;
+    public void setTextMessage(String textMessage) {
+        this.textMessage = textMessage;
     }
 
     public Chat getChat() {
