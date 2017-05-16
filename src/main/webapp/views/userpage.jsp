@@ -683,7 +683,7 @@
                                                     '<img src="'+result.userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
                                                 '</div>'+
                                                 '<div class="media-body">'+
-                                                    '<h3 class="media-heading" style="font-weight: 600;">'+result.username+'</h3>'+
+                                                    '<h3 class="media-heading" style="font-weight: 600;">'+result.userInfo.name+'</h3>'+
                                                     '<p>'+result.textMessage+'</p>'+
                                                 '</div>'+
                                                 '<div class="media-left">'+
@@ -702,11 +702,13 @@
                         '<img src="'+result.userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
                         '</div>'+
                         '<div class="media-body">'+
-                        '<h3 class="media-heading" style="font-weight: 600;">'+result.username+'</h3>'+
+                        '<h3 class="media-heading" style="font-weight: 600;">'+result.userInfo.name+'</h3>'+
                         '<p>'+result.textMessage+'</p>'+
                         '</div>'+
                         '</div>');
                 }
+                var cH = document.getElementById("chatHistory"+chatId);
+                cH.scrollTop = cH.scrollHeight;
                 getData();
             }
         });
@@ -730,8 +732,13 @@
                 } catch (e) {
                     result = data;
                 }
+                var msg="";
                 for(i=0;i<result.length;i++)
                 {
+                    if(result[i].textMessage != null)
+                    {
+                        msg = result[i].textMessage;
+                    }
                     if (result[i].userData != null) {
                         $('#chatHistory'+result[i].chat.chatId).append('<div class="media">'+
                             '<div class="media-left">'+
@@ -739,7 +746,7 @@
                             '</div>'+
                             '<div class="media-body">'+
                             '<h3 class="media-heading" style="font-weight: 600;">'+result[i].userInfo.name+'</h3>'+
-                            '<p>'+result[i].textMessage+'</p>'+
+                            '<p>'+msg+'</p>'+
                             '</div>'+
                             '<div class="media-left">'+
                             '<span class="btn"><img class="hrefImg" src = "resources/images/prikreplen.png" alt = "Logo" height = "40" align = "top"></span>'+
@@ -757,11 +764,12 @@
                             '<img src="'+result[i].userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
                             '</div>'+
                             '<div class="media-body">'+
-                            '<h3 class="media-heading" style="font-weight: 600;">'+result[i].username+'</h3>'+
-                            '<p>'+result[i].textMessage+'</p>'+
+                            '<h3 class="media-heading" style="font-weight: 600;">'+result[i].userInfo.name+'</h3>'+
+                            '<p>'+msg+'</p>'+
                             '</div>'+
                             '</div>');
                     }
+                    msg="";
                 }
 
             }
@@ -903,6 +911,7 @@
         }
         var cH = document.getElementById("chatHistory"+chatId);
         cH.style.display = "";
+        cH.scrollTop = cH.scrollHeight;
         getData();
     }
 
