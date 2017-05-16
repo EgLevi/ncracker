@@ -84,6 +84,9 @@
 <div class="container-fluid">
     <div class="row">
 
+        <button id="showPhotoBtn" type="button" data-toggle="modal" data-target="#showPhoto" style="display:none"></button>
+        <img id="forDefResolution" src="" style="display: none;">
+
 
         <div class="col-md-2 col-sm-12">
 
@@ -219,6 +222,22 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="showPhoto" role="dialog" style="position:absolute; top:30px;">
+            <div class="modal-dialog my-modal-dialog" style="width:900px; margin:auto">
+                <div class="panel panel-primary" style="background-color:#e5e8ed; width:900px; height:500px;">
+                    <div class="panel-heading" style="background-color:#e5e8ed">
+                        <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
+                        <button id="closeModalPhoto" type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="panel-body" style="position:relative;">
+                        <img id="currentPhoto" src="" style="position:absolute;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="userinfotable" class="col-md-6 col-sm-12 removableElement" style="">
 
 
@@ -245,9 +264,10 @@
     <div id="chatPanel" class="col-md-8 col-sm-12 removableElement" style="display:none;">
         <div class="panel panel-default">
             <div class="panel-heading">Header (что-нибудь о чате)</div>
-            <div id="chatHistory" class="panel-body table-responsive" style="height: 300px;">
-
-            </div>
+            <c:forEach items="${chats}" var="chat">
+                <div id="chatHistory${chat.chatId}" class="panel-body table-responsive" style="height: 300px; display:none;">
+                </div>
+            </c:forEach>
             <div class="panel-footer" style="position:relative; height: 120px;">
                 <div style="position:absolute; top:23px;">
                         <textarea id="message" name="message" class="form-control" rows="3" style="resize: none; width: 500px;"></textarea>
@@ -368,7 +388,9 @@
                 <div class="panel-heading" style="background-color:#e5e8ed">
                     <h3 style="color:#000000">Мои Фото</h3>
                 </div>
-                <div id="myPhotoContent" class="panel-body table-responsive" style="height: 420px">
+                <div class="panel-body table-responsive" style="height: 420px">
+                    <div id="myPhotoContent" class="table-responsive" style="height: 380px">
+                    </div>
                 </div>
             </div>
         </div>
@@ -656,7 +678,7 @@
                     result = data;
                 }
                 if (result.link != null) {
-                    $('#chatHistory').append('<div class="media">'+
+                    $('#chatHistory'+chatId).append('<div class="media">'+
                                                 '<div class="media-left">'+
                                                     '<img src="'+result.userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
                                                 '</div>'+
@@ -675,7 +697,7 @@
                 }
                 else
                 {
-                    $('#chatHistory').append('<div class="media">'+
+                    $('#chatHistory'+chatId).append('<div class="media">'+
                         '<div class="media-left">'+
                         '<img src="'+result.userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
                         '</div>'+
@@ -689,6 +711,64 @@
             }
         });
     }
+
+    function getAllUserMessages()
+    {
+
+        $.ajax({
+            url: "allMessages",
+            type: "GET",
+            dataType: "json",
+            context: document.body,
+            error: function () {
+                getData();
+            },
+            success: function (data) {
+                var result;
+                try {
+                    result = JSON.parse(data);
+                } catch (e) {
+                    result = data;
+                }
+                for(i=0;i<result.length;i++)
+                {
+                    if (result[i].userData != null) {
+                        $('#chatHistory'+result[i].chat.chatId).append('<div class="media">'+
+                            '<div class="media-left">'+
+                            '<img src="'+result[i].userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
+                            '</div>'+
+                            '<div class="media-body">'+
+                            '<h3 class="media-heading" style="font-weight: 600;">'+result[i].userInfo.name+'</h3>'+
+                            '<p>'+result[i].textMessage+'</p>'+
+                            '</div>'+
+                            '<div class="media-left">'+
+                            '<span class="btn"><img class="hrefImg" src = "resources/images/prikreplen.png" alt = "Logo" height = "40" align = "top"></span>'+
+                            '<a href="' + result[i].userData.dataLink + '" download style="display:none;"></a>'+
+                            '</div>'+
+                            '</div>');
+                        var imgs = document.getElementsByClassName("hrefImg");
+                        var lastAddElement = imgs[imgs.length-1];
+                        lastAddElement.addEventListener("click",clickOnImg);
+                    }
+                    else
+                    {
+                        $('#chatHistory'+result[i].chat.chatId).append('<div class="media">'+
+                            '<div class="media-left">'+
+                            '<img src="'+result[i].userInfo.photo_ava+'" class="media-object" style="width:60px; height:60px;">'+
+                            '</div>'+
+                            '<div class="media-body">'+
+                            '<h3 class="media-heading" style="font-weight: 600;">'+result[i].username+'</h3>'+
+                            '<p>'+result[i].textMessage+'</p>'+
+                            '</div>'+
+                            '</div>');
+                    }
+                }
+
+            }
+        });
+    }
+
+    getAllUserMessages();
 
     function clickOnSendMdgBtn()
     {
@@ -816,6 +896,13 @@
             remEl[i].style.display = "none";
         }
         chatPanel.style.display = "";
+        var chats = chatPanel.getElementsByClassName("panel-body");
+        for(i=0;i<chats.length;i++)
+        {
+            chats[i].style.display = "none";
+        }
+        var cH = document.getElementById("chatHistory"+chatId);
+        cH.style.display = "";
         getData();
     }
 
@@ -870,6 +957,34 @@
 
     menuMain.addEventListener("click",showMainPanels);
 
+    function clickOnPhoto(e)
+    {
+        var img = this.getElementsByTagName("img")[0];
+        currentPhoto.src=img.src;
+        currentPhoto.onload = function()
+        {
+            var scale;
+            if((currentPhoto.naturalWidth<850)&&(currentPhoto.naturalHeight<400))
+            {
+                scale=1;
+            }
+            else if(currentPhoto.naturalWidth/850>currentPhoto.naturalHeight/400)
+            {
+                scale=850/currentPhoto.naturalWidth;
+            }
+            else
+            {
+                scale=400/currentPhoto.naturalHeight;
+            }
+            var width = currentPhoto.naturalWidth*scale;
+            var height = currentPhoto.naturalHeight*scale;
+            currentPhoto.style.left = ((width*(1-1/scale) + 900 - width)/2)+"px";
+            currentPhoto.style.top = ((height*(1 - 1/scale) + 430 - height)/2)+"px";
+            currentPhoto.style.transform="scale("+scale+")";
+            showPhotoBtn.click();
+        }
+    }
+
     function getUserPhotos()
     {
         $.ajax({
@@ -887,8 +1002,14 @@
                 }
                 for (i=0; i<result.length; i++)
                 {
-                    $('#myPhotoContent').append('<img src="'+result[i]+'" class="media-object" ' +
-                        'style="width:120px; height:80px; display: inline-block; margin-top: 10px; margin-left:10px;">');
+                    $('#myPhotoContent').append('<span class="button photoBtn" style="padding-right: 0px;padding-left: 0px;"><img class="hrefImg media-object" src = "'+result[i]+'"' +
+                        ' style="width:120px; height:80px; display: inline-block; margin-top: 10px; margin-left:10px;">' +
+                        '</span>');
+                    var spans = myPhotoContent.getElementsByTagName("span");
+                    var lastAddElement = spans[spans.length-1];
+                    lastAddElement.addEventListener("click",clickOnPhoto);
+                    /*$('#myPhotoContent').append('<img src="'+result[i]+'" class="media-object" ' +
+                        'style="width:120px; height:80px; display: inline-block; margin-top: 10px; margin-left:10px;">');*/
                 }
             }
         });

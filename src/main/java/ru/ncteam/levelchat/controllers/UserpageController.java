@@ -15,10 +15,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import ru.ncteam.levelchat.entity.*;
 import ru.ncteam.levelchat.service.UserLogService;
 import ru.ncteam.levelchat.dao.ChatDAO;
 import ru.ncteam.levelchat.dao.UserInfoDAO;
+import ru.ncteam.levelchat.dao.MessageDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -32,6 +34,9 @@ public class UserpageController {
 
 	@Autowired
 	private ChatDAO chatDAO;
+
+	@Autowired
+	private MessageDAO messageDAO;
 
 	@Autowired
 	private UserInfoDAO userInfoDAO;
@@ -55,6 +60,16 @@ public class UserpageController {
 		map.put("chats", chats);
 		return "userpage";
 	}
+
+
+	@RequestMapping(value = "/allMessages",method = RequestMethod.GET)
+	@ResponseBody
+	public List<Message> getAllUserMessages() {
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Message> messages = userInfoDAO.getUserMessages(user.getUsername());
+		return messages;
+	}
+
 	 
 
 
