@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "MESSAGES")
-public class Message {
+@Table(name = "MESSAGE")
+public class Message implements Comparable<Message> {
     @Id
     @Column(name = "MESSAGE_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
@@ -69,5 +69,15 @@ public class Message {
     public Message setUserData(UserData userData) {
         this.userData = userData;
         return this;
+    }
+
+    @Override
+    public int compareTo(Message msg) {
+        return (int)(this.messageId-msg.getMessageId());
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }
