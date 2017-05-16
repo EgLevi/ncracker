@@ -134,3 +134,42 @@
 @media screen and (max-width: 450px) {
   h1 { font-size: 2.1em; }
 }
+
+footer {
+  background-color: #555;
+  color: white;
+  padding: 15px;
+}
+
+span.badge {
+  float: right;
+}
+
+.chat-in {
+  margin: 10pt;
+}
+
+#send-file {
+
+  font-size: 14pt;
+  vertical-align: middle;
+}
+
+#send-msg-span {
+  font-size: 14pt;
+}
+
+.container-overflow {
+  display: block;
+  overflow: auto;
+  height: 400pt;
+
+}
+
+div.message {
+  white-space: pre-wrap;
+}
+
+div.send-msg {
+  margin: 10pt 5pt 5pt 5pt;
+}

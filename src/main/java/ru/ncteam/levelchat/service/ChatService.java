@@ -16,60 +16,43 @@ import java.util.List;
 public class ChatService {
 
     @Autowired
-    ChatDAO chatDAO;
+    private ChatDAO chatDAO;
 
-    private static ConcurrentHashMap<Long, List<String>> map = new ConcurrentHashMap<Long,List<String>>();
+    private static ConcurrentHashMap<Long, List<String>> map = new ConcurrentHashMap<>();
 
     private long maxSizeMap;
 
-    public long getMaxSizeMap()
-    {
+    public long getMaxSizeMap() {
         return maxSizeMap;
     }
 
-    public void setMaxSizeMap(long size)
-    {
+    public void setMaxSizeMap(long size) {
         maxSizeMap = size;
     }
 
-    public ChatService()
-    {
+    public ChatService() {
         maxSizeMap = -1;
     }
 
-    public ChatService(long size)
-    {
+    public ChatService(long size) {
         //расширяемый
-        if (size>0)
-        {
-            maxSizeMap = size;
-        }
-        else
-        {
-            maxSizeMap=size;
-        }
+        if (size > 0) maxSizeMap = size;
+        else maxSizeMap = size;
     }
 
-    private void getAllChatsGroupInformation()
-    {
+    private void getAllChatsGroupInformation() {
         List<Chat> chats = chatDAO.getAllWithUsers();
-        List<String> listLogin = new CopyOnWriteArrayList<String>();
-        for(Chat chat : chats)
-        {
-            for(UserInfo user : chat.getUsers())
-            {
+        List<String> listLogin = new CopyOnWriteArrayList<>();
+        for (Chat chat : chats) {
+            for (UserInfo user : chat.getUsers()) {
                 listLogin.add(user.getLogin());
             }
-            map.put(chat.getChatId(),listLogin);
+            map.put(chat.getChatId(), listLogin);
             listLogin.clear();
         }
     }
 
-    public void addUserInChat(Long chatId, String login)
-    {
+    public void addUserInChat(Long chatId, String login) {
     }
-
-
-
 
 }

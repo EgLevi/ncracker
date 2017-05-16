@@ -13,10 +13,6 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.Properties;
 
 @Configuration
@@ -30,7 +26,7 @@ public class HibernateConfig {
     @Autowired
     private Environment hibernateProps;
 
-    //Дальше не трогай - убъёт
+    //Дальше не трогай - убъёт.
 
     @Bean
     public DataSource dataSource() {
@@ -52,7 +48,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean getSessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"ru.ncteam.levelchat"});
+        sessionFactory.setPackagesToScan("ru.ncteam.levelchat");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
@@ -79,10 +75,7 @@ public class HibernateConfig {
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
         properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-        //properties.put("hibernate.query.startup_check", "false");
         properties.put("javax.persistence.validation.mode", "none");
-        //properties.put("hibernate.validator.autoregister_listeners", "false");
-        //properties.put("hibernate.validator.apply_to_ddl", "false");
         return properties;
     }
 }

@@ -6,12 +6,12 @@
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<script src="resources/js/jquery-1.4.2.min.js" type="text/javascript" ></script>
+	<script src="../resources/js/jquery-1.4.2.min.js" type="text/javascript" ></script>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-         <link rel="stylesheet" type="text/css" href="resources/css/affablebean.css">
-         <link rel="stylesheet" type="text/css" href="resources/css/bootstrap_min.css">
-         <link rel="stylesheet" type="text/css" href="resources/css/LCstyle.css">  
+         <link rel="stylesheet" type="text/css" href="../resources/css/affablebean.css">
+         <link rel="stylesheet" type="text/css" href="../resources/css/bootstrap.min.css">
+         <link rel="stylesheet" type="text/css" href="../resources/css/LCstyle.css">
     </head>
     <body style="background-attachment:fixed" topmargin="10">
         <div class="navbar navbar-default"> <!-- navbar-default navbar-static-top-->
@@ -25,7 +25,7 @@
                                         <span class="icon-bar"></span>
                                     </button>
                                     <a class="navbar-brand" href="http://localhost:8081/ru.ncteam.levelchat/index.html">
-                                      <img src="resources/images/logo4.png" alt="Logo" height="40" align="top">
+                                      <img src="../resources/images/logo4.png" alt="Logo" height="40" align="top">
                                     </a>
                                 </div>
                                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -43,12 +43,12 @@
             <div class="row col-md-12" style="width:430px; margin:auto;">
                 <div class="panel panel-primary" style="background-color:#e5e8ed">
                   <div class="panel-heading" style="background-color:#e5e8ed">
-                    <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
+                    <img src="../resources/images/logo4.png" alt="Logo" height='40' align='top'>
                   </div>
                   <div class="panel-body">
                   <div class="photo-wrapper" style="margin: 0 auto;">
                         <h1 class="logo">
-                             <img id="avatar" src="resources/images/logo4.png">
+                             <img id="avatar" src="../resources/images/logo4.png">
                         </h1>
                    </div>
                     <form method="get" action="userpage" enctype="multipart/form-data">
@@ -116,7 +116,7 @@
 		    $('form').submit(function() {
 		    	if(relativePath.indexOf("none")>-1)
 		    	{
-					window.location = "/ru.ncteam.levelchat/userpage";
+					window.location = "/userpage";
 					return false; // отменяем отправку формы, т.е. перезагрузку страницы
 		    	}
 		    	$.ajax({

@@ -2,8 +2,6 @@ package ru.ncteam.levelchat.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -24,13 +22,13 @@ public class UserInfo {
     private long user_id;
 
     @Column(name = "NAME", length = 30)
-    @Size(min=0, max=30, message="Имя должно быть от 1 до 20 символов")
+    @Size(max=30, message="Имя должно быть от 1 до 20 символов")
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     private String name;
 
 
     @Column(name = "SURNAME", length = 30)
-    @Size(min=0, max=30, message="Фамилия должна быть от 1 до 20 символов")
+    @Size(max=30, message="Фамилия должна быть от 1 до 20 символов")
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     private String surname;
 
@@ -42,24 +40,24 @@ public class UserInfo {
     @Min(value=0, message="Возраст не может быть меньше 1 года")
     private Integer age;
 
-    @Size(min=0, max=30, message="Слишком большое(маленькое) название страны")
+    @Size(max=30, message="Слишком большое(маленькое) название страны")
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "COUNTRY", length = 30)
     private String country;
 
-    @Size(min=0, max=30, message="Слишком большое(маленькое) название города")
+    @Size(max=30, message="Слишком большое(маленькое) название города")
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     @Column(name = "CITY", length = 30)
     private String city;
 
 
     @Column(name = "LOGIN", length = 30, unique = true)
-    @Size(min=1, max=30, message="Логин должен быть от 1 до 20 символов")
+    @Size(message="Логин должен быть от 1 до 20 символов")
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String login;
 
 
-    @Column(name = "PASSWORD", length = 60)
+    @Column(name = "PASSWORD")
     @Size(min=6, max=30, message="Пароль должен быть от 6 до 30 символов")
     @Pattern(regexp="[a-zA-Z0-9[-_*]]+", message="Допустимые символы: буквы, цифры, _, -, *")
     private String password;
@@ -78,14 +76,14 @@ public class UserInfo {
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
     @JsonIgnore
-    private Set<Role> roles = new HashSet<Role>();
+    private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(name = "USER_INTEREST",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "INTEREST_ID")})
     @JsonIgnore
-    private Set<Interests> interests = new HashSet<Interests>();
+    private Set<Interests> interests = new HashSet<>();
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -96,15 +94,15 @@ public class UserInfo {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     @JsonIgnore
-    public Set<Message> messages = new HashSet<Message>();
+    private Set<Message> messages = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     @JsonIgnore
-    public Set<PhotoLib> photoLibs = new HashSet<PhotoLib>();
+    private Set<PhotoLib> photoLibs = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     @JsonIgnore
-    public Set<UserData> userData = new HashSet<UserData>();
+    private Set<UserData> userData = new HashSet<>();
 
     public long getUser_id() {
         return user_id;

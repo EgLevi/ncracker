@@ -1,9 +1,11 @@
 package ru.ncteam.levelchat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "MESSAGE")
+@Table(name = "MESSAGES")
 public class Message {
     @Id
     @Column(name = "MESSAGE_ID")
@@ -11,20 +13,19 @@ public class Message {
     @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long messageId;
 
-
-	@Column(name = "TEXT_MSG", length = 4000)
+    @Column(name = "TWXT_MSG", length = 4000)
     private String textMessage;
 
     @ManyToOne
-    @JoinColumn(name = "CHAT_ID", nullable = false)
+    @JoinColumn(name = "CHAT_ID")
     private Chat chat;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(name = "USER_ID")
     private UserInfo userInfo;
 
     @ManyToOne
-    @JoinColumn(name = "DATA_ID", nullable = true)
+    @JoinColumn(name = "DATA_ID")
     private UserData userData;
 
     public long getMessageId() {
@@ -47,23 +48,26 @@ public class Message {
         return chat;
     }
 
-    public void setChat(Chat chat) {
+    public Message setChat(Chat chat) {
         this.chat = chat;
+        return this;
     }
 
     public UserInfo getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
+    public Message setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+        return this;
     }
 
     public UserData getUserData() {
         return userData;
     }
 
-    public void setUserData(UserData userData) {
+    public Message setUserData(UserData userData) {
         this.userData = userData;
+        return this;
     }
 }

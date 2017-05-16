@@ -47,6 +47,11 @@ public class Chat {
     @JsonIgnore
     public Set<Message> messages = new HashSet<Message>();
 
+    @JsonIgnore
+    public Set<UserInfo> getUsers() {
+        return users;
+    }
+
     public long getChatId() {
         return chatId;
     }
@@ -95,10 +100,6 @@ public class Chat {
         isPersonalChat = personalChat;
     }
 
-    @JsonIgnore
-    public Set<UserInfo> getUsers() {
-        return users;
-    }
 
     public void setUsers(Set<UserInfo> users) {
         this.users = users;

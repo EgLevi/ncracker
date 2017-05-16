@@ -10,29 +10,21 @@ public class PhotoLib {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
     @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
-    private long id;
+    private long photoId;
 
-    @Column(name = "PHOTO")
-    private Blob photo;
+    @Column(name = "PHOTO_REF")
+    private String photoRef;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private UserInfo userInfo;
 
-    public long getId() {
-        return id;
+    public long getPhotoId() {
+        return photoId;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Blob getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Blob photo) {
-        this.photo = photo;
+    public void setPhotoId(long id) {
+        this.photoId = id;
     }
 
     public UserInfo getUserInfo() {
@@ -41,5 +33,13 @@ public class PhotoLib {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public String getPhotoRef() {
+        return photoRef;
+    }
+
+    public void setPhotoRef(String photoRef) {
+        this.photoRef = photoRef;
     }
 }
