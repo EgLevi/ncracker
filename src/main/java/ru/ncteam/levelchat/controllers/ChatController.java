@@ -165,11 +165,12 @@ public class ChatController {
             json.put("link", event.getUserData().getDataLink());
         }
 
-            messageDAO.create(event);
+
         ConcurrentLinkedQueue<DeferredResult<String>> results = deferredResultMap.get(event.getChat().getChatId());
         for (DeferredResult<String> result : results) {
             result.setResult(json.toString());
             results.poll();
         }
+        messageDAO.create(event);
     }
 }
