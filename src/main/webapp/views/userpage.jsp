@@ -28,9 +28,14 @@
             </button>
             <a class="navbar-brand" href="#">Logo</a>
         </div>
+        <form action="/logout" id="logout" method="post">
+            <!--<input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}" />-->
+        </form>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
+                <li><a href="#" onclick="document.getElementById('logout').submit();">Выйти</a></li>
+                <li><a href="/">Главная</a></li>
                 <li><a href="/messages">Messages</a></li>
             </ul>
             <form class="navbar-form navbar-right" role="search">
@@ -49,6 +54,12 @@
         </div>
     </div>
 </nav>
+
+
+
+
+
+
 
 <button id="showPhotoBtn" type="button" data-toggle="modal" data-target="#showPhoto" style="display:none"></button>
 
