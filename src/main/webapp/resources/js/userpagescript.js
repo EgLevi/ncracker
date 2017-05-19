@@ -413,7 +413,22 @@ function fileUploaded()
     });
 }
 
+function fileClick(e)
+{
+    e.stopPropagation();
+}
+
+file.addEventListener("click",fileClick);
+
 file.addEventListener("change",fileUploaded);
+
+function clickOnfileBtn(e)
+{
+    file.click();
+    e.preventDefault();
+}
+
+fileBtn.addEventListener("click",clickOnfileBtn);
 
 /*$("#file").change(function (event) {
  var file = $('#file').val();

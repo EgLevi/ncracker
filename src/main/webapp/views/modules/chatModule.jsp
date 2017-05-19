@@ -20,13 +20,15 @@
                 </div>
                 <div class="col-sm-3">
                     <form id="fileForm" method="post" enctype="multipart/form-data">
-                        <div class="col-sm-3 btn">
-                            <div class="inputFile" style="height:48px;">
+                        <div class="col-sm-3 btn" style="width:65px; padding-top: 0px;">
+                            <div class="inputFile" style="">
                                 <label style="margin-bottom: 0px;">
-                                    <span class="btn fileinput-button glyphicon glyphicon-paperclip" style="border-left-width: 0px; padding-left: 0px; padding-right: 0px; border-right-width: 0px;">
-                                        <input id="file" name="file" type="file" multiple="">
-                                    </span>
-                                    <div id="progressConteiner" class="progress" style="width:40px; height: 7px;">
+                                    <button id="fileBtn" class="btn btn-default" style="height: 34px; width:43px; position:relative;">
+		                                <span class="btn fileinput-button glyphicon glyphicon-paperclip" style="border-left-width: 0px; padding: 0px; border-right-width: 0px; position:absolute;left:14px; transform:scale(1.3); top:4px;">
+	                                        <input id="file" name="file" type="file" multiple="">
+	                                    </span>
+                                    </button>
+                                    <div id="progressConteiner" class="progress" style="width:40px; height: 7px; margin-bottom: 0px; margin-top: 5px;">
                                         <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
                                     </div>
                                     <div id="successLoad" style="width:13px;margin:auto; display:none"><span class="glyphicon glyphicon-ok" style="color:#00FF00;"></span></div>
