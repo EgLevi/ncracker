@@ -1,16 +1,33 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<div id="chatPanel" class="row removableElement" style="display: none;">
+<div id="chatPanel" class="row removableElement">
     <div class="col-sm-12">
         <div class="panel panel-default text-left">
-            <c:forEach items="${chats}" var="chat">
-                <div id="chatHistory${chat.chatId}" class="panel-body container-overflow">
-                    <div class="row">
-                        <ul class="chat-in list-group">
-                        </ul>
-                    </div>
+            <div id="chatHistory" class="panel-body container-overflow">
+                <div class="row">
+                    <ul class="chat-in list-group">
+                        <c:forEach items="${messages}" var="message">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <img src="/${message.userInfo.photo_ava}" class="media-object img-rounded" style="width:60px; height:60px;">
+                                    </div>
+                                    <div class="media-body">
+                                        <h3 class="media-heading" style="font-weight: 600;">${message.userInfo.login}</h3>
+                                        <p>${message.textMessage}</p>
+                                    </div>
+                                    <c:if test="${message.userData.dataLink != null}">
+                                        <div class="media-left">
+                                            <a href="${message.userData.dataLink}" download class="btn btn-link"><span
+                                                    class="glyphicon glyphicon-paperclip"></span> Скачать</a>
+                                        </div>
+                                    </c:if>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
                 </div>
-            </c:forEach>
+            </div>
             <div class="row send-msg">
                 <div class="col-sm-9 center-block">
                     <div>

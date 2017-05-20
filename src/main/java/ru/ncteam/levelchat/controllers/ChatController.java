@@ -30,6 +30,7 @@ import ru.ncteam.levelchat.utils.ApplicationUtil;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Controller
@@ -89,20 +90,25 @@ public class ChatController {
     }
 
     @RequestMapping(value = "/chats/{idChat}", method = RequestMethod.GET)
-    protected ModelAndView gotoChat(@PathVariable Long idChat) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<Chat> chats = chatDAO.getAllChatsByLogin();
+    protected String gotoChat(@PathVariable Long idChat,
+                                    Map<String, Object> map) {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
         for (Chat chat : chats) {
             if (chat.getChatId() == idChat) {
-                List<Message> messages = messageDAO.allMessagesByChatId(idChat);
-                modelAndView.setViewName("chat");
-                modelAndView.addObject("messages", messages);
-                modelAndView.addObject("chatId", idChat);
-                return modelAndView;
+                List<Message> messages = messageDAO.allMessagesByChatIdWithInfo(idChat);
+                map.put("messages", messages);
+                map.put("chatId", idChat);
+                UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
+                if(userInfo.getPhoto_ava()==null)
+                {
+                    userInfo.setPhoto_ava("photo/ava.png");
+                }
+                map.put("userInfo", userInfo);
+                return "messages";
             }
         }
-        modelAndView.setViewName("redirect:/chats");
-        return modelAndView;
+        return "redirect:/chats";
     }
 
     @RequestMapping(value = "/chats/upload", method = RequestMethod.POST)

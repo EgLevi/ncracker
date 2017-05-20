@@ -7,7 +7,7 @@
                 <button id="closeModal" type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="panel-body">
-                <div class="photo-wrapper" style="margin: 0 auto;">
+                <div class="photo-wrapper" style="width:150px; margin: 0 auto;">
                     <h1 class="logo">
                         <img id="avatar" src="${userInfo.photo_ava}" class="img-circle" height="140" width="140" alt="Avatar">
                     </h1>

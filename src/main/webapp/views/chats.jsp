@@ -12,16 +12,20 @@
     <link rel="stylesheet" href="../resources/css/userpagestyles.css">
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/bootstrap.min.js"></script>
-    <script src="../resources/js/csrfscript.js"></script>
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
+    <script src="../resources/js/csrfscript.js"></script>
     <script src="../resources/js/globalscript.js"></script>
     <script src="../resources/js/searchModulescript.js"></script>
     <script src="../resources/js/modalUserPhoto.js"></script>
+    <script src="../resources/js/chats.js"></script>
+
+
 </head>
 <body>
 
 <jsp:include page="modules/navbarModule.jsp"/>
 
+<jsp:include page="modules/modalPhotoModule.jsp"/>
 
 <div class="container text-center">
     <div class="row">
@@ -30,13 +34,9 @@
         </div>
 
         <div class="col-sm-9">
-            <jsp:include page="modules/searchModule.jsp"/>
+            <jsp:include page="modules/chatsModule.jsp"/>
         </div>
 
-
-        <jsp:include page="modules/modalPhotoModule.jsp"/>
-
-        <jsp:include page="modules/modalSearchModule.jsp"/>
 
 
     </div>

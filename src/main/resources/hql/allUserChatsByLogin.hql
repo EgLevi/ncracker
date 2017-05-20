@@ -1,1 +1,1 @@
-select c from Chat c join c.chatGroups cg where cg.user.login = :login
+from Chat where user.login = :login

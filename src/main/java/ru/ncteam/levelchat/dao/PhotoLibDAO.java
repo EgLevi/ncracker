@@ -5,6 +5,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ncteam.levelchat.entity.PhotoLib;
 import ru.ncteam.levelchat.entity.UserData;
 import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
@@ -13,26 +14,24 @@ import java.util.List;
 
 
 @Service
-public class UserDataDAO extends AbstractDAO<UserData, Long> {
+public class PhotoLibDAO extends AbstractDAO<PhotoLib, Long> {
     @Autowired
     private ApplicationUtil util;
 
     @Override
-    public List<UserData> getAll() {
+    public List<PhotoLib> getAll() {
         return null;
     }
 
     @Override
-    public UserData update(UserData entity) {
+    public PhotoLib update(PhotoLib entity) {
         return null;
     }
 
     @Override
     @Transactional
-    public UserData getEntityById(Long id) {
-        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/userDataById.hql"));
-        query.setParameter("dataId", id);
-        return (UserData) query.getSingleResult();
+    public PhotoLib getEntityById(Long id) {
+        return null;
     }
 
     @Override
@@ -41,34 +40,41 @@ public class UserDataDAO extends AbstractDAO<UserData, Long> {
     }
 
     @Override
-    public boolean create(UserData entity) {
+    public boolean create(PhotoLib entity) {
         sessionFactory.getCurrentSession();
         return false;
     }
 
     @Transactional
-    public Long create(String link, UserInfo userInfo) {
+    public String create(String link, UserInfo userInfo) {
         Long index = indexOf(link,userInfo);
         if(index == null)
         {
-            UserData userData = new UserData();
-            userData.setUserInfo(userInfo);
-            userData.setDataLink(link);
-            Session s = sessionFactory.getCurrentSession();
-            return (Long) s.save(userData);
+            try
+            {
+                PhotoLib photoLib = new PhotoLib();
+                photoLib.setUserInfo(userInfo);
+                photoLib.setPhotoRef(link);
+                Session s = sessionFactory.getCurrentSession();
+                return "success";
+            }
+            catch(Exception e)
+            {
+                e=e;
+            }
         }
-        return index;
+        return "photo already exist";
     }
 
     @Transactional
     public Long indexOf(String link,UserInfo userInfo) {
-        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/getUserData.hql"));
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/getUserPhotoLib.hql"));
         query.setParameter("login", userInfo.getLogin());
         query.setParameter("link", link);
-        UserData userData = (UserData)query.uniqueResult();
-        if(userData != null)
+        PhotoLib photoLib = (PhotoLib)query.uniqueResult();
+        if(photoLib != null)
         {
-            return userData.getDataId();
+            return photoLib.getPhotoId();
         }
         return null;
     }
