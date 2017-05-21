@@ -13,7 +13,7 @@
                                         <img src="/${message.userInfo.photo_ava}" class="media-object img-rounded" style="width:60px; height:60px;">
                                     </div>
                                     <div class="media-body">
-                                        <h3 class="media-heading" style="font-weight: 600;">${message.userInfo.login}</h3>
+                                        <h5 class="media-heading" style="font-weight: 600;">${message.userInfo.login}</h5>
                                         <p>${message.textMessage}</p>
                                     </div>
                                     <c:if test="${message.userData.dataLink != null}">

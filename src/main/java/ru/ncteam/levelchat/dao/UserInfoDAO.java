@@ -11,6 +11,8 @@ import ru.ncteam.levelchat.utils.ApplicationUtil;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import java.util.List;
 @Service
@@ -51,15 +53,26 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
     }
 
     @Transactional
+    public UserInfo getUserInfoByLoginWithInfo(String login) throws HibernateException {
+        UserInfo userInfo = getUserInfoByLogin(login);
+        userInfo.setUserChat(userInfo.getUserChat());
+        return userInfo;
+    }
+
+    @Transactional
     public List<Chat> getUserChats(String login) throws HibernateException
     {
         Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/UserInfoByLogin.hql"));
         query.setParameter("login", login);
         UserInfo userInfo = (UserInfo) query.getSingleResult();
-        Set<Chat> chats = userInfo.getChat();
-        List<Chat> result = new CopyOnWriteArrayList<Chat>();
-        result.addAll(chats);
-        return result;
+        Set<UserChat> userChat = userInfo.getUserChat();
+        List<Chat> chats  = new CopyOnWriteArrayList<Chat>();;
+        Iterator<UserChat> it = userChat.iterator();
+        while(it.hasNext())
+        {
+            chats.add(it.next().getChat());
+        }
+        return chats;
     }
 
     @Transactional
@@ -68,7 +81,13 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
         Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/UserInfoByLogin.hql"));
         query.setParameter("login", login);
         UserInfo userInfo = (UserInfo) query.getSingleResult();
-        Set<Chat> chats = userInfo.getChat();
+        Set<UserChat> userChat = userInfo.getUserChat();
+        List<Chat> chats  = new CopyOnWriteArrayList<Chat>();
+        Iterator<UserChat> itUC = userChat.iterator();
+        while(itUC.hasNext())
+        {
+            chats.add(itUC.next().getChat());
+        }
         List<Message> messages = new CopyOnWriteArrayList<Message>();
         List<Message> buf = new CopyOnWriteArrayList<Message>();
         Iterator<Chat> it = chats.iterator();
@@ -116,5 +135,21 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
         List<PhotoLib> result = new CopyOnWriteArrayList<PhotoLib>();
         result.addAll(photos);
         return result;
+    }
+
+    @Transactional
+    public Map<Long,Boolean> getMapReadUnread(String login) throws HibernateException
+    {
+        Map<Long, Boolean> map = new ConcurrentHashMap<>();
+        UserInfo userInfo = getUserInfoByLogin(login);
+        Set<UserChat> userChats = userInfo.getUserChat();
+        Iterator<UserChat> itUC = userChats.iterator();
+        UserChat userChat;
+        while(itUC.hasNext())
+        {
+            userChat = itUC.next();
+            map.put(userChat.getChat().getChatId(),userChat.isUnreadable());
+        }
+        return map;
     }
 }

@@ -16,7 +16,7 @@
     <script src="../resources/js/globalscript.js"></script>
     <script src="../resources/js/messagescript.js"></script>
 </head>
-<body>
+<body style="padding-right: 0px;">
 
 <jsp:include page="modules/navbarModule.jsp"/>
 

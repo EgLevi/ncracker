@@ -57,6 +57,39 @@ $(document).ready(function () {
         });
     }
 
+    function scrollChatToBottom(e)
+    {
+        if(this.scrollTop == (this.scrollHeight-this.clientHeight))//если прокручен до конца
+        {
+            $.ajax({
+                url: "" + chatId + "/read",
+                type: "GET",
+                error: function () {
+                },
+                success: function (data) {
+                }
+            });
+        }
+    }
+
+    function mouseOnMessages(e)
+    {
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = '17px';
+    }
+
+    function mouseOutMessages(e)
+    {
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0px';
+    }
+
+    document.getElementById("chatHistory").addEventListener("scroll",scrollChatToBottom);
+
+    document.getElementById("chatHistory").addEventListener("mouseover",mouseOnMessages);
+
+    document.getElementById("chatHistory").addEventListener("mouseout",mouseOutMessages);
+
     getData();
 
     function clickOnSendMsgBtn()

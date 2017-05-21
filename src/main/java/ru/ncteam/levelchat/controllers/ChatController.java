@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import ru.ncteam.levelchat.dao.ChatDAO;
-import ru.ncteam.levelchat.dao.MessageDAO;
-import ru.ncteam.levelchat.dao.UserDataDAO;
-import ru.ncteam.levelchat.dao.UserInfoDAO;
+import ru.ncteam.levelchat.dao.*;
 import ru.ncteam.levelchat.entity.Chat;
 import ru.ncteam.levelchat.entity.Message;
 import ru.ncteam.levelchat.entity.UserInfo;
@@ -56,6 +53,9 @@ public class ChatController {
     @Autowired
     private UserDataDAO userDataDAO;
 
+    @Autowired
+    private UserChatDAO userChatDAO;
+
     @RequestMapping(value = "/chats/{chatId}/chat", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     DeferredResult<String> chatGet(@PathVariable Long chatId) {
@@ -70,6 +70,15 @@ public class ChatController {
 
     }
 
+    @RequestMapping(value = "/chats/{chatId}/read", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String setRead(@PathVariable Long chatId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userChatDAO.setReadableForUser(user.getUsername(),chatId, false);
+        return "success";
+
+    }
+
     @RequestMapping(value = "/chats/{chatId}/chat", method = RequestMethod.POST)
     @ResponseBody
     protected void doPost(@RequestBody String request,
@@ -81,6 +90,7 @@ public class ChatController {
         Gson gson = builder.create();
         Message message = gson.fromJson(gson.toJson(json.get("message")), Message.class);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userChatDAO.setReadable(chatId, true);
         message.setChat(chatDAO.getEntityById(chatId));
         message.setUserInfo(userInfoDAO.getUserInfoByLogin(user.getUsername()));
         if (dataId != -1)
@@ -138,6 +148,10 @@ public class ChatController {
         UserInfo userInfo = gson.fromJson(gson.toJson(json.get("userInfo")), UserInfo.class);
         userInfo.setPassword("");//не отправляем клиенту пароль
         //теперь необходимо вставить userInfo обратно в json
+        if(userInfo.getPhoto_ava()==null)
+        {
+            userInfo.setPhoto_ava("photo/ava.png");
+        }
         jsonInString = mapper.writeValueAsString(userInfo);
         json.put("userInfo", parser.parse(jsonInString));
 

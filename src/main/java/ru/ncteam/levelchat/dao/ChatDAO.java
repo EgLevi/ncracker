@@ -24,7 +24,7 @@ public class ChatDAO extends AbstractDAO<Chat, Long> {
         return query.list();
     }
 
-    @Transactional
+    /*@Transactional
     public List<Chat> getAllWithUsers() {
         Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/allChat.hql"));
         List<Chat> chats = query.list();
@@ -33,7 +33,7 @@ public class ChatDAO extends AbstractDAO<Chat, Long> {
             chat.getUsers();
         }
         return chats;
-    }
+    }*/
 
     @Override
     @Transactional

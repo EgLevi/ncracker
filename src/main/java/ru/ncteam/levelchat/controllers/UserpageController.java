@@ -100,6 +100,8 @@ public class UserpageController {
 		}
 		map.put("chats", chats);
 		map.put("userInfo", userInfo);
+		Map<Long,Boolean> mapReadUnread = userInfoDAO.getMapReadUnread(user.getUsername());
+		map.put("mapReadUnread", mapReadUnread);
 		return "chats";
 	}
 
