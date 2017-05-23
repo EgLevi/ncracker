@@ -173,3 +173,8 @@ div.message {
 div.send-msg {
   margin: 10pt 5pt 5pt 5pt;
 }
+
+.edit-ava-button{
+  background-color:#e5e8ed;
+  margin-top:10px;
+}

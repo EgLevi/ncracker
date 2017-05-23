@@ -33,9 +33,10 @@
         </div>
 
         <div class="col-sm-9">
-            <jsp:include page="modules/searchButtonModule.jsp"/>
+
             <jsp:include page="modules/aboutModule.jsp"/>
-            #dashboard
+            <jsp:include page="modules/searchButtonModule.jsp"/>
+
         </div>
 
 
