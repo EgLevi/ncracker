@@ -51,6 +51,30 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 	}
 	
 	@Transactional
+	 public long getUSER_ID(String username)
+	 {
+		 long id;
+		 List<UserInfo> list = new ArrayList<UserInfo>();
+		 try
+		 {
+			 list = sessionFactory.getCurrentSession().createQuery("from UserInfo where login = '"+username+"'").list();	      
+		 }
+		 catch(Exception e)
+		 {
+			 System.out.println(e.getMessage());
+		 }
+		 if (list.size() != 1)
+		 {
+			 return -1;
+		 }
+		 else
+		 {
+			 id = list.get(0).getUser_id();
+			 return id;
+		 }		
+	 }
+	
+	@Transactional
 	public List<Interests> getListInterests(CategoryInterest name)
 	{
 		List<Interests> l = new ArrayList<Interests>();
@@ -273,11 +297,76 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             List<Interests> listInterests = query.getResultList();
             return listInterests;
         } catch (HibernateException e) {
-        	return null;
+        	return null;           
+        }
+    }
+    
+    @Transactional
+    public long getCategoryIDByCatName(String categoryName,String queryString)
+    {
+    	try {
+            Query query=sessionFactory.getCurrentSession().createQuery("from CategoryInterest where categoryName=:categoryName");
+            query.setParameter("categoryName", categoryName);
+            List<CategoryInterest> response = query.list();   
+            return response.get(0).getCategoryId();
+        } catch (HibernateException e) {
+        	return -1;
            
         }
     }
-      
+    
+    
+    @Transactional
+    public UserInfo getUser(long userId)
+    {
+    	Query query = sessionFactory.getCurrentSession().createQuery("from UserInfo WHERE user_id=:ParamID");
+        query.setParameter("ParamID", userId);
+        List<UserInfo> response = query.list();
+		UserInfo userInfo = response.get(0);        
+    	return userInfo;
+    }
+    
+    @Transactional
+    public List<String> getUsersInterests(long userId, long categoryId)
+    {
+    	List<String> listInterests = new ArrayList<String>();    
+        Set<Interests> interests = new HashSet<Interests>();
+		UserInfo userInfo = getUser(userId);
+		interests = userInfo.getInterests();
+		for(Interests inter:interests){
+			if(inter.getCategoryInterest().getCategoryId() == categoryId)
+			{
+				listInterests.add(inter.getInterestName());
+			}
+		}	        
+    	return listInterests;
+    }
+    
+    @Transactional
+    public Set<Interests> getInterestsByInteresName(List<String> interestsName)
+    {
+    	Set<Interests> interestsList = new HashSet<Interests>();
+    	for(String name:interestsName){
+    		Query query = sessionFactory.getCurrentSession().createQuery("from Interests where interestName=:Param");
+    		query.setParameter("Param", name);
+    		List<Interests> list = query.list();
+    		interestsList.add(list.get(0));
+    	}    	
+    	return interestsList;
+    }
+    
+    @Transactional
+    public void putInterestsUser(long UserID, Set<Interests> interests)
+    {
+    	 UserInfo userinfo = getUser(UserID);
+    	 Set<Interests> NewSet = new HashSet<Interests>();
+    	 for(Interests curr:interests){
+ 			System.out.println(curr.getInterestId());
+ 			NewSet.add(curr);
+ 		}    	 
+    	 userinfo.setInterests(interests);
+    }
+    
     @Transactional
     public List<Interests> getInterestsByCatName(String categoryName,String queryString)
     {
@@ -287,8 +376,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             List<Interests> listInterests = query.getResultList();
             return listInterests;
         } catch (HibernateException e) {
-        	return null;
-           
+        	return null;           
         }
     }
       

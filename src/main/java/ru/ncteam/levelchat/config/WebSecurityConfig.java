@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenValiditySeconds(2419200)
                 .rememberMeParameter("remeber_me_parameter")
                 .and()
-                .csrf().ignoringAntMatchers("/","/index*","/userpage*","/postregistration","/postregistrationPhoto","/adminpage*","/adminpage/**");
+                .csrf().ignoringAntMatchers("/","/index*","/userpage*","/postregistration","/postregistrationPhoto","/adminpage*","/adminpage/**","/ajaxtest*","/ajaxGetInterestCat*","/ajaxSave*","/ajaxFullInterest*","/ajaxDelete*");
     }
     
     /*@Override

@@ -342,41 +342,15 @@ public class UserLogController {
 			return "fail";
 		}
 	}
-	
-	/*@RequestMapping(value="/anketa", method = RequestMethod.GET)
-	public String anketa(Map<String, Object> model){		
-		//Set<Interests> set = cat.getInterests();
-		//userLogService.add
-		cat.setCategoryName("Фильмы");
-		List<String> l = new ArrayList<String>();
-		if(userLogService.addCategoryInterests(cat).equals("success"))
-		{
-			model.put("InterestList", l);			
-			return "anketa";
-		}
-		else{
-			return "redirect:/anketa?error";
-		}
-		//l.add(userLogService.addCategoryInterests(cat));
-		/*for (int i = 0; i < 5;i++){
-			l.add(String.valueOf(i));
-		}*/
-		/*for(Interests current : set ){
-			l.add(current.getInterestName());
-		}*/
-		
-	//}
-	//@SuppressWarnings("null")	
+
 	@RequestMapping(value = "/anketa", method = RequestMethod.GET)	
 	public String anketa (ModelMap model)
 	{		
 		List<CategoryInterest> category = new ArrayList<CategoryInterest>();
-		category = userLogService.getCategories();
+		category = userLogService.getAllCategory();
 		List<String> l = new ArrayList<String>();		
-		for(CategoryInterest currСategory : category){
-		
-			l.add(currСategory.getCategoryName());
-			
+		for(CategoryInterest currСategory : category){		
+			l.add(currСategory.getCategoryName());			
 			//получаю лист с интересами и засовываю в model для .jsp
 			List<Interests> lost = new ArrayList<Interests>();
 			lost = userLogService.getListInterests(currСategory);
@@ -384,41 +358,7 @@ public class UserLogController {
 		}
 		model.put("CategoryList", l);	
 		return "anketa";
-		
-		//Map<String, Object> model = new HashMap<String, Object>();
-		
-				//CategoryInterest cat = new CategoryInterest();
-				//cat.setCategoryName("Интересы");
-				//cat.set
-				//userLogService.addCategoryInterests(cat);
-		
-		//save()
-		/*CategoryInterest cat = new CategoryInterest();
-		cat.setCategoryName("Музыка");
-		
-		userLogService.addCategoryInterests(cat);
-		List<String> l = new ArrayList<String>();
-		l.add(cat.getCategoryName());*/
-		
-		/*CategoryInterest cat = new CategoryInterest();
-		
-		List<String> l = new ArrayList<String>();
-		
-		cat = userLogService.getCategorie("Музыка");
-		
-		System.out.println(cat.getCategoryId());
-		List<Interests> lost = new ArrayList<Interests>();
-		lost = userLogService.getListInterests(cat);
-		for(Interests curr : lost)
-		{
-			System.out.println(curr.getInterestName() + curr.getCategoryInterest().getCategoryId());
-		}*/
-		//Interests inter = new Interests();
-		//inter.setInterestName("AC/DC");
-		//inter.setCategoryInterest(cat);				
-		
-	}	
-	
+	}		
 	
 	@RequestMapping(value = "/ajaxtest", method = RequestMethod.POST)
 	@ResponseBody
@@ -428,31 +368,130 @@ public class UserLogController {
 	    
 	    JSONObject json = new JSONObject();		
 	    
-		/*List<CategoryInterest> category = new ArrayList<CategoryInterest>();
-		category = userLogService.getCategories();
-		List<String> l = new ArrayList<String>();	
-		int count = 0;
-		for(CategoryInterest currСategory : category){
-			l.add(currСategory.getCategoryName());
-			json.put( String.valueOf(count), currСategory.getCategoryName() );
-			count++;
-		}	*/	
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 		String name = data.get("name").getAsString();
 		System.out.println(name);
+		
 		CategoryInterest cat = new CategoryInterest();
 	    cat = userLogService.getCategorie(name);
-	    List<Interests> lost = new ArrayList<Interests>();
-		lost = userLogService.getListInterests(cat);	
+	    
+		List<Interests> interestsList = new ArrayList<Interests>();
+		interestsList = userLogService.getInterestsByCatName(name);
 		int count = 0;
-		for(Interests curr : lost)
+		for(Interests curr : interestsList)
 		{
 			json.put( String.valueOf(count), curr.getInterestName() );
 			count++;
-			//System.out.println(curr.getInterestName() + curr.getCategoryInterest().getCategoryId());
 		}
+		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		System.out.println(user.getUsername());
+		Set<Interests> interests = new HashSet<Interests>();
+		
+		UserInfo userInfo = new UserInfo();
+		interests = userInfo.getInterests();
+		
+		
+		System.out.println(String.valueOf(userLogService.getUSER_ID(user.getUsername())));
+		
 	    return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value = "/ajaxFullInterest", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> getFullInterests(Locale loc) throws JsonSyntaxException, JsonIOException, IOException {
+	    HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+	    
+	    JSONObject json = new JSONObject();
+	    
+	    List<CategoryInterest> Category = new ArrayList<CategoryInterest>();	
+	    Category = userLogService.getAllCategory();
+	    
+	    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    int count = 0;
+	    for(CategoryInterest nameCategory:Category){	    	
+	    	json.put( String.valueOf(count), nameCategory.getCategoryName());
+	    	/*System.out.println(String.valueOf(userLogService.getCategoryIDByCatName(nameCategory.getCategoryName()))+" : ");
+	    	List<String> interests = userLogService.getUsersInterests(userLogService.getUSER_ID(user.getUsername()), userLogService.getCategoryIDByCatName(nameCategory.getCategoryName()));
+	    	
+			for(String inter:interests)
+			{
+				json.put( String.valueOf(count), inter);
+				System.out.println(inter+";");
+				count++;
+			}	*/
+	    	count++;
+	    }		
+			
+	    return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/ajaxGetInterestCat", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> getUserInterests(Locale loc, String code, HttpServletRequest request) throws JsonSyntaxException, JsonIOException, IOException {
+	    HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+	    
+	    JSONObject json = new JSONObject();		
+	    
+		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
+		String nameCategory = data.get("name").getAsString();		
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+		
+		System.out.println(String.valueOf(userLogService.getCategoryIDByCatName(nameCategory)));
+		
+		List<String> interests = userLogService.getUsersInterests(userLogService.getUSER_ID(user.getUsername()), userLogService.getCategoryIDByCatName(nameCategory));
+		int count = 0;
+		for(String inter:interests)
+		{
+			json.put( String.valueOf(count), inter);
+			count++;
+		}		
+	    return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);
+	}
+	
+	
+	@RequestMapping(value = "/ajaxSave", method = RequestMethod.POST)
+	@ResponseBody
+	public void saveInterestsForUser(HttpServletRequest request) throws JsonSyntaxException, JsonIOException, IOException{
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    JSONObject json = new JSONObject();	    
+		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
+		int count = data.get("count").getAsInt();
+		List<String> NamesInterests = new ArrayList<String>();
+		for(int i = 0; i < count; i++){
+			NamesInterests.add(data.get(String.valueOf(i)).getAsString());
+		}
+		long id_category = userLogService.getCategoryIDByCatName(data.get("category").getAsString());		
+		Set<Interests> InterstsList = userLogService.getInterestsByInteresName(NamesInterests);		
+		long userID = userLogService.getUSER_ID(user.getUsername());
+		userLogService.putInterestsUser(userID, InterstsList);		
+		for(Interests curr:InterstsList){
+			System.out.println(curr.getInterestId());
+		}
+		
+		/*List<String> listInterestsName =  new ArrayList<String>();
+		JsonObject massJson = data.
+		for(JsonObject curr:data){
+			
+		}*/
+		//String nameCategory = data.get("1").getAsString();				
+		//System.out.println("ID Пользователя: "+String.valueOf(userLogService.getUSER_ID(user.getUsername()))+"\nRequets: "+nameCategory);	
+	}
+	
+	@RequestMapping(value = "/ajaxDelete", method = RequestMethod.POST)
+	@ResponseBody
+	public void deleteInterestsForUser(HttpServletRequest request) throws JsonSyntaxException, JsonIOException, IOException{
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    JSONObject json = new JSONObject();	    
+		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
+		int count = data.get("count").getAsInt();
+		List<String> NamesInterests = new ArrayList<String>();
+		for(int i = 0; i < count; i++){
+			NamesInterests.add(data.get(String.valueOf(i)).getAsString());
+		}
+		long id_category = userLogService.getCategoryIDByCatName(data.get("category").getAsString());
+	}
+	
 }

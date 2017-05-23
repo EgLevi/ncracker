@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserLogServiceImpl implements UserLogService {
@@ -48,6 +49,15 @@ public class UserLogServiceImpl implements UserLogService {
         this.userLogDAO = userLogDAO;
     }
     
+    public List<String> getUsersInterests(long userId, long categoryId)
+    {
+    	return userLogDAO.getUsersInterests(userId, categoryId);
+    }
+    
+    public UserInfo getUser(long userId)
+    {
+    	return userLogDAO.getUser(userId);
+    }
     
     public boolean checkLogin(String login)
     {
@@ -60,6 +70,16 @@ public class UserLogServiceImpl implements UserLogService {
     
     public String updateUserInfo(UserInfo userInfo) {
         return userLogDAO.updateUserInfo(userInfo, getQuery("hql/updateUserInfo.hql"));
+    }
+    
+    public long getUSER_ID(String username)
+    {
+    	return userLogDAO.getUSER_ID(username);
+    }
+    
+    public Set<Interests> getInterestsByInteresName(List<String> interestsName)
+    {
+    	return userLogDAO.getInterestsByInteresName(interestsName);
     }
     
     public String uploadUserInfoPhoto(UserInfo userInfo, MultipartFile photo_ava) {
@@ -98,20 +118,7 @@ public class UserLogServiceImpl implements UserLogService {
                 stream.write(bytes);
                 stream.flush();
                 stream.close();
-
-    public void removeUser(Integer iduserlog) {
-        userLogDAO.removeUser(iduserlog);
-    }*/
-    
-    public List<Interests> getListInterests(CategoryInterest name)
-    {
-    	return userLogDAO.getListInterests(name);
-    }
-    
-    public CategoryInterest getCategorie(String name)
-    {
-    	return userLogDAO.getCategorie(name);
-    }
+                
                 return (relativeDir.toString() + File.separator + fileName);
 
             } catch (Exception e) {
@@ -161,9 +168,13 @@ public class UserLogServiceImpl implements UserLogService {
     	return userLogDAO.getInterestsByCatId(categoryId,getQuery("hql/getInterestsByCatId.hql"));
     }
     
+    public long getCategoryIDByCatName(String categoryName)
+    {    	//getQuery("hql/getCategoryIDByCatName.hql")
+    	return userLogDAO.getCategoryIDByCatName(categoryName, "");
+    }
+    
     public List<Interests> getInterestsByCatName(String categoryName)
-    {
-    	
+    {    	
     	return userLogDAO.getInterestsByCatName(categoryName, getQuery("hql/getInterestByCatName.hql"));
     }
     
@@ -175,6 +186,11 @@ public class UserLogServiceImpl implements UserLogService {
     public List<Long> putInterests(List<Interests> interests, String categoryName) throws HibernateException
     {
     	return userLogDAO.putInterests(interests, categoryName, getQuery("hql/CategoryInterestByName.hql"));
+    }
+    
+    public void putInterestsUser(long UserID, Set<Interests> interests)
+    {
+    	userLogDAO.putInterestsUser(UserID, interests);
     }
     
     public void deleteInterests(List<Interests> interests,String categoryName) throws HibernateException
@@ -270,6 +286,16 @@ public class UserLogServiceImpl implements UserLogService {
             md5Hex = "0" + md5Hex;
         }
         return md5Hex;
+    }
+    
+    public CategoryInterest getCategorie(String name)
+    {
+    	return userLogDAO.getCategorie(name);
+    }
+    
+    public List<Interests> getListInterests(CategoryInterest name)
+    {
+    	return userLogDAO.getListInterests(name);
     }
     
     
