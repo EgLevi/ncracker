@@ -2,7 +2,6 @@ $(document).ready(function () {
 var csrfToken = $("meta[name='_csrf']").attr("content");
 var relativePath="none";
 
-
 function showEditUserInfo(e)
 {
     var remEl = $(".removableElement");
@@ -208,12 +207,6 @@ function getParent(el){
     return el.parentElement || el.parentNode;
 }
 
-function clickOnImg()
-{
-    var parent = getParent(getParent(this));
-    var link = parent.getElementsByTagName("a")[0];
-    link.click();
-}
 
 function getData() {
     $.ajax({
@@ -413,7 +406,22 @@ function fileUploaded()
     });
 }
 
+function fileClick(e)
+{
+    e.stopPropagation();
+}
+
+file.addEventListener("click",fileClick);
+
 file.addEventListener("change",fileUploaded);
+
+function clickOnfileBtn(e)
+{
+    file.click();
+    e.preventDefault();
+}
+
+fileBtn.addEventListener("click",clickOnfileBtn);
 
 /*$("#file").change(function (event) {
  var file = $('#file').val();
@@ -600,12 +608,6 @@ menuPhoto.addEventListener("click",showMyPhotoPanel);
 
 function SearchScriptObject()
 {
-    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-    var csrfToken = $("meta[name='_csrf']").attr("content");
-
-    $.ajaxSetup({
-        headers: {csrfHeader:csrfToken}
-    });
 
     var data=[];
 
@@ -646,11 +648,6 @@ function SearchScriptObject()
 
     okBtn.addEventListener("click",clickOnOkBtn);
 
-
-
-    function getParent(el){
-        return el.parentElement || el.parentNode;
-    }
 
 
     function deleteInterest(e)

@@ -7,44 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
     <link rel="stylesheet" href="../resources/css/styles.css">
+    <link rel="stylesheet" href="../resources/css/userpagestyles.css">
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/bootstrap.min.js"></script>
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
-    <script src="../resources/js/customscript.js"></script>
+    <script src="../resources/js/csrfscript.js"></script>
+    <script src="../resources/js/modalUserPhoto.js"></script>
+    <script src="../resources/js/globalscript.js"></script>
+    <script src="../resources/js/messagescript.js"></script>
 </head>
-<body>
+<body style="padding-right: 0px;">
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Logo</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li><a href="#">Home</a></li>
-                <li class="active"><a href="#">Messages</a></li>
-            </ul>
-            <form class="navbar-form navbar-right" role="search">
-                <div class="form-group input-group">
-                    <input type="text" class="form-control" placeholder="Search..">
-                    <span class="input-group-btn">
-            <button class="btn btn-default" type="button">
-              <span class="glyphicon glyphicon-search"></span>
-            </button>
-          </span>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="modules/navbarModule.jsp"/>
+
+<jsp:include page="modules/modalPhotoModule.jsp"/>
+
+<div id="chatId" style="display: none">${chatId}</div>
 
 <div class="container text-center">
     <div class="row">
@@ -53,7 +31,7 @@
         </div>
 
         <div class="col-sm-9">
-            <jsp:include page="modules/messagesModule.jsp"/>
+            <jsp:include page="modules/messageModule.jsp"/>
         </div>
 
 

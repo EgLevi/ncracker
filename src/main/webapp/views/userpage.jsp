@@ -13,48 +13,18 @@
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/bootstrap.min.js"></script>
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
-    <script src="../resources/js/customscript.js"></script>
-    <script src="../resources/js/userpagescript.js"></script>
+    <script src="../resources/js/modalUserPhoto.js"></script>
+    <script src="../resources/js/csrfscript.js"></script>
+    <script src="../resources/js/menuModulescript.js"></script>
+    <script src="../resources/js/searchButtonscript.js"></script>
+    <script src="../resources/js/aboutModulescript.js"></script>
+
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Logo</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-                <li><a href="/messages">Messages</a></li>
-            </ul>
-            <form class="navbar-form navbar-right" role="search">
-                <div class="form-group input-group">
-                    <input type="text" class="form-control" placeholder="Search..">
-                    <span class="input-group-btn">
-            <button class="btn btn-default" type="button">
-              <span class="glyphicon glyphicon-search"></span>
-            </button>
-          </span>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="modules/navbarModule.jsp"/>
 
-<button id="showPhotoBtn" type="button" data-toggle="modal" data-target="#showPhoto" style="display:none"></button>
-
-
-<jsp:include page="modules/modalUserPhotoModule.jsp"/>
-<jsp:include page="modules/modalSearchModule.jsp"/>
+<jsp:include page="modules/modalPhotoModule.jsp"/>
 
 <div class="container text-center">
     <div class="row">
@@ -65,16 +35,10 @@
         <div class="col-sm-9">
             <jsp:include page="modules/searchButtonModule.jsp"/>
             <jsp:include page="modules/aboutModule.jsp"/>
-            <jsp:include page="modules/editInfoModule.jsp"/>
-            <jsp:include page="modules/messagesModule.jsp"/>
-            <jsp:include page="modules/chatModule.jsp"/>
-            <jsp:include page="modules/userPhotoModule.jsp"/>
-            <jsp:include page="modules/searchModule.jsp"/>
             #dashboard
         </div>
 
 
-        <jsp:include page="modules/modalPhotoModule.jsp"/>
 
 
     </div>

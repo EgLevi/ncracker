@@ -2,11 +2,11 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="editUserInfoTable" class="row col-md-8 removableElement" style="display: none;">
+<div id="editUserInfoTable" class="row col-md-8 removableElement">
     <div class="panel panel-default">
         <div class="panel-heading">
             <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
-            <button id="closeEditUserInfoBtn" class="btn btn-primary">Закрыть</button>
+            <button id="closeEditUserInfoBtn" type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="panel-body">
             <div id="edituserform">

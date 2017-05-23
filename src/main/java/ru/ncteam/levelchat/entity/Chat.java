@@ -33,23 +33,21 @@ public class Chat {
     @Column(name = "PERSONAL_CHAT")
     private boolean isPersonalChat;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinTable(name = "USER_CHAT",
-            joinColumns = {@JoinColumn(name = "CHAT_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
-    @JsonIgnoreProperties(allowSetters=true)
-    @JsonBackReference
-    public Set<UserInfo> users = new HashSet<UserInfo>();
+    public Set<UserChat> userChats = new HashSet<UserChat>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
     @JsonIgnore
     public Set<Message> messages = new HashSet<Message>();
 
     @JsonIgnore
-    public Set<UserInfo> getUsers() {
-        return users;
+    public Set<UserChat> getUserChats() {
+        return userChats;
+    }
+
+    public void setUserChats(Set<UserChat> userChats) {
+        this.userChats = userChats;
     }
 
     public long getChatId() {
@@ -100,10 +98,6 @@ public class Chat {
         isPersonalChat = personalChat;
     }
 
-
-    public void setUsers(Set<UserInfo> users) {
-        this.users = users;
-    }
 
     public Set<Message> getMessages() {
         return messages;

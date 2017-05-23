@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.ncteam.levelchat.dao.MessageDAO;
 import ru.ncteam.levelchat.dao.ChatDAO;
+import ru.ncteam.levelchat.dao.PhotoLibDAO;
 import ru.ncteam.levelchat.dao.UserInfoDAO;
 import ru.ncteam.levelchat.entity.*;
 import ru.ncteam.levelchat.service.UserLogService;
+import ru.ncteam.levelchat.utils.ApplicationUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -38,13 +40,17 @@ public class UserpageController {
 	private UserInfoDAO userInfoDAO;
 
 	@Autowired
+	private PhotoLibDAO photoLibDAO;
+
+	@Autowired
 	private UserLogService userLogService;
+
+	@Autowired
+	private ApplicationUtil util;
 
 	
 	@RequestMapping(value = {"/userpage","/"})
 	public String userPage(Map<String, Object> map) {
-		SecurityContextHolder.getContext().getAuthentication();
-		Authentication a;
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserInfo userInfo = userLogService.getUserByLogin(user.getUsername());
 		if(userInfo.getPhoto_ava()==null)
@@ -52,8 +58,6 @@ public class UserpageController {
 			userInfo.setPhoto_ava("photo/ava.png");
 		}
 		map.put("userInfo",userInfo);
-		List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
-		map.put("chats", chats);
 		return "userpage";
 	}
 
@@ -72,9 +76,90 @@ public class UserpageController {
 
 
 	@RequestMapping(value = "/search")
-	public String getSearchPage() {
+	public String getSearchPage(Map<String, Object> map) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
+		UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
+		if(userInfo.getPhoto_ava()==null)
+		{
+			userInfo.setPhoto_ava("photo/ava.png");
+		}
+		map.put("userInfo", userInfo);
 		return "search";
 	}
+
+	@RequestMapping(value = "/chats")
+	public String getChats(Map<String, Object> map)
+	{
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
+		UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
+		if(userInfo.getPhoto_ava()==null)
+		{
+			userInfo.setPhoto_ava("photo/ava.png");
+		}
+		map.put("chats", chats);
+		map.put("userInfo", userInfo);
+		Map<Long,Boolean> mapReadUnread = userInfoDAO.getMapReadUnread(user.getUsername());
+		map.put("mapReadUnread", mapReadUnread);
+		return "chats";
+	}
+
+	@RequestMapping(value = "/myPhotos")
+	public String getPhoto(Map<String, Object> map)
+	{
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<PhotoLib> photoLibs = userInfoDAO.getUserPhotos(user.getUsername());
+		UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
+		if(userInfo.getPhoto_ava()==null)
+		{
+			userInfo.setPhoto_ava("photo/ava.png");
+		}
+		map.put("photos", photoLibs);
+		map.put("userInfo", userInfo);
+		return "myPhoto";
+	}
+
+
+
+	@RequestMapping(value = "/addPhoto",method = RequestMethod.POST)
+	@ResponseBody
+	public String uploadPhoto(@RequestParam(value = "photo", required=false) MultipartFile photo) {
+		if (!photo.isEmpty()) {
+			if(!(photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png")))
+			{
+				return "fail, wrong format of photo";
+			}
+			try {
+				User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				UserInfo userInfo = new UserInfo();
+				userInfo.setLogin(user.getUsername());
+				String str = util.uploadFile(photo);
+				return str;
+			} catch (Exception e) {
+				return "fail";
+			}
+		} else {
+			return "failed your photo is empty";
+		}
+	}
+
+	@RequestMapping(value = "/addPhoto/save",method = RequestMethod.POST)
+	@ResponseBody
+	public String updateUserInfoPhoto(@RequestBody String relativePathPhoto) {
+		try
+		{
+			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
+			return photoLibDAO.create(relativePathPhoto,userInfo);
+		}
+		catch (Exception e)
+		{
+			return "fail";
+		}
+	}
+
+
 
 	@RequestMapping(value = "/search/getCategories",method = RequestMethod.GET)
 	@ResponseBody
@@ -97,6 +182,19 @@ public class UserpageController {
 								  BindingResult result) {
 		return "success";
 	}
+
+	@RequestMapping(value = "/edituserinfo", method = RequestMethod.GET)
+	public String editUseInfo(Map<String, Object> map) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserInfo userInfo = userLogService.getUserByLogin(user.getUsername());
+		if(userInfo.getPhoto_ava()==null)
+		{
+			userInfo.setPhoto_ava("photo/ava.png");
+		}
+		map.put("userInfo",userInfo);
+		return "edituserinfo";
+	}
+
 
 	
 	@RequestMapping(value = "/edituserinfo", method = RequestMethod.POST)

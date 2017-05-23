@@ -85,12 +85,9 @@ public class UserInfo {
     @JsonIgnore
     private Set<Interests> interests = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinTable(name = "USER_CHAT",
-            joinColumns = {@JoinColumn(name = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "CHAT_ID")})
-    public Set<Chat> chats = new HashSet<Chat>();
+    private Set<UserChat> userChat = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userInfo")
     @JsonIgnore
@@ -209,12 +206,12 @@ public class UserInfo {
     }
 
     @JsonIgnore
-    public Set<Chat> getChat() {
-        return chats;
+    public Set<UserChat> getUserChat() {
+        return userChat;
     }
 
-    public void setChatGroups(Set<Chat> chats) {
-        this.chats = chats;
+    public void setUserChat(Set<UserChat> userChat) {
+        this.userChat = userChat;
     }
 
     public Set<Message> getMessages() {

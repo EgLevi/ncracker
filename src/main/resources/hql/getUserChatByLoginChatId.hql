@@ -1,0 +1,1 @@
+from UserChat where userInfo.login = :login and chat.chatId = :chatId

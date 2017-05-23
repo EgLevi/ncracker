@@ -399,9 +399,9 @@
 	    function deleteRowsFromTable(e) {
 	        selectedRow = selectedRow.sort(compareElement);//сортируем массив
 	        for (i = 0; i < selectedRow.length; i++) {
-	            tdList = trList[selectedRow[0]].getElementsByTagName('td');
+	            tdList = trList[selectedRow[i]-i].getElementsByTagName('td');
 	            dataDelete.push({ "interestId": tdList[0].innerHTML, "interestName": tdList[1].innerHTML });
-	            trList[selectedRow[0]].remove();//удаляем первый элемент массива(так как при удалении автоматически уменьшается и количество строк)
+	            trList[selectedRow[i]-i].remove();//удаляем первый элемент массива(так как при удалении автоматически уменьшается и количество строк)
 	        }
 	        selectedRow.splice(0, selectedRow.length);//освобождаем массив
 	    }
@@ -438,32 +438,42 @@
 	    {
 	        if (e.keyCode == 13)//была нажата клавиша Enter
 	        {
-	            tdList = trList[row].getElementsByTagName('td');
-	            thList = table.getElementsByTagName('th');
+                tdList = trList[row].getElementsByTagName('td');
+                thList = table.getElementsByTagName('th');
+	            if (row == trList.length - 1)//если последнее поле, то добавляем новый ряд
+                {
+                    dataInsert.push({ "interestId": 0, "interestName": txtarea.value });
+                    var elem;
+                    var childElem;
+                    elem = tableBody.insertRow(row);
+                    childElem = document.createElement('td');
+                    childElem.innerHTML = "";
+                    elem.insertBefore(childElem, elem.firstChild);
+                    childElem = document.createElement('td');
+                    childElem.innerHTML = "*";
+                    elem.insertBefore(childElem, elem.lastChild);
+                    trList = table.getElementsByTagName('tr')
+                    tdList = trList[row + 1].getElementsByTagName('td')
+                    for (i = 1; i < tdList.length; i++) {
+                        tdList[i].addEventListener("click", clickOnElement);
+                    }
+                }
+                else
+                {
+	                if(tdList[0].innerHTML == "*")
+                    {
+                        dataInsert.splice(dataInsert.indexOf({ "interestId": 0, "interestName": tdList[column].innerHTML }));
+                        dataInsert.push({ "interestId": 0, "interestName": txtarea.value });
+                    }
+                    else
+                    {
+                        data.push({ "interestId": tdList[0].innerHTML, "interestName": txtarea.value });
+                    }
+                }
+                tdList = trList[row].getElementsByTagName('td');
 	            tdList[column].innerHTML = txtarea.value;
 	            txtarea.value = "";
 	            txtarea.style.display = "none";
-	            if (row == trList.length - 1)//если последнее поле, то добавляем новый ряд
-	            {
-	                dataInsert.push({ "interestId": 0, "interestName": tdList[column].innerHTML });
-	                var elem;
-	                var childElem;
-	                elem = tableBody.insertRow(row);
-	                childElem = document.createElement('td');
-	                childElem.innerHTML = "";
-	                elem.insertBefore(childElem, elem.firstChild);
-	                childElem = document.createElement('td');
-	                childElem.innerHTML = "*";
-	                elem.insertBefore(childElem, elem.lastChild);
-	                trList = table.getElementsByTagName('tr')
-	                tdList = trList[row + 1].getElementsByTagName('td')
-	                for (i = 1; i < tdList.length; i++) {
-	                    tdList[i].addEventListener("click", clickOnElement);
-	                }
-	            }
-	            else {
-	                data.push({ "interestId": tdList[0].innerHTML, "interestName": tdList[column].innerHTML });
-	            }
 	        }
 	        if (e.keyCode == 9)//клавиша Tab
 	        {
@@ -555,7 +565,6 @@
 	            removeBtn.style.display = "inline";
 	        }
 	    }
-
 
 	    document.addEventListener("mouseup", mouseUpOnElement);
 	    document.addEventListener("mousedown", mouseDownOnDocument);
@@ -716,6 +725,9 @@
 	            	prevSelIndex = this;
 	            	categoryName = this.innerText;
 	            	addEventInTable();
+	            	data = [];
+	            	dataInsert = [];
+	            	dataDelete = [];
 	            	getInterestOfCategory();
 	            	hideDropDown();
 	            }
