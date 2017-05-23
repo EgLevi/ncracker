@@ -1,4 +1,13 @@
 $(document).ready(function () {
+
+
+    function scrollWindow(e)
+    {
+        window.scrollTo(0,0);
+    }
+
+    searchPanel.getElementsByTagName('button')[0].addEventListener("click",scrollWindow);
+
 function SearchScriptObject()
 {
 

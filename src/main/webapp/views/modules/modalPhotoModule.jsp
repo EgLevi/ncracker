@@ -3,13 +3,13 @@
     <div class="modal-dialog my-modal-dialog" style="width:450px; margin:auto">
         <div class="panel panel-primary" style="background-color:#e5e8ed; width:450px">
             <div class="panel-heading" style="background-color:#e5e8ed">
-                <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>
+                <img src="/resources/images/logo4.png" alt="Logo" height='40' align='top'>
                 <button id="closeModal" type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="panel-body">
                 <div class="photo-wrapper" style="width:150px; margin: 0 auto;">
                     <h1 class="logo">
-                        <img id="avatar" src="${userInfo.photo_ava}" class="img-circle" height="140" width="140" alt="Avatar">
+                        <img id="avatar" src='/${userInfo.photo_ava}' class="img-circle" height="140" width="140" alt="Avatar">
                     </h1>
                 </div>
                 <form id="photoeditform" method="get" action="userpage" enctype="multipart/form-data">

@@ -110,6 +110,7 @@ public class UserpageController {
 	{
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<PhotoLib> photoLibs = userInfoDAO.getUserPhotos(user.getUsername());
+		photoLibs.sort(PhotoLib::compareTo);
 		UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
 		if(userInfo.getPhoto_ava()==null)
 		{
@@ -152,6 +153,20 @@ public class UserpageController {
 			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
 			return photoLibDAO.create(relativePathPhoto,userInfo);
+		}
+		catch (Exception e)
+		{
+			return "fail";
+		}
+	}
+
+	@RequestMapping(value = "/myPhoto",method = RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteUserInfoPhoto(@RequestBody String relativePathPhoto) {
+		try
+		{
+			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return photoLibDAO.delete(relativePathPhoto,user.getUsername());
 		}
 		catch (Exception e)
 		{

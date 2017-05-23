@@ -1,5 +1,6 @@
 $(document).ready(function () {
     function clickOnPhoto(e) {
+        document.documentElement.scrollTop = document.documentElement.scrollHeight;
         var img = this.getElementsByTagName("img")[0];
         currentPhoto.src = img.src;
         currentPhoto.onload = function () {

@@ -1,4 +1,12 @@
 $(document).ready(function () {
+
+    function scrollWindow(e)
+    {
+        window.scrollTo(0,0);
+    }
+
+    editBtn.addEventListener("click",scrollWindow);
+
     var csrfToken = $("meta[name='_csrf']").attr("content");
     var relativePath="none";
     function sendPhoto()

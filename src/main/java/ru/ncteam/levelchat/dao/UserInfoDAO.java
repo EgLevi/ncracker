@@ -152,4 +152,5 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
         }
         return map;
     }
+
 }

@@ -9,6 +9,7 @@ import ru.ncteam.levelchat.entity.PhotoLib;
 import ru.ncteam.levelchat.entity.UserData;
 import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
+import java.io.File;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class PhotoLibDAO extends AbstractDAO<PhotoLib, Long> {
                 PhotoLib photoLib = new PhotoLib();
                 photoLib.setUserInfo(userInfo);
                 photoLib.setPhotoRef(link);
-                Session s = sessionFactory.getCurrentSession();
+                sessionFactory.getCurrentSession().save(photoLib);
                 return "success";
             }
             catch(Exception e)
@@ -68,6 +69,7 @@ public class PhotoLibDAO extends AbstractDAO<PhotoLib, Long> {
 
     @Transactional
     public Long indexOf(String link,UserInfo userInfo) {
+        link = link.replaceAll("/+","\\\\");
         Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/getUserPhotoLib.hql"));
         query.setParameter("login", userInfo.getLogin());
         query.setParameter("link", link);
@@ -77,5 +79,17 @@ public class PhotoLibDAO extends AbstractDAO<PhotoLib, Long> {
             return photoLib.getPhotoId();
         }
         return null;
+    }
+
+    @Transactional
+    public String delete(String link,String login) {
+        link = link.replaceAll("/+","\\\\");
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(util.getStringFromFile("hql/getUserPhotoLib.hql"));
+        query.setParameter("login", login);
+        query.setParameter("link", link);
+        PhotoLib photoLib = (PhotoLib)query.uniqueResult();
+        session.delete(photoLib);
+        return "success";
     }
 }

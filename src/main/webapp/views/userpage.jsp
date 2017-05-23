@@ -33,10 +33,9 @@
         </div>
 
         <div class="col-sm-9">
-
-            <jsp:include page="modules/aboutModule.jsp"/>
             <jsp:include page="modules/searchButtonModule.jsp"/>
-
+            <jsp:include page="modules/aboutModule.jsp"/>
+            #dashboard
         </div>
 
 
@@ -46,12 +45,9 @@
 </div>
 </div>
 
-
-
-<jsp:include page="modules/footerModule.jsp"/>
-
-
-
+<footer class="container-fluid text-center">
+    <p>Footer Text</p>
+</footer>
 
 </body>
 </html>
