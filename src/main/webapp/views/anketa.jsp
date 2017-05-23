@@ -113,14 +113,16 @@
         <script>
         
         function save(){
-        	var del_array = [];
-        	del_array = array.slice();	
+        	/*var del_array = [];
+        	del_array = array[key['name']].slice();	
+        	alert(del_array);*/
         	var Options = [];	//список выбранных интересов в компоненте select
         	//Получаю массив из <option> в select	  							
               $('#select option:selected').each(function(){
               	Options.push(this.text);
               });
-        	for(var i = 0; i < Options.length; i++){
+              array2[key['name']] = Options;
+        	/*for(var i = 0; i < Options.length; i++){
         		for(var j = 0; j < del_array.length; j++){
         			if(del_array[j] == Options[i]){
         				del_array.splice(j,1);
@@ -130,15 +132,20 @@
         				break;
         			}
         		}
-        	}
-        	alert("Удалить из БД: "+del_array+"\nДобавить в БД:"+Options);
-        	var request = {};
-        	request['category'] = key['name'];
-        	request['count'] = Options.length;
-        	//alert(request['category']);
-        	for(var i = 0; i < Options.length; i++){
-        		request[i] = Options[i];
         	}        	
+        	alert("Удалить из БД: "+del_array+"\nДобавить в БД:"+Options);*/
+        	alert("Добавить в БД:"+array2[key['name']]);
+        	var request = {};
+        	//request['category'] = key['name'];        	
+        	var count = 0;
+        	for(var i = 0; i < caterys.length; i++){
+        		for(var j = 0; j < array2[caterys[i]].length; j++){
+        			request[count] = array2[caterys[i]][j];
+        			count++;
+        		}        		
+        	} 
+        	request['count'] = count;
+        	alert(request['count']);
         	$.ajax({
 					type:"POST",
 					url:"ajaxSave.html",
@@ -147,100 +154,90 @@
 				});
         }		
         
-        var array = [];			//список интересов пользователя в БД
-        var key;
-        var caterys;
-        
-                $(document).ready(function() {
-                  $('.chosen-select').chosen();                  
-                  $('.select-tag').select2({
-                    tags: true
+        $('.list-group-item').on('click', function() {
+        	
+      	    if(key != ''){
+      	    	var selected = [];	//список выбранных интересов в компоненте select
+            	//Получаю массив из <option> в select	  							
+                  $('#select option:selected').each(function(){
+                	  selected.push(this.text);
                   });
-                  
-                  $('.list-group-item').on('click', function() {
-                	  
-                	  //Здесь очистищаю select                	  
-                	  var action_list = document.getElementById("select");
-                      i = action_list.options.length;
-  					  while (i--)
-  					  {
-  					    action_list.remove(i);
-  					    $('#select').trigger('chosen:updated');					    
-  					  }
-  					  
-  					key = {name: $(this).text()};
-  					
-  					/*if(array.length == 0)
-  						{
-  							var count = 0;
-  							$.ajax({
-	  	  						type:"POST",
-	  	  						url:"ajaxFullInterest.html",
-	  	  						success: function(data){
-	  	  						//получаю объект JavaScript
-	  	  							var returnedData = JSON.parse(data);	  	  						
-	  	  							//получаю массив из объекта
-	  	  									caterys = $.map(returnedData, function(value, index) {	
-		  	  									alert(value);		  	  								    
-		  	  								    count++;
-		  	  									return [value];
-	  	  								});
-	  	  								alert(count);
-	  	  							},
-	  	  						 async: false
-	  	  						});
-  							alert(count);
-  							for(var i = 0; i < count; i++)
-  							{
-  								$.ajax({
-  			  						type:"POST",
-  			  						url:"ajaxtest.html",
-  			  						data:JSON.stringify(key),
-  			  						contentType: "application/json",
-  			  						success: function(data){	  	
-  			  							//получаю объект JavaScript
-  			  							var returnedData = JSON.parse(data);	
-  			  							//получаю массив из объекта
-  			  								var mas = $.map(returnedData, function(value, index) {
-  			  								    return [value];
-  			  								});
-  			  							array[caterys[i]] = mas;
-  			  							alert(mas);
-  			  						},
-  			  						error : function(jqXHR, textStatus, errorThrown) {
-  			  			                alert("Error! "+textStatus+" "+" "+jqXHR);	  			              
-  			  			              	console.log(jqXHR);
-  			  			            	console.log(textStatus);
-  			  			            	console.log(errorThrown);	  			            	
-  			  			            }
-  			  					});
-  							}
-  							alert(array[caterys[2]]);	
-  						}
-  					else{
-  						
-  					}*/
-  					
-  					
-  					  
-                	  		
-	  					$.ajax({
+                  array2[key['name']] = selected;               
+      	    }      	
+      	  key = {name: $(this).text()}; 
+      	  //Здесь очистищаю select                	  
+      	  var action_list = document.getElementById("select");
+            i = action_list.options.length;
+			  while (i--)
+			  {
+			    action_list.remove(i);
+			    $('#select').trigger('chosen:updated');					    
+			  }
+			  
+			
+			for(var i = 0; i < array[key['name']].length; i++){
+				$('#select').append('<option value="'+i+'">'+array[key['name']][i]+'</option>');
+					$('#select').trigger('chosen:updated');
+			}				
+				var Options = [];	//список выбранных интересов в компоненте select
+			
+			//заполняю выбранные из категории интересы
+						//Получаю массив из <option> в select	  							
+	                    $('#select > option').each(function(){
+	                    	Options.push(this.text);
+	                    });
+						for(var i = 0; i < Options.length; i++){
+							//сравниваю каждый <option> с интересами и если они совпадают то делаю этот интерес selected
+							for(var j = 0; j < array2[key['name']].length; j++){
+								if(array2[key['name']][j] == Options[i]){
+									$("#select option[value=" + i + "]").attr('selected', 'true');	
+									$('#select').trigger('chosen:updated');
+									break;
+								}
+							}
+						}	  							     		
+            });       
+        
+        var key;
+        var array;
+        var array2;
+        var caterys;
+                $(document).ready(function() { 
+                  key = '';
+                  array = [];			//список интересов в БД
+                  array2 = [];			//список интересов пользователя
+                  var count = 0;
+					$.ajax({
+  						type:"POST",
+  						url:"ajaxFullInterest.html",
+  						success: function(data){
+  						//получаю объект JavaScript
+  							var returnedData = JSON.parse(data);	  	  						
+  							//получаю массив из объекта
+  									caterys = $.map(returnedData, function(value, index) {	
+	  									return [value];
+  								});
+  							},
+  						 async: false
+  						});
+					for(var i = 0; i < caterys.length; i++)
+					{
+						var request ={name:caterys[i]};
+						$.ajax({
 	  						type:"POST",
 	  						url:"ajaxtest.html",
-	  						data:JSON.stringify(key),
+	  						data:JSON.stringify(request),
 	  						contentType: "application/json",
 	  						success: function(data){	  	
 	  							//получаю объект JavaScript
 	  							var returnedData = JSON.parse(data);	
 	  							//получаю массив из объекта
-	  								var array = $.map(returnedData, function(value, index) {
+	  								var mas = $.map(returnedData, function(value, index) {
 	  								    return [value];
 	  								});
-	  							for(var i = 0; i < array.length; i++){
-	  								$('#select').append('<option value="'+i+'">'+array[i]+'</option>');
-		      	  					$('#select').trigger('chosen:updated');
-	  							}
+	  							array[caterys[i]] = mas;
 	  						},
+	  						async: false,
 	  						error : function(jqXHR, textStatus, errorThrown) {
 	  			                alert("Error! "+textStatus+" "+" "+jqXHR);	  			              
 	  			              	console.log(jqXHR);
@@ -248,46 +245,34 @@
 	  			            	console.log(errorThrown);	  			            	
 	  			            }
 	  					});
-	  					
-	  					
-	  					var Options = [];	//список выбранных интересов в компоненте select
-	  				//заполняю выбранные из категории интересы
-	  					$.ajax({
+						
+						$.ajax({
 	  						type:"POST",
 	  						url:"ajaxGetInterestCat.html",
-	  						data:JSON.stringify(key),
+	  						data:JSON.stringify(request),
 	  						contentType: "application/json",
 	  						success: function(data){	  	
 	  							//получаю объект JavaScript
 	  							var returnedData = JSON.parse(data);	
 	  							//получаю массив из объекта
-	  								array = $.map(returnedData, function(value, index) {
+	  								var mas = $.map(returnedData, function(value, index) {
 	  								    return [value];
 	  								});
-	  							
-	  							//Получаю массив из <option> в select	  							
-	  		                    $('#select > option').each(function(){
-	  		                    	Options.push(this.text);
-	  		                    });
-	  							for(var i = 0; i < Options.length; i++){
-	  								//сравниваю каждый <option> с интересами и если они совпадают то делаю этот интерес selected
-	  								for(var j = 0; j < array.length; j++){
-	  									if(array[j] == Options[i]){
-	  										$("#select option[value=" + i + "]").attr('selected', 'true');	
-	  										$('#select').trigger('chosen:updated');
-	  										break;
-	  									}
-	  								}
-	  							}	  							     
+	  							array2[caterys[i]] = mas;
 	  						},
+	  						async: false,
 	  						error : function(jqXHR, textStatus, errorThrown) {
 	  			                alert("Error! "+textStatus+" "+" "+jqXHR);	  			              
 	  			              	console.log(jqXHR);
 	  			            	console.log(textStatus);
 	  			            	console.log(errorThrown);	  			            	
 	  			            }
-	  					});	 					
-	                  });             	
+	  					});						
+					}	
+                  $('.chosen-select').chosen();                  
+                  $('.select-tag').select2({
+                    tags: true
+                  });                     	
             });           
         </script>
   </body>

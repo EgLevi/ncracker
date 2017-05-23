@@ -463,7 +463,7 @@ public class UserLogController {
 		for(int i = 0; i < count; i++){
 			NamesInterests.add(data.get(String.valueOf(i)).getAsString());
 		}
-		long id_category = userLogService.getCategoryIDByCatName(data.get("category").getAsString());		
+		//long id_category = userLogService.getCategoryIDByCatName(data.get("category").getAsString());		
 		Set<Interests> InterstsList = userLogService.getInterestsByInteresName(NamesInterests);		
 		long userID = userLogService.getUSER_ID(user.getUsername());
 		userLogService.putInterestsUser(userID, InterstsList);		
