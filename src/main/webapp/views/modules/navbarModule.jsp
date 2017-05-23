@@ -17,7 +17,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="#" onclick="document.getElementById('logout').submit();">Выйти</a></li>
                 <li><a href="/">Главная</a></li>
-                <li><a href="/messages">Messages</a></li>
+                <li><a href="/chats">Messages</a></li>
             </ul>
         </div>
     </div>
