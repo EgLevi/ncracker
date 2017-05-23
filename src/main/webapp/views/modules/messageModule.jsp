@@ -29,16 +29,16 @@
                 </div>
             </div>
             <div class="row send-msg">
-                <div class="col-sm-9 center-block">
+                <div class="col-sm-8 center-block">
                     <div>
                         <textarea id="message" placeholder="Введите сообщение" class="form-control"
                                   style="resize: vertical"></textarea>
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <form id="fileForm" method="post" enctype="multipart/form-data">
                         <div class="col-sm-3 btn" style="width:65px; padding-top: 0px;">
-                            <div class="inputFile" style="">
+                            <div class="inputFile">
                                 <label style="margin-bottom: 0px;">
                                     <button id="fileBtn" class="btn btn-default" style="height: 34px; width:43px; position:relative;">
 		                                <span class="btn fileinput-button glyphicon glyphicon-paperclip" style="border-left-width: 0px; padding: 0px; border-right-width: 0px; position:absolute;left:14px; transform:scale(1.3); top:4px;">
@@ -55,7 +55,7 @@
                         </div>
                     </form>
                     <div class="col-sm-4">
-                        <button id="sendMsg" class="btn btn-default"><span id="send-msg-span"
+                        <button id="sendMsg" class="btn btn-info"><span id="send-msg-span"
                                                                             class="glyphicon glyphicon-send"></span>
                         </button>
                     </div>
