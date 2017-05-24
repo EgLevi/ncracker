@@ -13,7 +13,7 @@ public class Message implements Comparable<Message> {
     @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long messageId;
 
-    @Column(name = "TWXT_MSG", length = 4000)
+    @Column(name = "TEXT_MSG", length = 4000)
     private String textMessage;
 
     @ManyToOne
