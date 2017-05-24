@@ -7,7 +7,7 @@
                 <button id="closeModalPhoto" type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="panel-body" style="position:relative;">
-                <img id="currentPhoto" src="" style="position:absolute;">
+                <img id="currentPhoto" src="" style="position:absolute; margin:auto;">
             </div>
         </div>
     </div>
