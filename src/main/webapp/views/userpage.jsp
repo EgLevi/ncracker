@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <title>${userInfo.login}</title>
-    <sec:csrfMetaTags />
+    <sec:csrfMetaTags/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
@@ -39,8 +39,6 @@
         </div>
 
 
-
-
     </div>
 </div>
 </div>
@@ -48,18 +46,5 @@
 <footer class="container-fluid text-center">
     <p>Footer Text</p>
 </footer>
-    <script>
-        var userid = ${userInfo.user_id};
-        $.ajax({
-            type: 'POST',
-            url:"userpage",
-            headers:{'X-CSRF-TOKEN':csrfToken},
-            contentType: 'application/json',
-            data: JSON.stringify(userid),
-            success: function(){
-                alert('Данные успешно отправлены.');
-            }
-        })
-    </script>
 </body>
 </html>

@@ -50,7 +50,7 @@ public class UserpageController {
 
 
 	@RequestMapping(value = {"/userpage","/"})
-	public String userPage(Map<String, Object> map) {
+	public String userPagecc(Map<String, Object> map) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserInfo userInfo = userLogService.getUserByLogin(user.getUsername());
 		if(userInfo.getPhoto_ava()==null)
@@ -58,7 +58,7 @@ public class UserpageController {
 			userInfo.setPhoto_ava("photo/ava.png");
 		}
 		map.put("userInfo",userInfo);
-        userLogService.putDashboard(userInfo.getUser_id());
+        //userLogService.putDashboard(userInfo.getUser_id());
 		return "userpage";
 	}
 
@@ -88,7 +88,7 @@ public class UserpageController {
 
 
 
-	@RequestMapping(value = "/search")
+	/*@RequestMapping(value = "/search")
 	public String getSearchPage(Map<String, Object> map) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
@@ -99,7 +99,7 @@ public class UserpageController {
 		}
 		map.put("userInfo", userInfo);
 		return "search";
-	}
+	}*/
 
 	@RequestMapping(value = "/chats")
 	public String getChats(Map<String, Object> map)
@@ -234,18 +234,12 @@ public class UserpageController {
         return object.toJSONString();
     }
 
-    @RequestMapping(value = "/edituserinfo", method = RequestMethod.GET)
-    public String editInfo() {
-        return "editInfo";
-    }
-
-
 
 	@RequestMapping(value = "/edituserinfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> updateUserInfo(@RequestBody @Valid UserInfo userInfo,
 			BindingResult result) {
-		Map<String, Object> map = new ConcurrentHashMap<String, Object>();
+		Map<String, Object> map = new ConcurrentHashMap<>();
 		if(result.hasErrors())
 		{
 			String code;

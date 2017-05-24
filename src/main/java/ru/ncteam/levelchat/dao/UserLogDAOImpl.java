@@ -353,7 +353,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     @Transactional
     public Long getId(){
         Query query = sessionFactory.getCurrentSession().createSQLQuery("Select Max(interest_group) FROM interest_list");
-        Long id = Long.parseLong(query.getSingleResult().toString()) + 1L;
+        Long id = Long.parseLong(query.getSingleResult().toString());
         return id;
     }
 
@@ -419,7 +419,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
 
         Query sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(q);
 
-        sqlQuery.setParameter("groupId", 5);
+        sqlQuery.setParameter("groupId", getId());
 //        sqlQuery.setParameter("city", "'"+city+"'");
 //
 //        sqlQuery.setParameter("country", "'"+country+"'");
@@ -432,11 +432,16 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         String q1 = "Select Login From User_info where user_id = :userid";
         Query query = sessionFactory.getCurrentSession().createSQLQuery(q1);
         ArrayList ar = new ArrayList();
-        for (int i = 0; i<sqlQuery.getResultList().size(); i++){
-            query.setParameter("userid",21);
+        for (Object userid: sqlQuery.list()) {
+            query.setParameter("userid",userid);
             System.out.println(query.getResultList().toString());
             ar.add(query.getResultList().toString());
         }
+        /*for (int i = 0; i<sqlQuery.getResultList().size(); i++){
+            query.setParameter("userid",sqlQuery.res);
+            System.out.println(query.getResultList().toString());
+            ar.add(query.getResultList().toString());
+        }*/
 
         return ar;
     }

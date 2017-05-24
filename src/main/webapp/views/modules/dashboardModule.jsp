@@ -10,20 +10,6 @@
     <p><a href="http://vk.com/" class="enjoy-css">Добавьте свои интересы, чтобы появились ваши личные плитки ${userInfo.user_id}</a></p>
 </form>
 
-
-<script>
-    var userid = ${userInfo.user_id};
-    $.ajax({
-        type: 'GET',
-        url:"userpage",
-        headers:{'X-CSRF-TOKEN':csrfToken},
-        contentType: 'application/json',
-        data: JSON.stringify(userid),
-        success: function(){
-            alert('Данные успешно отправлены.');
-        }
-    })
-</script>
 <style>
 .enjoy-css {
 display: inline-block;

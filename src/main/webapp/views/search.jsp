@@ -297,8 +297,8 @@ TODO: DASHBOARD!!!
     function getUsersForChat(e) {
         $.ajax({
             type:'GET',
-            url:"search/getUsers",
-            contentType: 'application/json',
+            url:"/search/getUsersForChat",
+            contentType: 'json',
             dataType: "json",
             success: function (res) {
                 var result;
