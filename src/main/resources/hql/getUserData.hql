@@ -1,0 +1,1 @@
+from UserData where userInfo.login=:login and dataLink=:link

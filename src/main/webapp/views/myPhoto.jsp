@@ -13,18 +13,28 @@
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/bootstrap.min.js"></script>
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
-    <script src="../resources/js/modalUserPhoto.js"></script>
+    <script src="../resources/js/editUserInfo.js"></script>
     <script src="../resources/js/csrfscript.js"></script>
-    <script src="../resources/js/menuModulescript.js"></script>
-    <script src="../resources/js/searchButtonscript.js"></script>
-    <script src="../resources/js/aboutModulescript.js"></script>
-
+    <script src="../resources/js/modalUserPhoto.js"></script>
+    <script src="../resources/js/globalscript.js"></script>
+    <script src="../resources/js/userPhotoModulescript.js"></script>
+    <script src="../resources/js/myPhotoscript.js"></script>
+    <script src="../resources/js/modalAddPhotoModule.js"></script>
 </head>
 <body>
 
 <jsp:include page="modules/navbarModule.jsp"/>
 
+
+
+
+
 <jsp:include page="modules/modalPhotoModule.jsp"/>
+<jsp:include page="modules/modalUserPhotoModule.jsp"/>
+<jsp:include page="modules/modalAddPhoto.jsp"/>
+
+<button id="showPhotoBtn" type="button" data-toggle="modal" data-target="#showPhoto" style="display:none"></button>
+
 
 <div class="container text-center">
     <div class="row">
@@ -33,11 +43,8 @@
         </div>
 
         <div class="col-sm-9">
-            <jsp:include page="modules/searchButtonModule.jsp"/>
-            <jsp:include page="modules/aboutModule.jsp"/>
-            <jsp:include page="modules/dashboardModule.jsp"/>
+            <jsp:include page="modules/userPhotoModule.jsp"/>
         </div>
-
 
 
 
@@ -48,18 +55,6 @@
 <footer class="container-fluid text-center">
     <p>Footer Text</p>
 </footer>
-    <script>
-        var userid = ${userInfo.user_id};
-        $.ajax({
-            type: 'POST',
-            url:"userpage",
-            headers:{'X-CSRF-TOKEN':csrfToken},
-            contentType: 'application/json',
-            data: JSON.stringify(userid),
-            success: function(){
-                alert('Данные успешно отправлены.');
-            }
-        })
-    </script>
+
 </body>
 </html>

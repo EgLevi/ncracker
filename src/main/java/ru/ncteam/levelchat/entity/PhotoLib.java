@@ -5,7 +5,7 @@ import java.sql.Blob;
 
 @Entity
 @Table(name = "PHOTO_LIB")
-public class PhotoLib {
+public class PhotoLib implements Comparable<PhotoLib>{
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
@@ -41,5 +41,15 @@ public class PhotoLib {
 
     public void setPhotoRef(String photoRef) {
         this.photoRef = photoRef;
+    }
+
+    @Override
+    public int compareTo(PhotoLib photoLib) {
+        return (int)(this.photoId-photoLib.getPhotoId());
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }

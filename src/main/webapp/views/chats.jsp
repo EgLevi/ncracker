@@ -13,11 +13,12 @@
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/bootstrap.min.js"></script>
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
-    <script src="../resources/js/modalUserPhoto.js"></script>
     <script src="../resources/js/csrfscript.js"></script>
-    <script src="../resources/js/menuModulescript.js"></script>
-    <script src="../resources/js/searchButtonscript.js"></script>
-    <script src="../resources/js/aboutModulescript.js"></script>
+    <script src="../resources/js/globalscript.js"></script>
+    <script src="../resources/js/searchModulescript.js"></script>
+    <script src="../resources/js/modalUserPhoto.js"></script>
+    <script src="../resources/js/chats.js"></script>
+
 
 </head>
 <body>
@@ -33,11 +34,8 @@
         </div>
 
         <div class="col-sm-9">
-            <jsp:include page="modules/searchButtonModule.jsp"/>
-            <jsp:include page="modules/aboutModule.jsp"/>
-            <jsp:include page="modules/dashboardModule.jsp"/>
+            <jsp:include page="modules/chatsModule.jsp"/>
         </div>
-
 
 
 
@@ -48,18 +46,6 @@
 <footer class="container-fluid text-center">
     <p>Footer Text</p>
 </footer>
-    <script>
-        var userid = ${userInfo.user_id};
-        $.ajax({
-            type: 'POST',
-            url:"userpage",
-            headers:{'X-CSRF-TOKEN':csrfToken},
-            contentType: 'application/json',
-            data: JSON.stringify(userid),
-            success: function(){
-                alert('Данные успешно отправлены.');
-            }
-        })
-    </script>
+
 </body>
 </html>

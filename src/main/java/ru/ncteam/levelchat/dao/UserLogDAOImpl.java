@@ -45,6 +45,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         if (existUser(userInfo,queryString))
         {
             userInfo.setPassword(bcryptEncoder.encode(userInfo.getPassword()));
+            userInfo.setPhoto_ava("photo/ava.png");
             Role role = new Role();
             role.setRole("ROLE_USER");
             role.setId(1);

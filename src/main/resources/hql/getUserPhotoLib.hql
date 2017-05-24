@@ -1,0 +1,1 @@
+from PhotoLib where userInfo.login=:login and photoRef=:link
