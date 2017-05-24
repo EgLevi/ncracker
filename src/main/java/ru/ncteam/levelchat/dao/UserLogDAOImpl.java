@@ -346,8 +346,8 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     public Set<Interests> getInterestsByInteresName(List<String> interestsName)
     {
     	Set<Interests> interestsList = new HashSet<Interests>();
-    	for(String name:interestsName){
-    		Query query = sessionFactory.getCurrentSession().createQuery("from Interests where interestName=:Param");
+    	Query query = sessionFactory.getCurrentSession().createQuery("from Interests where interestName=:Param");
+    	for(String name:interestsName){    		
     		query.setParameter("Param", name);
     		List<Interests> list = query.list();
     		interestsList.add(list.get(0));
@@ -358,12 +358,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     @Transactional
     public void putInterestsUser(long UserID, Set<Interests> interests)
     {
-    	 UserInfo userinfo = getUser(UserID);
-    	 Set<Interests> NewSet = new HashSet<Interests>();
-    	 for(Interests curr:interests){
- 			System.out.println(curr.getInterestId());
- 			NewSet.add(curr);
- 		}    	 
+    	 UserInfo userinfo = getUser(UserID);  	 
     	 userinfo.setInterests(interests);
     }
     

@@ -480,18 +480,23 @@ public class UserLogController {
 		//System.out.println("ID Пользователя: "+String.valueOf(userLogService.getUSER_ID(user.getUsername()))+"\nRequets: "+nameCategory);	
 	}
 	
-	@RequestMapping(value = "/ajaxDelete", method = RequestMethod.POST)
+	@RequestMapping(value = "/ajaxSaveInteres", method = RequestMethod.POST)
 	@ResponseBody
-	public void deleteInterestsForUser(HttpServletRequest request) throws JsonSyntaxException, JsonIOException, IOException{
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    JSONObject json = new JSONObject();	    
+	public void ajaxSaveInteres(HttpServletRequest request) throws JsonSyntaxException, JsonIOException, IOException{
+    
 		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
 		int count = data.get("count").getAsInt();
-		List<String> NamesInterests = new ArrayList<String>();
+		
+		CategoryInterest category = userLogService.getCategorie(data.get("category").getAsString());
+		
+		List<Interests> Interes = new ArrayList<Interests>();
 		for(int i = 0; i < count; i++){
-			NamesInterests.add(data.get(String.valueOf(i)).getAsString());
+			Interests curr = new Interests();
+			curr.setInterestName(data.get(String.valueOf(i)).getAsString());
+			curr.setCategoryInterest(category);
+			Interes.add(curr);
 		}
-		long id_category = userLogService.getCategoryIDByCatName(data.get("category").getAsString());
+		userLogService.putInterests(Interes, category.getCategoryName());
 	}
 	
 }

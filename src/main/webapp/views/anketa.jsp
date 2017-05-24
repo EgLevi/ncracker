@@ -91,7 +91,7 @@
         </div>
         <div class="row">
           <div class="col-md-8">
-            <select multiple class="select-tag" tabindex="-1" aria-hidden="true">
+            <select id="writeUser" multiple class="select-tag" tabindex="-1" aria-hidden="true">
             </select>
           </div>  
         </div> 
@@ -100,6 +100,7 @@
         		<input type="button" value="Сохранить" id="but" onclick="save()">
         	</div>
         </div>        
+        
 
         
     </div>
@@ -117,11 +118,12 @@
         	del_array = array[key['name']].slice();	
         	alert(del_array);*/
         	var Options = [];	//список выбранных интересов в компоненте select
+        	var request = {};
         	//Получаю массив из <option> в select	  							
               $('#select option:selected').each(function(){
               	Options.push(this.text);
               });
-              array2[key['name']] = Options;
+              array2[key['name']] = Options.slice();
         	/*for(var i = 0; i < Options.length; i++){
         		for(var j = 0; j < del_array.length; j++){
         			if(del_array[j] == Options[i]){
@@ -134,9 +136,46 @@
         		}
         	}        	
         	alert("Удалить из БД: "+del_array+"\nДобавить в БД:"+Options);*/
-        	alert("Добавить в БД:"+array2[key['name']]);
-        	var request = {};
-        	//request['category'] = key['name'];        	
+        	Options = [];
+        	$('#writeUser option:selected').each(function(){
+              	Options.push(this.text);
+              });
+        	
+        	if(Options.length != 0){
+        		array2['Другие'] = Options.slice();
+        		for(var i = 0; i < Options.length; i++){
+            		for(var j = 0; j < writeUser.length; j++){
+            			if(writeUser[j] == Options[i]){
+            				writeUser.splice(j,1);
+            				Options.splice(i,1);
+            				i--;
+            				j--;       			
+            				break;
+            			}
+            		}
+            	}
+        		if(Options.length != 0){
+        			alert("ОТПРАВЛЯЮ ЗАПРОС");
+        			var count = 0;
+        			for (var i = 0; i < Options.length; i++){
+        				request[i] = Options[i];
+        				count++;
+        			}
+        			request['count'] = count;
+        			request['category'] = 'Другие';
+        			$.ajax({
+    					type:"POST",
+    					url:"ajaxSaveInteres.html",
+    					data:JSON.stringify(request),
+    					contentType: "application/json",
+    					async: false
+    				});
+        		}
+        	}
+        	
+        	//alert("Добавить в БД:"+array2[key['name']]+"\nВ таблицу интересов добавить: "+Options);
+        	
+        	request = {};        	
         	var count = 0;
         	for(var i = 0; i < caterys.length; i++){
         		for(var j = 0; j < array2[caterys[i]].length; j++){
@@ -151,7 +190,7 @@
 					url:"ajaxSave.html",
 					data:JSON.stringify(request),
 					contentType: "application/json"
-				});
+				});				
         }		
         
         $('.list-group-item').on('click', function() {
@@ -174,36 +213,45 @@
 			    $('#select').trigger('chosen:updated');					    
 			  }
 			  
-			
-			for(var i = 0; i < array[key['name']].length; i++){
-				$('#select').append('<option value="'+i+'">'+array[key['name']][i]+'</option>');
-					$('#select').trigger('chosen:updated');
-			}				
-				var Options = [];	//список выбранных интересов в компоненте select
-			
-			//заполняю выбранные из категории интересы
-						//Получаю массив из <option> в select	  							
-	                    $('#select > option').each(function(){
-	                    	Options.push(this.text);
-	                    });
-						for(var i = 0; i < Options.length; i++){
-							//сравниваю каждый <option> с интересами и если они совпадают то делаю этот интерес selected
-							for(var j = 0; j < array2[key['name']].length; j++){
-								if(array2[key['name']][j] == Options[i]){
-									$("#select option[value=" + i + "]").attr('selected', 'true');	
-									$('#select').trigger('chosen:updated');
-									break;
+			if($(this).text()!="Другие"){
+				for(var i = 0; i < array[key['name']].length; i++){
+					$('#select').append('<option value="'+i+'">'+array[key['name']][i]+'</option>');
+						$('#select').trigger('chosen:updated');
+				}				
+					var Options = [];	//список выбранных интересов в компоненте select
+				
+				//заполняю выбранные из категории интересы
+							//Получаю массив из <option> в select	  							
+		                    $('#select > option').each(function(){
+		                    	Options.push(this.text);
+		                    });						
+							for(var i = 0; i < Options.length; i++){
+								//сравниваю каждый <option> с интересами и если они совпадают то делаю этот интерес selected
+								for(var j = 0; j < array2[key['name']].length; j++){								
+									if((array2[key['name']][j] == Options[i])){
+										$("#select option[value=" + i + "]").attr('selected', 'true');	
+										$('#select').trigger('chosen:updated');
+										break;
+									}
 								}
-							}
-						}	  							     		
+							}	
+			}
+			else{
+				for(var i = 0; i < array2[key['name']].length; i++){
+					$('#writeUser').append('<option value="'+i+'">'+array2[key['name']][i]+'</option>');
+					$("#writeUser option[value=" + i + "]").attr('selected', 'true');
+				}
+			}			  							     		
             });       
         
         var key;
         var array;
         var array2;
+        var writeUser;
         var caterys;
                 $(document).ready(function() { 
-                  key = '';
+                	writeUser = [];
+                	key = '';
                   array = [];			//список интересов в БД
                   array2 = [];			//список интересов пользователя
                   var count = 0;
@@ -272,7 +320,8 @@
                   $('.chosen-select').chosen();                  
                   $('.select-tag').select2({
                     tags: true
-                  });                     	
+                  });
+                  writeUser = array2['Другие'].slice();
             });           
         </script>
   </body>
