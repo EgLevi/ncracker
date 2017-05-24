@@ -55,7 +55,7 @@
         <div class="col-sm-9">
             <jsp:include page="modules/searchButtonModule.jsp"/>
             <jsp:include page="modules/aboutModule.jsp"/>
-            #dashboard
+            <jsp:include page="modules/dashboardModule.jsp"/>
         </div>
 
 
@@ -66,7 +66,19 @@
 <footer class="container-fluid text-center">
     <p>Footer Text</p>
 </footer>
-
+    <script>
+        var userid = ${userInfo.user_id};
+        $.ajax({
+            type: 'POST',
+            url:"userpage",
+            headers:{'X-CSRF-TOKEN':csrfToken},
+            contentType: 'application/json',
+            data: JSON.stringify(userid),
+            success: function(){
+                alert('Данные успешно отправлены.');
+            }
+        })
+    </script>
 </body>
 </html>
 

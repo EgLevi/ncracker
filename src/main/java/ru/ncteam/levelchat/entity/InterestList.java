@@ -11,7 +11,7 @@ public class InterestList {
     @SequenceGenerator(name = "LCSEQ", sequenceName = "LCSEQ", allocationSize = 1)
     private long listId;
 
-    @Column(name = "INTEREST_GROUP", unique = true)
+    @Column(name = "INTEREST_GROUP")
     private long interestGroup;
 
     @ManyToOne

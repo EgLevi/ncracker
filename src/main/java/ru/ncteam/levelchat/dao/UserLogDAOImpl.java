@@ -1,5 +1,6 @@
 package ru.ncteam.levelchat.dao;
 
+import com.sun.java.swing.plaf.windows.WindowsBorders;
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
@@ -15,10 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.ncteam.levelchat.entity.CategoryInterest;
-import ru.ncteam.levelchat.entity.Interests;
-import ru.ncteam.levelchat.entity.Role;
-import ru.ncteam.levelchat.entity.UserInfo;
+import ru.ncteam.levelchat.entity.*;
 
 
 import java.util.*;
@@ -350,6 +348,98 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         query.setParameter("login", login);
         return (UserInfo)query.uniqueResult();
     }
-    
+
+    @Transactional
+    public Long getId(){
+        Query query = sessionFactory.getCurrentSession().createSQLQuery("Select Max(interest_group) FROM interest_list");
+        Long id = Long.parseLong(query.getSingleResult().toString()) + 1L;
+        return id;
+    }
+
+    @Transactional
+    @Override
+    public void putDashBoard(Long userid) {
+        DashboardUrl dashboardUrl = new DashboardUrl();
+        Interests interests = new Interests();
+        Query query = sessionFactory.getCurrentSession().createQuery("from UserInterest where userId =:userid");
+        query.setParameter("userid",userid);
+        List<UserInterest> uListInter = (List<UserInterest>) query.list();
+        for (int i = 0; i < uListInter.size(); i++) {
+
+            interests.setInterestId(uListInter.get(i).getInterestId());
+            dashboardUrl.setBoardId(dashboardUrl.getBoardId()+1);
+            dashboardUrl.setInterests(interests);
+            dashboardUrl.setUrlInterest("href");
+            sessionFactory.getCurrentSession().save(dashboardUrl);
+        }
+    }
+    /**
+     *  @param interestLists
+     * @param groupid
+     */
+    @Override
+    @Transactional
+    public void putInterestList(List<Interests> interestLists, Long groupid) {
+        InterestList interestList = new InterestList();
+        Interests interests = new Interests();
+
+        for (int i = 0; i<interestLists.size(); i++){
+
+            interests.setInterestId(interestLists.get(i).getInterestId());
+
+            interestList.setInterest(interests);
+
+            interestList.setInterestGroup(groupid);
+            sessionFactory.getCurrentSession().save(interestList);
+        }
+    }
+
+    /**
+     *
+     * @param city
+     * @param country
+     * @param sex
+     * @param otAge
+     * @param doAge
+     * @param group
+     * @return listOfUsersForChat
+     * @throws HibernateException
+     */
+    @Override
+    @Transactional
+    public  ArrayList getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group) throws HibernateException {
+
+        String q = "Select t1.user_id FROM (SELECT uint.user_id, COUNT(uint.user_id) " +
+                "   FROM User_interest uint, Interest_list ilist " +
+                "   WHERE uint.interest_id = ilist.interest_id " +
+                "   AND ilist.INTEREST_GROUP = :groupId " +
+                "   GROUP BY uint.user_id ORDER BY COUNT(uint.user_id) DESC) t1";
+
+
+        Query sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(q);
+
+        sqlQuery.setParameter("groupId", 5);
+//        sqlQuery.setParameter("city", "'"+city+"'");
+//
+//        sqlQuery.setParameter("country", "'"+country+"'");
+//        sqlQuery.setParameter("sex", "'"+sex+"'");
+//        sqlQuery.setInteger("otAge", otAge);
+//        sqlQuery.setInteger("doAge", doAge);
+        System.out.println("Айдишники собеседников");
+        System.out.println(sqlQuery.getResultList().toString());
+
+        String q1 = "Select Login From User_info where user_id = :userid";
+        Query query = sessionFactory.getCurrentSession().createSQLQuery(q1);
+        ArrayList ar = new ArrayList();
+        for (int i = 0; i<sqlQuery.getResultList().size(); i++){
+            query.setParameter("userid",21);
+            System.out.println(query.getResultList().toString());
+            ar.add(query.getResultList().toString());
+        }
+
+        return ar;
+    }
+
+
 
 }

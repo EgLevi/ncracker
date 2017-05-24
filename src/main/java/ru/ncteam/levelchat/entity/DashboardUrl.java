@@ -3,7 +3,7 @@ package ru.ncteam.levelchat.entity;
 import javax.persistence.*;
 @Entity
 @Table(name = "DASHBOARD_URL")
-class DashboardUrl {
+public class DashboardUrl {
     @Id
     @Column(name = "BOARD_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
@@ -17,7 +17,7 @@ class DashboardUrl {
     private String statusChat;
 
     @ManyToOne
-    @JoinColumn(name = "INTEREST_ID", nullable = false)
+    @JoinColumn(name = "INTEREST_ID", nullable = false, unique = true)
     private Interests interests;
 
     public long getBoardId() {

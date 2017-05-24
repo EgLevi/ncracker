@@ -166,6 +166,27 @@ public class UserLogServiceImpl implements UserLogService {
         return userLogDAO.getUserByLogin(login, getQuery("hql/UserInfoByLogin.hql"));
     }
 
+    public List<UserInfo> getUsersChat(String city, String country, String sex, int otAge, int doAge, Long group) {
+        return userLogDAO.getUsersForChat( city,  country,  sex,  otAge,  doAge,  group);
+    }
+
+    @Override
+    public void putInterestList(List<Interests> interestLists, Long groupId) throws HibernateException {
+        userLogDAO.putInterestList(interestLists,groupId);
+    }
+    public Long getId(){
+        return userLogDAO.getId();
+    }
+
+    /**
+     * добавляет интересы конкретного пользователя в dashboard
+     * @param userid
+     */
+    @Override
+    public void putDashboard(Long userid) {
+        userLogDAO.putDashBoard(userid);
+    }
+
 
     private String getQuery(String filename) {
         try {

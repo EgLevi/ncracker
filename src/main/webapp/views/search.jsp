@@ -5,8 +5,11 @@
 <html>
 <script src="resources/js/jquery-1.4.2.min.js" type="text/javascript" ></script>
 <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <sec:csrfMetaTags />
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.2.504/styles/kendo.bootstrap-v4.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="resources/css/affablebean.css">
     <link rel="stylesheet" type="text/css" href="resources/css/LCstyle.css">
@@ -31,10 +34,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://localhost:8081/ru.ncteam.levelchat/index.html">Главная</a></li>
-                <li><a href="http://localhost:8081/ru.ncteam.levelchat/postregistration#">Поддержка</a></li>
-                <li><a href="http://localhost:8081/ru.ncteam.levelchat/postregistration#">О нас</a></li>
-                <li><a href="http://localhost:8081/ru.ncteam.levelchat/contact.html">Контакты</a></li>
+                <li><a href="http://localhost:8082/ru.ncteam.levelchat/index.html">Главная</a></li>
+                <li><a href="http://localhost:8082/ru.ncteam.levelchat/postregistration#">Поддержка</a></li>
+                <li><a href="http://localhost:8082/ru.ncteam.levelchat/postregistration#">О нас</a></li>
+                <li><a href="http://localhost:8082/ru.ncteam.levelchat/contact.html">Контакты</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -49,13 +52,24 @@
             </div>
             <div class="panel-body table-responsive" style="height: 420px">
                 <div style="width:40%; margin-left: auto;margin-right: auto;margin-top: 100px;">
+                    <div style="margin-top:10px;"><label class="fontface">Интересы</label></div>
+                    <%--Пользователи для чата--%>
+                        <div class="table-responsive" style="height: 130px;">
+                            <div id="usersForChat" class="btn-group-vertical table-responsive" style="width:100%;">
+                                <div id="fdivUFC">
+                                    <label id="flabelusers" style="display:none">0</label>
+                                    <button id="fusersForChat" type="button" class="btn btn-default fontface" style="display:none; width:100%">пользователь 1</button>
+                                </div>
+                            </div>
+                        </div>
+                    <%--end--%>
                     <div class="btn" style="transform:scale(2); width:100%; margin:auto;">
                         <!--<button type="button" class="btn btn-primary btn-block btn-lg" ></button>-->
                         <img src="resources/images/search.png" alt="Logo" height="40" align="top">
                     </div>
                     <div style="margin-top: 15px">
                         <div style="width:100%; margin-left: auto; margin-right: auto;text-align:center">
-                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">параметры поиска</button>
+                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">Параметры поиска собеседника</button>
                             <!-- Modal -->
                             <div class="modal fade" id="myModal" role="dialog" style="position:absolute;">
                                 <div class="modal-dialog my-modal-dialog" style="">
@@ -121,6 +135,14 @@
     }
 </style>
 
+
+<%--
+TODO: Добавить обработчик на алгоритм поиска
+1) в нём должен быть инсерт в InterestList по interestId
+2) запомнить группу InterestGroup
+TODO: Так же создание чата по первому пользователю из этого алгоритма(скопировать старый код из другого проекта)
+TODO: DASHBOARD!!!
+--%>
 <style>
 
     .remBtn
@@ -184,6 +206,7 @@
              contentType: 'application/json',
              data: JSON.stringify(data),
              success: function (res) {
+
              cancelBtn.click();
              },
              error: function (jqXHR, textStatus, errorThrown) {
@@ -271,7 +294,42 @@
             data.push({ "interestId": parentEl.getElementsByTagName("label")[0].innerHTML, "interestName": this.innerHTML });
         }
     }
+    function getUsersForChat(e) {
+        $.ajax({
+            type:'GET',
+            url:"search/getUsers",
+            contentType: 'application/json',
+            dataType: "json",
+            success: function (res) {
+                var result;
+                try {
+                    result = JSON.parse(res);
+                } catch (e) {
+                    result = res;
+                }
 
+                var childList = usersForChat.getElementsByTagName("div");
+                var length=childList.length;
+
+                for(i=0;i<length-1;i++)
+                {
+                    childList[1].remove();
+                }
+                var element;
+
+                for (i = 0; i < result.length; i++) {
+                    element = $("#fdivUFC").clone();
+                    element[0].getElementsByTagName("button")[0].innerHTML = result[i].interestName;
+                    element[0].getElementsByTagName("button")[0].addEventListener("click",clickOnInterest);
+                    element[0].getElementsByTagName("button")[0].style.display = "block";
+                    interests.appendChild(element[0]);
+                }
+            },
+            error:function (jqXHR, textStatus, errorThrown) {
+            }
+        })
+
+    }
     function getInterestsByCategory(e)
     {
         $.ajax({
@@ -339,6 +397,11 @@
             error: function (jqXHR, textStatus, errorThrown) {
             }
         });
+    }
+
+    function createListUsers() {
+
+        
     }
 
     getCategory();
