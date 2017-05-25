@@ -116,9 +116,20 @@ public class UserpageController {
 		{
 			userInfo.setPhoto_ava("photo/ava.png");
 		}
-		map.put("photos", photoLibs);
+		//map.put("photos", photoLibs);
 		map.put("userInfo", userInfo);
 		return "myPhoto";
+	}
+
+
+	@RequestMapping(value = "/myPhotos/getAllPhoto",method = RequestMethod.GET)
+	@ResponseBody
+	public List<PhotoLib> getPhoto()
+	{
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<PhotoLib> photoLibs = userInfoDAO.getUserPhotos(user.getUsername());
+		photoLibs.sort(PhotoLib::compareTo);
+		return photoLibs;
 	}
 
 

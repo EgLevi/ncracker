@@ -61,4 +61,26 @@ $(document).ready(function () {
             return false; // отменяем отправку формы, т.е. перезагрузку страницы
         });
     });
+
+
+    function windowResize(e)
+    {
+        var witdh;
+        if(parseInt(document.documentElement.clientWidth)<500)
+        {
+            width = parseInt(document.documentElement.clientWidth)*0.8;
+        }
+        else
+        {
+            width=450;
+        }
+        modalPhoto.getElementsByClassName('modal-dialog')[0].style.width = width+"px";
+        modalPhoto.getElementsByClassName('panel')[0].style.width = width+"px";
+        photoeditform.getElementsByTagName('span')[0].style.width = (width-33)+"px";
+    }
+
+    windowResize();
+
+    window.addEventListener('resize',windowResize);
+
 })

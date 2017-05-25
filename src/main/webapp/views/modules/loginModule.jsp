@@ -21,7 +21,6 @@
             </div>
             <div class="login-help">
                 <a href="registration" style="color:#777777">Регистрация</a>
-                <a href="adminpage" style="color:#777777">Войти как админ</a>
             </div>
         </form:form>
     </div>

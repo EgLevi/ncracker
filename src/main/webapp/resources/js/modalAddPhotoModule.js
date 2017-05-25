@@ -24,7 +24,9 @@ $(document).ready(function () {
                 if(res.indexOf("fail")>-1)
                 {
                     addPhotoError.innerHTML=res;
-                    relativePathPhoto = "none"
+                    relativePathPhoto = "none";
+                    addPhoto.src="";
+                    successLoadPhoto.style.display="none";
                 }
                 else
                 {
@@ -83,40 +85,35 @@ $(document).ready(function () {
 
     function addPhotoOnPanel()
     {
-        var rows = $('#myPhotoContent > table > tbody > tr');
-        var lastRow;
-        var cells;
-        var flag;
-        if(rows.length > 0)
+        var rect;
+        var spans = myPhotoContent.getElementsByTagName('span');
+        var lastRect = spans[spans.length-1].getBoundingClientRect();
+        var length = spans.length;
+        for(i=0;i<length;i++)
         {
-            lastRow = rows[rows.length - 1];
-            cells = lastRow.getElementsByTagName('td');
-            flag=(cells.length==4);
+            rect = spans[spans.length-1].getBoundingClientRect();
+            if(rect.top==lastRect.top)
+            {
+                hidePanel.prepend(spans[spans.length-1].getElementsByTagName('img')[0]);
+                spans[spans.length-1].remove();
+            }
+            else
+            {
+                break;
+            }
         }
-        else
-        {
-            flag=true;
-        }
-        if(flag)
-        {
-            $('#myPhotoContent > table > tbody').append('<tr></tr>');
-            rows = $('#myPhotoContent > table > tbody > tr');
-        }
-        lastRow = $('#myPhotoContent > table > tbody > tr:last');
-        lastRow.append('<td><span class="button photoBtn" style="padding-right: 0px;padding-left: 0px; position:relative;">'+
-            '<button type="button" style="position:absolute; right:-10px; top:-42px; color:#ff0000; display: none;" class="close">×</button>'+
-            '<img class="hrefImg media-object" src = "'+relativePathPhoto+'" style="width:120px; height:80px; display: inline-block; margin-top: 10px; margin-left:17px;">'+
-        '</span></td>');
-        cells = lastRow[0].getElementsByTagName('td');
-        cells[cells.length - 1].addEventListener("click",clickOnPhoto);
-        cells[cells.length - 1].addEventListener("mouseout",mouseOutImg);
-        cells[cells.length - 1].addEventListener("mouseover",mouseOnImg);
-        cells[cells.length - 1].getElementsByTagName('button')[0].addEventListener('click',deletePhoto);
+        $('#hidePanel').append('<img src="'+relativePathPhoto+'">');
+        var imgs = hidePanel.getElementsByTagName('img');
+        countImg = 1;
+        counter=0;
+        imgs[imgs.length - 1].addEventListener("load",photoLoad);
     }
 
     function clickOnCloseModalAddPhoto() {
         addPhoto.src="";
         successLoadPhoto.style.display="none";
+        addPhotoSelect.value = "";
+        addPhotoError.value="";
     }
 
     closeModalAddPhoto.addEventListener("click",clickOnCloseModalAddPhoto);
@@ -129,24 +126,10 @@ $(document).ready(function () {
         addPhoto.src=relativePathPhoto;
         addPhoto.onload = function()
         {
-            var scale;
-            if((addPhoto.naturalWidth<850)&&(addPhoto.naturalHeight<350))
-            {
-                scale=1;
-            }
-            else if(addPhoto.naturalWidth/850>addPhoto.naturalHeight/350)
-            {
-                scale=850/addPhoto.naturalWidth;
-            }
-            else
-            {
-                scale=350/addPhoto.naturalHeight;
-            }
-            var width = addPhoto.naturalWidth*scale;
-            var height = addPhoto.naturalHeight*scale;
-            addPhoto.style.left = ((width*(1-1/scale) + 900 - width)/2)+"px";
-            addPhoto.style.top = ((height*(1 - 1/scale) + 370 - height)/2)+"px";
-            addPhoto.style.transform="scale("+scale+")";
+            var str = showAddPhoto.getElementsByClassName('panel')[0].style.width;
+            str = str.replace("px", "");
+            var widthStyle = parseInt(str) - 50;
+            addContentOnModal(addPhoto, widthStyle, 335);
         }
     }
 })

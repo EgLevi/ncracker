@@ -18,7 +18,6 @@
     <script src="../resources/js/modalUserPhoto.js"></script>
     <script src="../resources/js/globalscript.js"></script>
     <script src="../resources/js/userPhotoModulescript.js"></script>
-    <script src="../resources/js/myPhotoscript.js"></script>
     <script src="../resources/js/modalAddPhotoModule.js"></script>
 </head>
 <body>
@@ -44,6 +43,9 @@
 
         <div class="col-sm-9">
             <jsp:include page="modules/userPhotoModule.jsp"/>
+        </div>
+
+        <div id="hidePanel" style="display: none;">
         </div>
 
 
