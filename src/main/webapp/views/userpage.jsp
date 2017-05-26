@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>${userInfo.login}</title>
+    <title>${userInfo.name} ${userInfo.surname}</title>
     <sec:csrfMetaTags />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
