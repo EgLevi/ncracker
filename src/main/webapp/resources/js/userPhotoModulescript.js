@@ -18,7 +18,7 @@ function photoLoad(e)
 function imgAlignment(imgSource)
 {
     var str;
-    var maxHeight=80;
+    var maxHeight=120;
     var widthPanel = myPhotoContent.clientWidth-20;
     var sumWidth=0;
     str="";
@@ -369,6 +369,20 @@ $(document).ready(function () {
     }
 
     getAllPhoto();
+
+    function mouseOnPhotoPanel(e) {
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = '17px';
+    }
+
+    function mouseOutPhotoPanel(e) {
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0px';
+    }
+
+    myPhotoContent.addEventListener("mouseover", mouseOnPhotoPanel);
+
+    myPhotoContent.addEventListener("mouseout", mouseOutPhotoPanel);
 
 
 })

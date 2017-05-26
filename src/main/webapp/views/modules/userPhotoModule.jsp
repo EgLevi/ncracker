@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="myPhotoPanel" class="col-md-9 removableElement">
+<div id="myPhotoPanel" class="col-md-12 removableElement">
     <div class="panel panel-default">
         <div class="panel-heading">
             <label>Мои Фото</label>
