@@ -351,6 +351,216 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         query.setParameter("login", login);
         return (UserInfo)query.uniqueResult();
     }
+
+
+    @Transactional
+    public long getUSER_ID(String username)
+    {
+        long id;
+        List<UserInfo> list = new ArrayList<UserInfo>();
+        try
+        {
+            list = sessionFactory.getCurrentSession().createQuery("from UserInfo where login = '"+username+"'").list();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        if (list.size() != 1)
+        {
+            return -1;
+        }
+        else
+        {
+            id = list.get(0).getUser_id();
+            return id;
+        }
+    }
+
+    @Transactional
+    public List<Interests> getListInterests(CategoryInterest name)
+    {
+        List<Interests> l = new ArrayList<Interests>();
+        List<Interests> mylist = new ArrayList<Interests>();
+        try{// u where u.CATEGORY_ID="+id
+            l = sessionFactory.getCurrentSession().createQuery("from Interests").list();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            return l;
+        }
+        for (Interests curr: l)
+        {
+            if(curr.getCategoryInterest().getCategoryName().equals(name.getCategoryName()))
+            {
+                System.out.print(curr.getInterestName() + " ");
+                mylist.add(curr);
+            }
+        }
+        return mylist;
+    }
+
+    @Transactional
+    public CategoryInterest getCategorie(String name)
+    {
+        //List<CategoryInterest> cat = new ArrayList<CategoryInterest>();
+        List<CategoryInterest> exec = new ArrayList<CategoryInterest>();
+        try
+        {
+            exec = sessionFactory.getCurrentSession().createQuery("from CategoryInterest").list();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            return exec.get(0);
+        }
+        for (CategoryInterest curr: exec)
+        {
+            System.out.println(curr.getCategoryName());
+            if(curr.getCategoryName().equals(name))
+            {
+                return curr;
+            }
+        }
+        return exec.get(0);
+    }
+
+    @Transactional
+    public String addInterest(Interests inter)
+    {
+        try
+        {
+            sessionFactory.getCurrentSession().save(inter);
+        }
+        catch(Exception e) {
+            return e.getMessage();
+        }
+        return ("success Insert interes");
+    }
+
+    @Transactional
+    public List<CategoryInterest> getCategory()
+    {
+        //List<CategoryInterest> myList = new ArrayList<CategoryInterest>();
+        //CategoryInterest inter = new CategoryInterest();
+        List<CategoryInterest> exec = new ArrayList<CategoryInterest>();
+        try
+        {
+            //Criteria criteria = session.createCriteria(CategoryInterest.class);
+            //myList = criteria.add(Restrictions.isNotNull("categoryId")).list();
+
+            //inter = (CategoryInterest)criteria.add(Restrictions.eq("categoryId","1")).uniqueResult();
+            //inter = sessionFactory.getCurrentSession().get(CategoryInterest.class, 1);
+            Query query = sessionFactory.getCurrentSession().createQuery("from CategoryInterest");
+            exec = query.list();
+
+            System.out.println(exec.get(0).getCategoryName());
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            return exec;
+        }
+        System.out.println("succes");
+        return exec;
+    }
+
+    @Transactional
+    public String addCategory(CategoryInterest catInteres)
+    {
+        try
+        {
+            sessionFactory.getCurrentSession().save(catInteres);
+        }
+        catch(Exception e) {
+            return e.getMessage();
+        }
+        return "success";
+    }
+
+    @Transactional
+    public String updateUserInfo(UserInfo userInfo,String queryString) {
+
+        try {
+            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+            query.setParameter("email", userInfo.getEmail());
+            query.setParameter("country", userInfo.getCountry());
+            query.setParameter("city", userInfo.getCity());
+            query.setParameter("name", userInfo.getName());
+            query.setParameter("surname", userInfo.getSurname());
+            query.setParameter("age", userInfo.getAge());
+            query.setParameter("sex", userInfo.getSex());
+            query.setParameter("login", userInfo.getLogin());
+            query.executeUpdate();
+            return "success";
+        } catch (HibernateException e) {
+            return e.getMessage();
+        }
+    }
+
+    @Transactional
+    public long getCategoryIDByCatName(String categoryName,String queryString)
+    {
+        try {
+            Query query=sessionFactory.getCurrentSession().createQuery("from CategoryInterest where categoryName=:categoryName");
+            query.setParameter("categoryName", categoryName);
+            List<CategoryInterest> response = query.list();
+            return response.get(0).getCategoryId();
+        } catch (HibernateException e) {
+            return -1;
+
+        }
+    }
+
+
+    @Transactional
+    public UserInfo getUser(long userId)
+    {
+        Query query = sessionFactory.getCurrentSession().createQuery("from UserInfo WHERE user_id=:ParamID");
+        query.setParameter("ParamID", userId);
+        List<UserInfo> response = query.list();
+        UserInfo userInfo = response.get(0);
+        return userInfo;
+    }
+
+    @Transactional
+    public List<String> getUsersInterests(long userId, long categoryId)
+    {
+        List<String> listInterests = new ArrayList<String>();
+        Set<Interests> interests = new HashSet<Interests>();
+        UserInfo userInfo = getUser(userId);
+        interests = userInfo.getInterests();
+        for(Interests inter:interests){
+            if(inter.getCategoryInterest().getCategoryId() == categoryId)
+            {
+                listInterests.add(inter.getInterestName());
+            }
+        }
+        return listInterests;
+    }
+
+    @Transactional
+    public Set<Interests> getInterestsByInteresName(List<String> interestsName)
+    {
+        Set<Interests> interestsList = new HashSet<Interests>();
+        Query query = sessionFactory.getCurrentSession().createQuery("from Interests where interestName=:Param");
+        for(String name:interestsName){
+            query.setParameter("Param", name);
+            List<Interests> list = query.list();
+            interestsList.add(list.get(0));
+        }
+        return interestsList;
+    }
+
+    @Transactional
+    public void putInterestsUser(long UserID, Set<Interests> interests)
+    {
+        UserInfo userinfo = getUser(UserID);
+        userinfo.setInterests(interests);
+    }
+
+
+
     
 
 }

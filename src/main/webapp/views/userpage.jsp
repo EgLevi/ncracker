@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="../resources/css/userpagestyles.css">
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/bootstrap.min.js"></script>
-    <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/modalUserPhoto.js"></script>
     <script src="../resources/js/csrfscript.js"></script>
     <script src="../resources/js/menuModulescript.js"></script>
@@ -43,7 +42,6 @@
 
 
     </div>
-</div>
 </div>
 
 <footer class="container-fluid text-center">

@@ -5,6 +5,7 @@ import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -46,6 +47,28 @@ public interface UserLogDAO {
     public void putCategoryInterestByName(String categoryName) throws HibernateException;
 
     public UserInfo getUserByLogin(String login,String queryString) throws HibernateException;
+
+    public String addCategory(CategoryInterest catInteres);
+
+    public List<CategoryInterest> getCategory();
+
+    public long getUSER_ID(String username);
+
+    public String addInterest(Interests inter);
+
+    public CategoryInterest getCategorie(String name);
+
+    public List<Interests> getListInterests(CategoryInterest name);
+
+    public List<String> getUsersInterests(long userId, long categoryId);
+
+    public long getCategoryIDByCatName(String categoryName,String queryString);
+
+    public Set<Interests> getInterestsByInteresName(List<String> interestsName);
+
+    public UserInfo getUser(long userId);
+
+    public void putInterestsUser(long UserID, Set<Interests> interests);
 
 
 }

@@ -5,6 +5,7 @@ import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.HibernateException;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,5 +44,27 @@ public interface UserLogService {
     void putCategoryInterestByName(String categoryName) throws HibernateException;
 
     UserInfo getUserByLogin(String login) throws HibernateException;
+
+    public long getCategoryIDByCatName(String categoryName);
+
+    public long getUSER_ID(String username);
+
+    public List<String> getUsersInterests(long userId, long categoryId);
+
+    public void addCategoryInterests(CategoryInterest catInteres);
+
+    public List<CategoryInterest> getCategories();
+
+    public void addInter(Interests inter);
+
+    public void putInterestsUser(long UserID, Set<Interests> interests);
+
+    public CategoryInterest getCategorie(String name);
+
+    public Set<Interests> getInterestsByInteresName(List<String> interestsName);
+
+    public UserInfo getUser(long userId);
+
+    public List<Interests> getListInterests(CategoryInterest name);
 
 }

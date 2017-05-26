@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserLogServiceImpl implements UserLogService {
@@ -214,5 +215,59 @@ public class UserLogServiceImpl implements UserLogService {
         return md5Hex;
     }
 
+    public List<String> getUsersInterests(long userId, long categoryId)
+    {
+        return userLogDAO.getUsersInterests(userId, categoryId);
+    }
+
+    public UserInfo getUser(long userId)
+    {
+        return userLogDAO.getUser(userId);
+    }
+
+    public long getUSER_ID(String username)
+    {
+        return userLogDAO.getUSER_ID(username);
+    }
+
+    public Set<Interests> getInterestsByInteresName(List<String> interestsName)
+    {
+        return userLogDAO.getInterestsByInteresName(interestsName);
+    }
+
+    public long getCategoryIDByCatName(String categoryName)
+    {    	//getQuery("hql/getCategoryIDByCatName.hql")
+        return userLogDAO.getCategoryIDByCatName(categoryName, "");
+    }
+
+    public CategoryInterest getCategorie(String name)
+    {
+        return userLogDAO.getCategorie(name);
+    }
+
+    public List<Interests> getListInterests(CategoryInterest name)
+    {
+        return userLogDAO.getListInterests(name);
+    }
+
+    public void putInterestsUser(long UserID, Set<Interests> interests)
+    {
+        userLogDAO.putInterestsUser(UserID, interests);
+    }
+
+    public void addInter(Interests inter)
+    {
+        System.out.println(userLogDAO.addInterest(inter));
+    }
+
+    public void addCategoryInterests(CategoryInterest catInteres)
+    {
+        System.out.println(userLogDAO.addCategory(catInteres));
+    }
+
+    public List<CategoryInterest> getCategories()
+    {
+        return userLogDAO.getCategory();
+    }
 
 }

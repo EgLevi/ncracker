@@ -162,7 +162,7 @@ function deletePhoto(e)
     getParent(getParent(this)).remove();
     if(index>=0)
     {
-        while(spans.length>=index)
+        while(spans.length>index)
         {
             if(spans.length==0)
             {
@@ -284,7 +284,7 @@ $(document).ready(function () {
                     index=imgs.length-1;
                 }
             }
-            getParent(imgs[index]).dispatchEvent(new Event("click"));
+            getParent(getParent(imgs[index])).dispatchEvent(new Event("click"));
             changePhotoFlag=true;
         }
     }
