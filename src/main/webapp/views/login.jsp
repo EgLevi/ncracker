@@ -22,12 +22,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Logo</a>
+            <a class="navbar-brand" href="#"><img src="/resources/images/logo4.png"  height="30"></a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li><a href="#">Home</a></li>
-            </ul>
+
         </div>
     </div>
 </nav>
