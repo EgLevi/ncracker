@@ -87,19 +87,22 @@ $(document).ready(function () {
     {
         var rect;
         var spans = myPhotoContent.getElementsByTagName('span');
-        var lastRect = spans[spans.length-1].getBoundingClientRect();
-        var length = spans.length;
-        for(i=0;i<length;i++)
+        if(spans.length>0)
         {
-            rect = spans[spans.length-1].getBoundingClientRect();
-            if(rect.top==lastRect.top)
+            var lastRect = spans[spans.length-1].getBoundingClientRect();
+            var length = spans.length;
+            for(i=0;i<length;i++)
             {
-                hidePanel.prepend(spans[spans.length-1].getElementsByTagName('img')[0]);
-                spans[spans.length-1].remove();
-            }
-            else
-            {
-                break;
+                rect = spans[spans.length-1].getBoundingClientRect();
+                if(rect.top==lastRect.top)
+                {
+                    hidePanel.prepend(spans[spans.length-1].getElementsByTagName('img')[0]);
+                    spans[spans.length-1].remove();
+                }
+                else
+                {
+                    break;
+                }
             }
         }
         $('#hidePanel').append('<img src="'+relativePathPhoto+'">');
