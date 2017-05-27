@@ -31,8 +31,11 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
     }
 
     @Override
+    @Transactional
     public UserInfo getEntityById(Long id) {
-        return null;
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/UserInfoById.hql"));
+        query.setParameter("id", id);
+        return (UserInfo) query.getSingleResult();
     }
 
     @Override
@@ -66,11 +69,9 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
         query.setParameter("login", login);
         UserInfo userInfo = (UserInfo) query.getSingleResult();
         Set<UserChat> userChat = userInfo.getUserChat();
-        List<Chat> chats  = new CopyOnWriteArrayList<Chat>();;
-        Iterator<UserChat> it = userChat.iterator();
-        while(it.hasNext())
-        {
-            chats.add(it.next().getChat());
+        List<Chat> chats  = new CopyOnWriteArrayList<>();
+        for (UserChat anUserChat : userChat) {
+            chats.add(anUserChat.getChat());
         }
         return chats;
     }
@@ -82,14 +83,12 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
         query.setParameter("login", login);
         UserInfo userInfo = (UserInfo) query.getSingleResult();
         Set<UserChat> userChat = userInfo.getUserChat();
-        List<Chat> chats  = new CopyOnWriteArrayList<Chat>();
-        Iterator<UserChat> itUC = userChat.iterator();
-        while(itUC.hasNext())
-        {
-            chats.add(itUC.next().getChat());
+        List<Chat> chats  = new CopyOnWriteArrayList<>();
+        for (UserChat anUserChat : userChat) {
+            chats.add(anUserChat.getChat());
         }
-        List<Message> messages = new CopyOnWriteArrayList<Message>();
-        List<Message> buf = new CopyOnWriteArrayList<Message>();
+        List<Message> messages = new CopyOnWriteArrayList<>();
+        List<Message> buf = new CopyOnWriteArrayList<>();
         Iterator<Chat> it = chats.iterator();
         Iterator<Message> innerIt;
         Chat chat;
@@ -120,7 +119,7 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
         query.setParameter("login", login);
         UserInfo userInfo = (UserInfo) query.getSingleResult();
         Set<UserData> data = userInfo.getUserData();
-        List<UserData> result = new CopyOnWriteArrayList<UserData>();
+        List<UserData> result = new CopyOnWriteArrayList<>();
         result.addAll(data);
         return result;
     }
@@ -132,7 +131,7 @@ public class UserInfoDAO extends AbstractDAO<UserInfo, Long> {
         query.setParameter("login", login);
         UserInfo userInfo = (UserInfo) query.getSingleResult();
         Set<PhotoLib> photos = userInfo.getPhotoLibs();
-        List<PhotoLib> result = new CopyOnWriteArrayList<PhotoLib>();
+        List<PhotoLib> result = new CopyOnWriteArrayList<>();
         result.addAll(photos);
         return result;
     }

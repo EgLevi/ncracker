@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="resources/css/affablebean.css">
     <link rel="stylesheet" type="text/css" href="resources/css/LCstyle.css">
+    <script src="../resources/js/searchPageScript.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -63,7 +64,7 @@
                             </div>
                         </div>
                     <%--end--%>
-                    <div class="btn" style="transform:scale(2); width:100%; margin:auto;">
+                    <div id="start-chat" class="btn" style="transform:scale(2); width:100%; margin:auto;">
                         <!--<button type="button" class="btn btn-primary btn-block btn-lg" ></button>-->
                         <img src="resources/images/search.png" alt="Logo" height="40" align="top">
                     </div>

@@ -1,8 +1,6 @@
 package ru.ncteam.levelchat.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -27,7 +25,7 @@ public class Chat {
     private long listId;
 
     @ManyToOne
-    @JoinColumn(name = "LEVEL_ID", nullable = false)
+    @JoinColumn(name = "LEVEL_ID")
     private Levels level;
 
     @Column(name = "PERSONAL_CHAT")
@@ -35,11 +33,11 @@ public class Chat {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
     @JsonIgnore
-    public Set<UserChat> userChats = new HashSet<UserChat>();
+    private Set<UserChat> userChats = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
     @JsonIgnore
-    public Set<Message> messages = new HashSet<Message>();
+    public Set<Message> messages = new HashSet<>();
 
     @JsonIgnore
     public Set<UserChat> getUserChats() {
@@ -70,8 +68,8 @@ public class Chat {
         return statusChat;
     }
 
-    public void setStatusChat(char statusChat) {
-        this.statusChat = statusChat;
+    public void setStatusChat() {
+        this.statusChat = '0';
     }
 
     public long getListId() {
@@ -94,8 +92,8 @@ public class Chat {
         return isPersonalChat;
     }
 
-    public void setPersonalChat(boolean personalChat) {
-        isPersonalChat = personalChat;
+    public void setPersonalChat() {
+        isPersonalChat = true;
     }
 
 
