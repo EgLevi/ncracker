@@ -21,9 +21,7 @@
 
 </head>
 <body>
-
 <jsp:include page="modules/navbarModule.jsp"/>
-
 <jsp:include page="modules/modalPhotoModule.jsp"/>
 
 <div class="container text-center">
@@ -31,20 +29,17 @@
         <div class="col-sm-3 well">
             <jsp:include page="modules/leftModule.jsp"/>
         </div>
-
         <div class="col-sm-9">
             <jsp:include page="modules/searchButtonModule.jsp"/>
             <jsp:include page="modules/aboutModule.jsp"/>
             <jsp:include page="modules/dashboardModule.jsp"/>
         </div>
-
-
     </div>
-</div>
 </div>
 
 <footer class="container-fluid text-center">
     <p>Footer Text</p>
 </footer>
+
 </body>
 </html>

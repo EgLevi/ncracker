@@ -74,7 +74,13 @@ public class UserpageController {
 
 
     @RequestMapping(value = "/search")
-    public String getSearchPage() {
+    public String getSearchPage(Map<String, Object> map) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserInfo userInfo = userLogService.getUserByLogin(user.getUsername());
+        if (userInfo.getPhoto_ava() == null) {
+            userInfo.setPhoto_ava("photo/ava.png");
+        }
+        map.put("userInfo", userInfo);
         return "search";
     }
 

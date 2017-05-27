@@ -17,33 +17,33 @@ $(document).ready(function () {
         }
     }
 
-    function clickOnOkBtn(e) {
-        if (data.length > 0)//если есть данные на обновление, то посылаем соответствующий запрос
-        {
-            $.ajax({
-                type: 'POST',
-                url: "search",
-                headers: {'X-CSRF-TOKEN': csrfToken},
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function (res) {
+    $("#okBtn").click(
+        function () {
+            if (data.length > 0)//если есть данные на обновление, то посылаем соответствующий запрос
+            {
+                $.ajax({
+                    type: 'POST',
+                    url: "search",
+                    headers: {'X-CSRF-TOKEN': csrfToken},
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (res) {
 
-                    cancelBtn.click();
-                    getUsersForChat();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                }
-            });
-            data = [];
-            clearListSelectedInterest()
+                        cancelBtn.click();
+                        getUsersForChat();
+                        start_chat();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                    }
+                });
+                data = [];
+                clearListSelectedInterest()
+            }
+            else {
+                cancelBtn.click();
+            }
         }
-        else {
-            cancelBtn.click();
-        }
-    }
-
-    okBtn.addEventListener("click", clickOnOkBtn);
-
+    );
 
     function getParent(el) {
         return el.parentElement || el.parentNode;
@@ -192,26 +192,25 @@ $(document).ready(function () {
         });
     }
 
-    $("#start-chat").click(
-        function () {
+
+        function start_chat() {
             var ulogin = {ulogin: username_by_inter};
             $.ajax({
                 headers: {'X-CSRF-TOKEN': csrfToken},
                 type: "POST",
                 url: "search/startchat",
-                contentType:"application/json",
+                contentType: "application/json",
                 data: JSON.stringify(ulogin),
                 success: function (res) {
-
                     cancelBtn.click();
-                    getUsersForChat();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert("ошибка отправки запроса")
                 }
             });
         }
-    )
+
 
     getCategory();
-});
+})
+;
