@@ -163,6 +163,11 @@ public class UserLogController {
         return "postregistrationPhoto";
     }
 
+    @RequestMapping("/trial")
+    public String trial() {
+        return "trial";
+    }
+
     @RequestMapping(value = "/anketa", method = RequestMethod.GET)
     public String anketa (ModelMap model)
     {

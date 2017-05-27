@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>${userInfo.name} ${userInfo.surname}</title>
+    <title>${userInfo.login}</title>
     <sec:csrfMetaTags />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,9 +44,7 @@
     </div>
 </div>
 
-<footer class="container-fluid text-center">
-    <p>Footer Text</p>
-</footer>
+<jsp:include page="modules/footerModule.jsp"/>
 
 </body>
 </html>

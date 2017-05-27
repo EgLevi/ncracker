@@ -20,7 +20,7 @@
                 <label for="remember_me" class="inline">Запомнить</label>
             </div>
             <div class="login-help">
-                <a href="registration" style="color:#777777">Регистрация</a>
+                <a id="okBtn" href="registration" style="color:#777777">Регистрация</a>
             </div>
         </form:form>
     </div>
