@@ -26,7 +26,11 @@ public class Interests {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "interest")
     @JsonIgnore
-    public Set<InterestList> interestLists = new HashSet<InterestList>();
+    private Set<InterestList> interestLists = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interests")
+    @JsonIgnore
+    public Set<DashboardUrl> dashboardUrls = new HashSet<>();
 
     public long getInterestId() {
         return interestId;

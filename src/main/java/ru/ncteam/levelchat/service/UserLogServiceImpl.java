@@ -167,6 +167,27 @@ public class UserLogServiceImpl implements UserLogService {
         return userLogDAO.getUserByLogin(login, getQuery("hql/UserInfoByLogin.hql"));
     }
 
+    public List<UserInfo> getUsersChat(String city, String country, String sex, int otAge, int doAge, Long group) {
+        return userLogDAO.getUsersForChat( city,  country,  sex,  otAge,  doAge,  group);
+    }
+
+    @Override
+    public void putInterestList(List<Interests> interestLists, Long groupId) throws HibernateException {
+         userLogDAO.putInterestList(interestLists,groupId);
+    }
+    public Long getId(){
+        return userLogDAO.getId();
+    }
+
+    /**
+     * добавляет интересы конкретного пользователя в dashboard
+     * @param userid
+     */
+    @Override
+    public void putDashboard(Long userid) {
+        userLogDAO.putDashBoard(userid);
+    }
+
 
     private String getQuery(String filename) {
         try {
@@ -176,8 +197,6 @@ public class UserLogServiceImpl implements UserLogService {
             byte[] fileContent = ByteBuffer.allocate((int) file.length()).array();
             long actualLength = is.read(fileContent, 0, fileContent.length);
             return new String(fileContent, 0, (int) actualLength);
-        } catch (IOException e) {
-            e.getMessage();
         } catch (Exception ne) {
             ne.getMessage();
         }
@@ -207,12 +226,12 @@ public class UserLogServiceImpl implements UserLogService {
             e.printStackTrace();
         }
         BigInteger bigInt = new BigInteger(1, digest);
-        String md5Hex = bigInt.toString(16);
+        StringBuilder md5Hex = new StringBuilder(bigInt.toString(16));
 
         while (md5Hex.length() < 32) {
-            md5Hex = "0" + md5Hex;
+            md5Hex.insert(0, "0");
         }
-        return md5Hex;
+        return md5Hex.toString();
     }
 
     public List<String> getUsersInterests(long userId, long categoryId)

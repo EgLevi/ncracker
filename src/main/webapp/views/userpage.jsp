@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <title>${userInfo.login}</title>
-    <sec:csrfMetaTags />
+    <sec:csrfMetaTags/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
@@ -20,9 +20,7 @@
 
 </head>
 <body>
-
 <jsp:include page="modules/navbarModule.jsp"/>
-
 <jsp:include page="modules/modalPhotoModule.jsp"/>
 
 <div class="container text-center">
@@ -30,17 +28,11 @@
         <div class="col-sm-3 well">
             <jsp:include page="modules/leftModule.jsp"/>
         </div>
-
         <div class="col-sm-9">
             <jsp:include page="modules/searchButtonModule.jsp"/>
             <jsp:include page="modules/aboutModule.jsp"/>
-            #dashboard
+            <jsp:include page="modules/dashboardModule.jsp"/>
         </div>
-
-
-
-
-
     </div>
 </div>
 

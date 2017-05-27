@@ -4,14 +4,13 @@ import ru.ncteam.levelchat.entity.CategoryInterest;
 import ru.ncteam.levelchat.entity.Interests;
 import ru.ncteam.levelchat.entity.UserInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 
 
 public interface UserLogDAO {
@@ -46,6 +45,8 @@ public interface UserLogDAO {
     
     public void putCategoryInterestByName(String categoryName) throws HibernateException;
 
+    public void putInterestList(List<Interests> interestLists, Long groupid);
+
     public UserInfo getUserByLogin(String login,String queryString) throws HibernateException;
 
     public String addCategory(CategoryInterest catInteres);
@@ -69,6 +70,12 @@ public interface UserLogDAO {
     public UserInfo getUser(long userId);
 
     public void putInterestsUser(long UserID, Set<Interests> interests);
+
+    public ArrayList getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group);
+
+    public Long getId();
+
+    public void putDashBoard(Long userid);
 
 
 }

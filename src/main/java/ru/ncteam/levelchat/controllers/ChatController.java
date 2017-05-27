@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import ru.ncteam.levelchat.dao.*;
 import ru.ncteam.levelchat.entity.Chat;
 import ru.ncteam.levelchat.entity.Message;
@@ -24,7 +23,6 @@ import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.listener.ChatPublisher;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +72,7 @@ public class ChatController {
     public @ResponseBody
     String setRead(@PathVariable Long chatId) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userChatDAO.setReadableForUser(user.getUsername(),chatId, false);
+        userChatDAO.setReadableForUser(user.getUsername(),chatId);
         return "success";
 
     }
@@ -90,7 +88,7 @@ public class ChatController {
         Gson gson = builder.create();
         Message message = gson.fromJson(gson.toJson(json.get("message")), Message.class);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userChatDAO.setReadable(chatId, true);
+        userChatDAO.setReadable(chatId);
         message.setChat(chatDAO.getEntityById(chatId));
         message.setUserInfo(userInfoDAO.getUserInfoByLogin(user.getUsername()));
         if (dataId != -1)

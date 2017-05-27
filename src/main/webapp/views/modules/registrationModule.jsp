@@ -6,7 +6,7 @@
             <label for="login">Логин</label>
             <div class="input-group">
                 <input id="login" type="text" class="form-control" name="login"
-                       placeholder="Имя пользователя" style="margin-bottom:7px;">
+                       placeholder="Имя пользователя" style="margin-bottom:7px; height: 35px;">
                 <div class="input-group-btn">
                     <button id="checkBtn" type="button" data-title="Проверить существоание логина"
                             class="btn btn-default" style="margin-bottom:7px;"><span id="okIcon"
