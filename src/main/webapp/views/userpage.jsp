@@ -29,8 +29,8 @@
             <jsp:include page="modules/leftModule.jsp"/>
         </div>
         <div class="col-sm-9">
-            <jsp:include page="modules/searchButtonModule.jsp"/>
             <jsp:include page="modules/aboutModule.jsp"/>
+            <jsp:include page="modules/searchButtonModule.jsp"/>
             <jsp:include page="modules/dashboardModule.jsp"/>
         </div>
     </div>
