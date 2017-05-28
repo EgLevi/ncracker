@@ -368,7 +368,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
                 "                           WHERE uint.interest_id = ilist.interest_id " +
                 "                           AND ilist.INTEREST_GROUP = :groupId " +
                 "                          AND uint.USER_ID IN ( " +
-                "                             SELECT proverka.USER_ID FROM CHAT_GROUP proverka " +
+                "                             SELECT proverka.USER_ID FROM USER_CHAT proverka " +
                 "                             WHERE proverka.USER_ID != :userid " +
                 "                           ) " +
                 "                           GROUP BY uint.user_id ORDER BY COUNT(uint.user_id) DESC) t1";
