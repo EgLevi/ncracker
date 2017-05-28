@@ -52,7 +52,7 @@
             </div>
             <div class="panel-body table-responsive" style="height: 420px">
                 <div style="width:40%; margin-left: auto;margin-right: auto;margin-top: 100px;">
-                    <div style="margin-top:10px;"><label class="fontface">Интересы</label></div>
+                    <div style="margin-top:10px;"><label class="fontface">Пользователи для чата</label></div>
                     <%--Пользователи для чата--%>
                         <div class="table-responsive" style="height: 130px;">
                             <div id="usersForChat" class="btn-group-vertical table-responsive" style="width:100%;">
