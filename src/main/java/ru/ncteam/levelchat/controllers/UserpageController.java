@@ -146,6 +146,7 @@ public class UserpageController {
         if (userInfo.getPhoto_ava() == null) {
             userInfo.setPhoto_ava("photo/ava.png");
         }
+        chats.sort(Chat::compareTo);
         map.put("chats", chats);
         map.put("userInfo", userInfo);
         Map<Long, Boolean> mapReadUnread = userInfoDAO.getMapReadUnread(user.getUsername());

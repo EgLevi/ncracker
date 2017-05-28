@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "CHAT")
-public class Chat {
+public class Chat  implements Comparable<Chat> {
     @Id
     @Column(name = "CHAT_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LCSEQ")
@@ -91,5 +91,15 @@ public class Chat {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    @Override
+    public int compareTo(Chat chat) {
+        return (int)(this.chatId-chat.getChatId());
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }

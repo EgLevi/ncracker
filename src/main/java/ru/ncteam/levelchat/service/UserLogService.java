@@ -67,7 +67,6 @@ public interface UserLogService {
 
     public List<Interests> getListInterests(CategoryInterest name);
 
-    List<UserInfo> getUsersChat(String city, String country, String sex, int otAge, int doAge, Long group);
     
     List<UserInfo> getUsersChat(String city, String country, String sex, int otAge, int doAge, Long group, Long userid);
 

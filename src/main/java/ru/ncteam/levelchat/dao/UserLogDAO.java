@@ -70,8 +70,6 @@ public interface UserLogDAO {
     public UserInfo getUser(long userId);
 
     public void putInterestsUser(long UserID, Set<Interests> interests);
-
-    public ArrayList getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group);
     
     public ArrayList getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group, Long userid);
 
