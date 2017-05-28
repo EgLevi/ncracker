@@ -43,16 +43,33 @@ public class UserDataDAO extends AbstractDAO<UserData, Long> {
     @Override
     public boolean create(UserData entity) {
         sessionFactory.getCurrentSession();
-
         return false;
     }
 
     @Transactional
     public Long create(String link, UserInfo userInfo) {
-        UserData userData = new UserData();
-        userData.setUserInfo(userInfo);
-        userData.setDataLink(link);
-        Session s = sessionFactory.getCurrentSession();
-        return (Long) s.save(userData);
+        Long index = indexOf(link,userInfo);
+        if(index == null)
+        {
+            UserData userData = new UserData();
+            userData.setUserInfo(userInfo);
+            userData.setDataLink(link);
+            Session s = sessionFactory.getCurrentSession();
+            return (Long) s.save(userData);
+        }
+        return index;
+    }
+
+    @Transactional
+    public Long indexOf(String link,UserInfo userInfo) {
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/getUserData.hql"));
+        query.setParameter("login", userInfo.getLogin());
+        query.setParameter("link", link);
+        UserData userData = (UserData)query.uniqueResult();
+        if(userData != null)
+        {
+            return userData.getDataId();
+        }
+        return null;
     }
 }

@@ -48,7 +48,7 @@ public interface UserLogDAO {
 
     public UserInfo getUserByLogin(String login,String queryString) throws HibernateException;
 
-    public ArrayList getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group);
+    public ArrayList getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group, Long userid);
 
     public Long getId();
 

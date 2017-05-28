@@ -1,6 +1,5 @@
 package ru.ncteam.levelchat.dao;
 
-import com.sun.java.swing.plaf.windows.WindowsBorders;
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
@@ -31,24 +30,24 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     private BCryptPasswordEncoder bcryptEncoder;
 
     public BCryptPasswordEncoder getBcryptEncoder() {
-		return bcryptEncoder;
-	}
+        return bcryptEncoder;
+    }
 
-	public void setBcryptEncoder(BCryptPasswordEncoder bcryptEncoder) {
-		this.bcryptEncoder = bcryptEncoder;
-	}
+    public void setBcryptEncoder(BCryptPasswordEncoder bcryptEncoder) {
+        this.bcryptEncoder = bcryptEncoder;
+    }
 
 
-	@Transactional
-    public String addUser(UserInfo userInfo,String queryString) {
+    @Transactional
+    public String addUser(UserInfo userInfo, String queryString) {
 
-        if (existUser(userInfo,queryString))
-        {
+        if (existUser(userInfo, queryString)) {
             userInfo.setPassword(bcryptEncoder.encode(userInfo.getPassword()));
+            userInfo.setPhoto_ava("photo/ava.png");
             Role role = new Role();
             role.setRole("ROLE_USER");
             role.setId(1);
-            Set<Role> setRole = new HashSet<Role>();
+            Set<Role> setRole = new HashSet<>();
             setRole.add(role);
             userInfo.setRoles(setRole);
             try {
@@ -61,102 +60,82 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             return "A user with this login already exist";
         }
     }
-    
-	@Transactional
+
+    @Transactional
     public String updateUserInfo(UserInfo userInfo) {
 
-    	try {
-    	    //создаем переменную buf для динамического формирования запроса
+        try {
+            //создаем переменную buf для динамического формирования запроса
             StringBuffer buf = new StringBuffer();
             buf.append("update UserInfo set");
-            boolean flag=false;
-            if(userInfo.getEmail()!=null)
-            {
+            boolean flag = false;
+            if (userInfo.getEmail() != null) {
                 buf.append(" email=:email");
-                flag=true;
+                flag = true;
             }
-            if(userInfo.getCountry()!=null)
-            {
-                if(flag)
-                {
+            if (userInfo.getCountry() != null) {
+                if (flag) {
                     buf.append(" ,");
                 }
                 buf.append(" country=:country");
-                flag=true;
+                flag = true;
             }
-            if(userInfo.getCity()!=null)
-            {
-                if(flag)
-                {
+            if (userInfo.getCity() != null) {
+                if (flag) {
                     buf.append(" ,");
                 }
                 buf.append(" city=:city");
-                flag=true;
+                flag = true;
             }
-            if(userInfo.getName()!=null)
-            {
-                if(flag)
-                {
+            if (userInfo.getName() != null) {
+                if (flag) {
                     buf.append(" ,");
                 }
                 buf.append(" name=:name");
-                flag=true;
+                flag = true;
             }
-            if(userInfo.getSurname()!=null)
-            {
-                if(flag)
-                {
+            if (userInfo.getSurname() != null) {
+                if (flag) {
                     buf.append(" ,");
                 }
                 buf.append(" surname=:surname");
-                flag=true;
+                flag = true;
             }
-            if(userInfo.getAge()!=null)
-            {
-                if(flag)
-                {
+            if (userInfo.getAge() != null) {
+                if (flag) {
                     buf.append(" ,");
                 }
                 buf.append(" age=:age");
-                flag=true;
+                flag = true;
             }
-            if(userInfo.getSex()!=null)
-            {
-                if(flag)
-                {
+            if (userInfo.getSex() != null) {
+                if (flag) {
                     buf.append(" ,");
                 }
                 buf.append(" sex=:sex");
             }
             buf.append(" where login=:login");
             String queryString = buf.toString();
-            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
-            if(userInfo.getEmail()!=null)
-            {
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+            if (userInfo.getEmail() != null) {
                 query.setParameter("email", userInfo.getEmail());
             }
-            if(userInfo.getCountry()!=null)
-            {
+            if (userInfo.getCountry() != null) {
                 query.setParameter("country", userInfo.getCountry());
             }
-            if(userInfo.getCity()!=null)
-            {
+            if (userInfo.getCity() != null) {
                 query.setParameter("city", userInfo.getCity());
             }
-            if(userInfo.getName()!=null)
-            {
+            if (userInfo.getName() != null) {
                 query.setParameter("name", userInfo.getName());
             }
-            if(userInfo.getSurname()!=null)
-            {
+            if (userInfo.getSurname() != null) {
                 query.setParameter("surname", userInfo.getSurname());
             }
-            if(userInfo.getAge()!=null)
-            {
+            if (userInfo.getAge() != null) {
                 query.setParameter("age", userInfo.getAge());
             }
-            if(userInfo.getSex()!=null)
-            {
+            if (userInfo.getSex() != null) {
                 query.setParameter("sex", userInfo.getSex());
             }
             query.setParameter("login", userInfo.getLogin());
@@ -166,12 +145,12 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             return e.getMessage();
         }
     }
-	
-	@Transactional
+
+    @Transactional
     public String updateUserInfoPhoto(UserInfo userInfo, String queryString) {
 
-    	try {
-            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+        try {
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
             query.setParameter("photo_ava", userInfo.getPhoto_ava());
             query.setParameter("login", userInfo.getLogin());
             query.executeUpdate();
@@ -180,18 +159,18 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             return e.getMessage();
         }
     }
-	
+
 
     @Transactional
-    public boolean existUser(UserInfo userInfo,String queryString) {
+    public boolean existUser(UserInfo userInfo, String queryString) {
         Query query = sessionFactory.getCurrentSession().createQuery(queryString);
         query.setParameter("login", userInfo.getLogin());
         return query.getResultList().isEmpty();
     }
-    
+
     @Transactional
-    public boolean existUser(String login,String queryString) {
-    	Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+    public boolean existUser(String login, String queryString) {
+        Query query = sessionFactory.getCurrentSession().createQuery(queryString);
         query.setParameter("login", login);
         return query.getResultList().isEmpty();
     }
@@ -200,160 +179,136 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserInfo userInfo = null;
         Set<Role> roles = null;
-        try 
-        {
-        	Query query = sessionFactory.getCurrentSession().createQuery("from UserInfo where login=:login");
+        try {
+            Query query = sessionFactory.getCurrentSession().createQuery("from UserInfo where login=:login");
             query.setParameter("login", username);
             userInfo = (UserInfo) query.uniqueResult();
             roles = userInfo.getRoles();
         } catch (HibernateException e) {
-        	e=e;
-        }
-        catch(Exception e1)
-        {
-        	e1=e1;
         }
 
         Iterator<Role> it = roles.iterator();
-        Collection<GrantedAuthority> collectionGA = new ArrayList<GrantedAuthority>();
+        Collection<GrantedAuthority> collectionGA = new ArrayList<>();
         while (it.hasNext()) {
             collectionGA.add(new SimpleGrantedAuthority(it.next().getRole()));
         }
 
-        UserDetails user = new User(username, userInfo.getPassword(), true, true, true, true, collectionGA);
-        return user;
+        return new User(username, userInfo.getPassword(), true, true, true, true, collectionGA);
     }
 
-    
+
     @Transactional
     public List<CategoryInterest> getAllCategory(String queryString) {
-    	
-    	try {
-            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+
+        try {
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
             return query.getResultList();
         } catch (HibernateException e) {
-        	return null;
-           
+            return null;
+
         }
     }
-    
+
     @Transactional
-    public List<Interests> getInterestsByCatId(long categoryId,String queryString)
-    {
-    	try {
-            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+    public List<Interests> getInterestsByCatId(long categoryId, String queryString) {
+        try {
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
             query.setParameter("categoryId", categoryId);
-            List<Interests> listInterests = query.getResultList();
-            return listInterests;
+            return (List<Interests>) query.getResultList();
         } catch (HibernateException e) {
-        	return null;
-           
+            return null;
+
         }
     }
-      
+
     @Transactional
-    public List<Interests> getInterestsByCatName(String categoryName,String queryString)
-    {
-    	try {
-            Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+    public List<Interests> getInterestsByCatName(String categoryName, String queryString) {
+        try {
+            Query query = sessionFactory.getCurrentSession().createQuery(queryString);
             query.setParameter("categoryName", categoryName);
-            List<Interests> listInterests = query.getResultList();
-            return listInterests;
+            return (List<Interests>) query.getResultList();
         } catch (HibernateException e) {
-        	return null;
-           
+            return null;
+
         }
     }
-      
+
     @Transactional
-    public void putInterestsByCatId(long categoryId,List<Interests> interests,String queryString) throws HibernateException
-    {
-    	Query query=sessionFactory.getCurrentSession().createQuery(queryString);
-    	for(int i=0;i<interests.size();i++)
-    	{
-    		query.setParameter("interestName", interests.get(i).getInterestName());
-    		query.setParameter("interestId", interests.get(i).getInterestId());
+    public void putInterestsByCatId(long categoryId, List<Interests> interests, String queryString) throws HibernateException {
+        Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+        for (Interests interest : interests) {
+            query.setParameter("interestName", interest.getInterestName());
+            query.setParameter("interestId", interest.getInterestId());
             query.executeUpdate();
-    	}
+        }
     }
-        
+
     @Transactional
-    public void updateInterests(List<Interests> interests,String queryString) throws HibernateException
-    {
-    	Query query=sessionFactory.getCurrentSession().createQuery(queryString);
-    	for(int i=0;i<interests.size();i++)
-    	{
-    		query.setParameter("interestName", interests.get(i).getInterestName());
-    		query.setParameter("interestId", interests.get(i).getInterestId());
+    public void updateInterests(List<Interests> interests, String queryString) throws HibernateException {
+        Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+        for (Interests interest : interests) {
+            query.setParameter("interestName", interest.getInterestName());
+            query.setParameter("interestId", interest.getInterestId());
             query.executeUpdate();
-    	}
+        }
     }
-    
+
     @Transactional
-    public List<Long> putInterests(List<Interests> interests, String categoryName,String queryString) throws HibernateException
-    {
-    	CategoryInterest categoryInterest = getCategoryInterestByName(categoryName, queryString);
-    	Interests interest=null;
-    	List<Long> listId = new ArrayList<Long>();
-    	for(int i=0;i<interests.size();i++)
-    	{
-    		interest = interests.get(i);
-    		interest.setCategoryInterest(categoryInterest);
-    		listId.add((Long)sessionFactory.getCurrentSession().save(interest));
-    	}
-    	return listId;
+    public List<Long> putInterests(List<Interests> interests, String categoryName, String queryString) throws HibernateException {
+        CategoryInterest categoryInterest = getCategoryInterestByName(categoryName, queryString);
+        Interests interest;
+        List<Long> listId = new ArrayList<>();
+        for (Interests interest1 : interests) {
+            interest = interest1;
+            interest.setCategoryInterest(categoryInterest);
+            listId.add((Long) sessionFactory.getCurrentSession().save(interest));
+        }
+        return listId;
     }
-    
+
     @Transactional
-    public void deleteInterests(List<Interests> interests,String categoryName, String queryString) throws HibernateException
-    {
-    	CategoryInterest categoryInterest = getCategoryInterestByName(categoryName,queryString);
-    	Interests interest;
-    	for(int i=0;i<interests.size();i++)
-    	{
-    		interest = interests.get(i);
-    		interest.setCategoryInterest(categoryInterest);
-    		sessionFactory.getCurrentSession().delete(interest);
-    	}
+    public void deleteInterests(List<Interests> interests, String categoryName, String queryString) throws HibernateException {
+        CategoryInterest categoryInterest = getCategoryInterestByName(categoryName, queryString);
+        Interests interest;
+        for (Interests interest1 : interests) {
+            interest = interest1;
+            interest.setCategoryInterest(categoryInterest);
+            sessionFactory.getCurrentSession().delete(interest);
+        }
     }
-    
+
     @Transactional
-    public void deleteCategory(String categoryName, String queryString) throws HibernateException
-    {
-    	Session session = sessionFactory.getCurrentSession();
-    	CategoryInterest categoryInterest = getCategoryInterestByName(categoryName,queryString);
+    public void deleteCategory(String categoryName, String queryString) throws HibernateException {
+        Session session = sessionFactory.getCurrentSession();
+        CategoryInterest categoryInterest = getCategoryInterestByName(categoryName, queryString);
         session.delete(categoryInterest);
     }
-    
+
     @Transactional
-    private CategoryInterest getCategoryInterestByName(String categoryName,String queryString)
-    {
-    	Query query=sessionFactory.getCurrentSession().createQuery(queryString);
-    	query.setParameter("categoryName", categoryName);
-    	return (CategoryInterest)query.uniqueResult();
-    }
-    
-    @Transactional
-    public void putCategoryInterestByName(String categoryName) throws HibernateException
-    {
-    	CategoryInterest categoryInterest = new CategoryInterest();
-    	categoryInterest.setCategoryName(categoryName);
-    	sessionFactory.getCurrentSession().save(categoryInterest);
+    private CategoryInterest getCategoryInterestByName(String categoryName, String queryString) {
+        Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+        query.setParameter("categoryName", categoryName);
+        return (CategoryInterest) query.uniqueResult();
     }
 
     @Transactional
-    public UserInfo getUserByLogin(String login,String queryString) throws HibernateException
-    {
-        Query query=sessionFactory.getCurrentSession().createQuery(queryString);
+    public void putCategoryInterestByName(String categoryName) throws HibernateException {
+        CategoryInterest categoryInterest = new CategoryInterest();
+        categoryInterest.setCategoryName(categoryName);
+        sessionFactory.getCurrentSession().save(categoryInterest);
+    }
+
+    @Transactional
+    public UserInfo getUserByLogin(String login, String queryString) throws HibernateException {
+        Query query = sessionFactory.getCurrentSession().createQuery(queryString);
         query.setParameter("login", login);
-        return (UserInfo)query.uniqueResult();
+        return (UserInfo) query.uniqueResult();
     }
 
     @Transactional
-    public Long getId(){
+    public Long getId() {
         Query query = sessionFactory.getCurrentSession().createSQLQuery("Select Max(interest_group) FROM interest_list");
-        Long id = Long.parseLong(query.getSingleResult().toString()) + 1L;
-        return id;
+        return Long.parseLong(query.getSingleResult().toString());
     }
 
     @Transactional
@@ -362,19 +317,20 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         DashboardUrl dashboardUrl = new DashboardUrl();
         Interests interests = new Interests();
         Query query = sessionFactory.getCurrentSession().createQuery("from UserInterest where userId =:userid");
-        query.setParameter("userid",userid);
+        query.setParameter("userid", userid);
         List<UserInterest> uListInter = (List<UserInterest>) query.list();
-        for (int i = 0; i < uListInter.size(); i++) {
+        for (UserInterest anUListInter : uListInter) {
 
-            interests.setInterestId(uListInter.get(i).getInterestId());
-            dashboardUrl.setBoardId(dashboardUrl.getBoardId()+1);
+            interests.setInterestId(anUListInter.getInterestId());
+            dashboardUrl.setBoardId(dashboardUrl.getBoardId() + 1);
             dashboardUrl.setInterests(interests);
             dashboardUrl.setUrlInterest("href");
             sessionFactory.getCurrentSession().save(dashboardUrl);
         }
     }
+
     /**
-     *  @param interestLists
+     * @param interestLists
      * @param groupid
      */
     @Override
@@ -382,8 +338,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     public void putInterestList(List<Interests> interestLists, Long groupid) {
         InterestList interestList = new InterestList();
         Interests interests = new Interests();
-
-        for (int i = 0; i<interestLists.size(); i++){
+        for (int i = 0; i < interestLists.size(); i++) {
 
             interests.setInterestId(interestLists.get(i).getInterestId());
 
@@ -395,7 +350,6 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     }
 
     /**
-     *
      * @param city
      * @param country
      * @param sex
@@ -407,18 +361,23 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
      */
     @Override
     @Transactional
-    public  ArrayList getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group) throws HibernateException {
+    public ArrayList<String> getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group, Long USERID) throws HibernateException {
 
         String q = "Select t1.user_id FROM (SELECT uint.user_id, COUNT(uint.user_id) " +
-                "   FROM User_interest uint, Interest_list ilist " +
-                "   WHERE uint.interest_id = ilist.interest_id " +
-                "   AND ilist.INTEREST_GROUP = :groupId " +
-                "   GROUP BY uint.user_id ORDER BY COUNT(uint.user_id) DESC) t1";
+                "                           FROM User_interest uint, Interest_list ilist " +
+                "                           WHERE uint.interest_id = ilist.interest_id " +
+                "                           AND ilist.INTEREST_GROUP = :groupId " +
+                "                          AND uint.USER_ID IN ( " +
+                "                             SELECT proverka.USER_ID FROM CHAT_GROUP proverka " +
+                "                             WHERE proverka.USER_ID != :userid " +
+                "                           ) " +
+                "                           GROUP BY uint.user_id ORDER BY COUNT(uint.user_id) DESC) t1";
 
 
         Query sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(q);
 
-        sqlQuery.setParameter("groupId", 5);
+        sqlQuery.setParameter("groupId", getId());
+        sqlQuery.setParameter("userid", USERID);
 //        sqlQuery.setParameter("city", "'"+city+"'");
 //
 //        sqlQuery.setParameter("country", "'"+country+"'");
@@ -431,15 +390,19 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
         String q1 = "Select Login From User_info where user_id = :userid";
         Query query = sessionFactory.getCurrentSession().createSQLQuery(q1);
         ArrayList ar = new ArrayList();
-        for (int i = 0; i<sqlQuery.getResultList().size(); i++){
-            query.setParameter("userid",21);
+        for (Object userid : sqlQuery.list()) {
+            query.setParameter("userid", userid);
+            System.out.println(query.getSingleResult().toString());
+            ar.add(query.getSingleResult().toString());
+        }
+        /*for (int i = 0; i<sqlQuery.getResultList().size(); i++){
+            query.setParameter("userid",sqlQuery.res);
             System.out.println(query.getResultList().toString());
             ar.add(query.getResultList().toString());
-        }
+        }*/
 
         return ar;
     }
-
 
 
 }

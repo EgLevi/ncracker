@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    var elem = document.getElementById("con-over");
-    elem.scrollTop = elem.scrollHeight;
+    //var elem = document.getElementById("con-over");
+    //elem.scrollTop = elem.scrollHeight;
 
     function clickOnCheck(e) {
         var formData = new FormData($('form')[0]);

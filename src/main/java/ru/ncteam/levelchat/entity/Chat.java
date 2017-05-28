@@ -1,8 +1,6 @@
 package ru.ncteam.levelchat.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -27,29 +25,27 @@ public class Chat {
     private long listId;
 
     @ManyToOne
-    @JoinColumn(name = "LEVEL_ID", nullable = false)
+    @JoinColumn(name = "LEVEL_ID")
     private Levels level;
 
     @Column(name = "PERSONAL_CHAT")
     private boolean isPersonalChat;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinTable(name = "USER_CHAT",
-            joinColumns = {@JoinColumn(name = "CHAT_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "USER_ID")})
-    @JsonIgnoreProperties(allowSetters=true)
-    @JsonBackReference
-    public Set<UserInfo> users = new HashSet<UserInfo>();
+    private Set<UserChat> userChats = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat")
     @JsonIgnore
-    public Set<Message> messages = new HashSet<Message>();
+    public Set<Message> messages = new HashSet<>();
 
     @JsonIgnore
-    public Set<UserInfo> getUsers() {
-        return users;
+    public Set<UserChat> getUserChats() {
+        return userChats;
+    }
+
+    public void setUserChats(Set<UserChat> userChats) {
+        this.userChats = userChats;
     }
 
     public long getChatId() {
@@ -72,8 +68,8 @@ public class Chat {
         return statusChat;
     }
 
-    public void setStatusChat(char statusChat) {
-        this.statusChat = statusChat;
+    public void setStatusChat() {
+        this.statusChat = '0';
     }
 
     public long getListId() {
@@ -96,14 +92,10 @@ public class Chat {
         return isPersonalChat;
     }
 
-    public void setPersonalChat(boolean personalChat) {
-        isPersonalChat = personalChat;
+    public void setPersonalChat() {
+        isPersonalChat = true;
     }
 
-
-    public void setUsers(Set<UserInfo> users) {
-        this.users = users;
-    }
 
     public Set<Message> getMessages() {
         return messages;

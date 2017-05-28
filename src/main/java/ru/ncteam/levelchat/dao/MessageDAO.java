@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ncteam.levelchat.entity.Message;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,5 +58,21 @@ public class MessageDAO extends AbstractDAO<Message, Long> {
         Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/messageByIdChat.hql"));
         query.setParameter("chatId", id);
         return query.list();
+    }
+
+    @Transactional
+    public List<Message> allMessagesByChatIdWithInfo(Long id) {
+        Query query = sessionFactory.getCurrentSession().createQuery(util.getStringFromFile("hql/messageByIdChat.hql"));
+        query.setParameter("chatId", id);
+        List<Message> messages = query.list();
+        Iterator<Message> it = messages.iterator();
+        Message message;
+        while(it.hasNext())
+        {
+            message=it.next();
+            message.setUserInfo(message.getUserInfo());
+            message.setUserData(message.getUserData());
+        }
+        return messages;
     }
 }

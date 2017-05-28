@@ -44,7 +44,7 @@ public interface UserLogService {
 
     UserInfo getUserByLogin(String login) throws HibernateException;
 
-    List<UserInfo> getUsersChat(String city, String country, String sex, int otAge, int doAge, Long group);
+    List<UserInfo> getUsersChat(String city, String country, String sex, int otAge, int doAge, Long group, Long userid);
 
     void putInterestList(List<Interests> interestLists, Long groupId) throws HibernateException;
 

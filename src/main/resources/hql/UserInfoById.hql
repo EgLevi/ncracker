@@ -1,0 +1,1 @@
+from UserInfo where user_id = :id
