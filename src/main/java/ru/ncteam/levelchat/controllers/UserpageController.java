@@ -93,23 +93,6 @@ public class UserpageController {
         return messages;
     }
 
-
-
-
-
-	/*@RequestMapping(value = "/search")
-    public String getSearchPage(Map<String, Object> map) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
-		UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
-		if(userInfo.getPhoto_ava()==null)
-		{
-			userInfo.setPhoto_ava("photo/ava.png");
-		}
-		map.put("userInfo", userInfo);
-		return "search";
-	}*/
-
     @RequestMapping(value = "/chats")
     public String getChats(Map<String, Object> map) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
