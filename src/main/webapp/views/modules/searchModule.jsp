@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="searchPanel" class="col-xs-12 col-md-8 col-sm-12 removableElement">
+<div id="searchPanel" class="col-sm-12 removableElement">
     <div class="panel panel-default" style="height:483px;">
         <div class="panel-heading">
             <div style="width:80%; margin:auto; text-align: center; transform:scale(1.5);">

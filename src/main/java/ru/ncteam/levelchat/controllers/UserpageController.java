@@ -27,11 +27,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 public class UserpageController {
-    @Autowired
-    private ChatDAO chatDAO;
 
     @Autowired
-    private MessageDAO messageDAO;
+    private ChatDAO chatDAO;
 
     @Autowired
     private UserInfoDAO userInfoDAO;
@@ -57,7 +55,6 @@ public class UserpageController {
             userInfo.setPhoto_ava("photo/ava.png");
         }
         map.put("userInfo", userInfo);
-        //userLogService.putDashboard(userInfo.getUser_id());
         return "userpage";
     }
 
@@ -141,23 +138,6 @@ public class UserpageController {
         return messages;
     }
 
-
-
-
-
-	/*@RequestMapping(value = "/search")
-    public String getSearchPage(Map<String, Object> map) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
-		UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
-		if(userInfo.getPhoto_ava()==null)
-		{
-			userInfo.setPhoto_ava("photo/ava.png");
-		}
-		map.put("userInfo", userInfo);
-		return "search";
-	}*/
-
     @RequestMapping(value = "/chats")
     public String getChats(Map<String, Object> map) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -223,9 +203,10 @@ public class UserpageController {
     @RequestMapping(value = "/search/getUsersForChat", method = RequestMethod.GET)
     @ResponseBody
     public String getUsersForChat() {
-
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long id = userInfoDAO.getUserInfoByLogin(user.getUsername()).getUser_id();
         JSONObject object = new JSONObject();
-        object.put("usersName", userLogService.getUsersChat("", ",", "", 20, 21, userLogService.getId()));
+        object.put("usersName", userLogService.getUsersChat("", "", "", 20, 21, userLogService.getId(), id));
 
         return object.toJSONString();
     }

@@ -167,8 +167,8 @@ public class UserLogServiceImpl implements UserLogService {
         return userLogDAO.getUserByLogin(login, getQuery("hql/UserInfoByLogin.hql"));
     }
 
-    public List<UserInfo> getUsersChat(String city, String country, String sex, int otAge, int doAge, Long group) {
-        return userLogDAO.getUsersForChat( city,  country,  sex,  otAge,  doAge,  group);
+    public List<UserInfo> getUsersChat(String city, String country, String sex, int otAge, int doAge, Long group, Long userid) {
+        return userLogDAO.getUsersForChat( city,  country,  sex,  otAge,  doAge,  group, userid);
     }
 
     @Override
