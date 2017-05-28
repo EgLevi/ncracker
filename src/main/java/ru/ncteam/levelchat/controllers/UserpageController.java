@@ -1,4 +1,4 @@
-﻿package ru.ncteam.levelchat.controllers;
+package ru.ncteam.levelchat.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
@@ -46,9 +46,6 @@ public class UserpageController {
     private ApplicationUtil util;
 
     @Autowired
-    private LevelsDAO levelsDAO;
-
-    @Autowired
     private UserChatDAO userChatDAO;
 
 
@@ -63,36 +60,6 @@ public class UserpageController {
         //userLogService.putDashboard(userInfo.getUser_id());
         return "userpage";
     }
-
-	@RequestMapping(value = "/search")
-	public String getSearchPage(Map<String, Object> map) {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
-		UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
-		if(userInfo.getPhoto_ava()==null)
-		{
-			userInfo.setPhoto_ava("photo/ava.png");
-		}
-		map.put("userInfo", userInfo);
-		return "search";
-	}
-
-	@RequestMapping(value = "/chats")
-	public String getChats(Map<String, Object> map)
-	{
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<Chat> chats = userInfoDAO.getUserChats(user.getUsername());
-		UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
-		if(userInfo.getPhoto_ava()==null)
-		{
-			userInfo.setPhoto_ava("photo/ava.png");
-		}
-		map.put("chats", chats);
-		map.put("userInfo", userInfo);
-		Map<Long,Boolean> mapReadUnread = userInfoDAO.getMapReadUnread(user.getUsername());
-		map.put("mapReadUnread", mapReadUnread);
-		return "chats";
-	}
 
 	@RequestMapping(value = "/myPhotos")
 	public String getPhoto(Map<String, Object> map)
@@ -206,40 +173,7 @@ public class UserpageController {
         return "chats";
     }
 
-    @RequestMapping(value = "/myPhotos")
-    public String getPhoto(Map<String, Object> map) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<PhotoLib> photoLibs = userInfoDAO.getUserPhotos(user.getUsername());
-        photoLibs.sort(PhotoLib::compareTo);
-        UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
-        if (userInfo.getPhoto_ava() == null) {
-            userInfo.setPhoto_ava("photo/ava.png");
-        }
-        map.put("photos", photoLibs);
-        map.put("userInfo", userInfo);
-        return "myPhoto";
-    }
 
-
-    @RequestMapping(value = "/addPhoto", method = RequestMethod.POST)
-    @ResponseBody
-    public String uploadPhoto(@RequestParam(value = "photo", required = false) MultipartFile photo) {
-        if (!photo.isEmpty()) {
-            if (!(photo.getContentType().equals("image/jpeg") || photo.getContentType().equals("image/png"))) {
-                return "fail, wrong format of photo";
-            }
-            try {
-                User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                UserInfo userInfo = new UserInfo();
-                userInfo.setLogin(user.getUsername());
-                return util.uploadFile(photo);
-            } catch (Exception e) {
-                return "fail";
-            }
-        } else {
-            return "failed your photo is empty";
-        }
-    }
 
     @RequestMapping(value = "/addPhoto/save", method = RequestMethod.POST)
     @ResponseBody
@@ -282,7 +216,7 @@ public class UserpageController {
     @ResponseBody
     public String putInterestsForSearch(@RequestBody ArrayList<Interests> interests,
                                         BindingResult result) {
-        userLogService.putInterestList(interests, userLogService.getId());
+        userLogService.putInterestList(interests, userLogService.getId()+1);
         return "success";
     }
 

@@ -24,10 +24,6 @@ public class Chat {
     @Column(name = "LIST_ID")
     private long listId;
 
-    @ManyToOne
-    @JoinColumn(name = "LEVEL_ID")
-    private Levels level;
-
     @Column(name = "PERSONAL_CHAT")
     private boolean isPersonalChat;
 
@@ -78,14 +74,6 @@ public class Chat {
 
     public void setListId(long listId) {
         this.listId = listId;
-    }
-
-    public Levels getLevel() {
-        return level;
-    }
-
-    public void setLevel(Levels level) {
-        this.level = level;
     }
 
     public boolean isPersonalChat() {

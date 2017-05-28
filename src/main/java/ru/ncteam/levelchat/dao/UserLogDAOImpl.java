@@ -1,4 +1,4 @@
-﻿package ru.ncteam.levelchat.dao;
+package ru.ncteam.levelchat.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
@@ -308,7 +308,17 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     @Transactional
     public Long getId() {
         Query query = sessionFactory.getCurrentSession().createSQLQuery("Select Max(interest_group) FROM interest_list");
-        return Long.parseLong(query.getSingleResult().toString());
+        Object result = query.getSingleResult();
+        Long id;
+        if(result==null)
+        {
+            id=new Long(0);
+        }
+        else
+        {
+            id=Long.parseLong(query.getSingleResult().toString());
+        }
+        return id;
     }
 
     @Transactional

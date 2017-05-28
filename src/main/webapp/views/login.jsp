@@ -13,7 +13,7 @@
     <script src="../resources/js/jquery-3.2.0.min.js"></script>
     <script src="../resources/js/customscript.js"></script>
 </head>
-<body>
+<body class="">
 
 <img src="/resources/images/demoApp.png" style=" width:75%; height:90%;opacity:0.5;">
 <a id="sign" class="btn btn-link" style="position: absolute; top:25%;right:50%;"><h1>Хочу так же</h1></a>
@@ -34,6 +34,11 @@
     </div>
 </div>
 </div>
+
+
+<style>
+    .hideCursor {cursor: none;}
+</style>
 
 <script src="../resources/js/bootstrap.min.js"></script>
 <script>
@@ -59,6 +64,11 @@
         {
             return;
         }
+        /*$('body').css({
+            'cursor' : 'none'
+        });*/
+        document.body.className="hideCursor";
+        sign.className+=" hideCursor";
         cursor.style.display = "";
         var parent = getParent(this);
         cursor.style.top = e.clientY+'px';

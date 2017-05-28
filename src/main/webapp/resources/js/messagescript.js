@@ -90,6 +90,8 @@ $(document).ready(function () {
 
     document.getElementById("chatHistory").addEventListener("scroll", scrollChatToBottom);
 
+    document.getElementById("chatHistory").dispatchEvent(new Event("scroll"));
+
     document.getElementById("chatHistory").addEventListener("mouseover", mouseOnMessages);
 
     document.getElementById("chatHistory").addEventListener("mouseout", mouseOutMessages);
