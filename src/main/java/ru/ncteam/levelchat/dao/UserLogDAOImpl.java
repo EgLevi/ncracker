@@ -361,18 +361,23 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
      */
     @Override
     @Transactional
-    public ArrayList<String> getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group) throws HibernateException {
+    public ArrayList<String> getUsersForChat(String city, String country, String sex, int otAge, int doAge, Long group, Long USERID) throws HibernateException {
 
         String q = "Select t1.user_id FROM (SELECT uint.user_id, COUNT(uint.user_id) " +
-                "   FROM User_interest uint, Interest_list ilist " +
-                "   WHERE uint.interest_id = ilist.interest_id " +
-                "   AND ilist.INTEREST_GROUP = :groupId " +
-                "   GROUP BY uint.user_id ORDER BY COUNT(uint.user_id) DESC) t1";
+                "                           FROM User_interest uint, Interest_list ilist " +
+                "                           WHERE uint.interest_id = ilist.interest_id " +
+                "                           AND ilist.INTEREST_GROUP = :groupId " +
+                "                          AND uint.USER_ID IN ( " +
+                "                             SELECT proverka.USER_ID FROM CHAT_GROUP proverka " +
+                "                             WHERE proverka.USER_ID != :userid " +
+                "                           ) " +
+                "                           GROUP BY uint.user_id ORDER BY COUNT(uint.user_id) DESC) t1";
 
 
         Query sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(q);
 
         sqlQuery.setParameter("groupId", getId());
+        sqlQuery.setParameter("userid", USERID);
 //        sqlQuery.setParameter("city", "'"+city+"'");
 //
 //        sqlQuery.setParameter("country", "'"+country+"'");
