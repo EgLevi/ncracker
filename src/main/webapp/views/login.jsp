@@ -15,7 +15,7 @@
 </head>
 <body class="">
 
-<img src="/resources/images/demoApp.png" style=" width:75%; height:90%;opacity:0.5;">
+<img src="/resources/images/demoApp.png" style=" width:100%; height:90%;opacity:0.5;">
 <a id="sign" class="btn btn-link" style="position: absolute; top:25%;right:50%;"><h1>Хочу так же</h1></a>
 <div id="cursor" style="width:20px; height:20px; position: absolute;display:none; z-index: 10">
     <img src="/resources/images/cursor.png" style="width:14px; height:20px;">
