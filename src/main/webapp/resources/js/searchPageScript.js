@@ -31,7 +31,7 @@ $(document).ready(function () {
 
                         cancelBtn.click();
                         getUsersForChat();
-                        start_chat();
+
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                     }
@@ -42,6 +42,7 @@ $(document).ready(function () {
             else {
                 cancelBtn.click();
             }
+
         }
     );
 
@@ -105,7 +106,7 @@ $(document).ready(function () {
         }
     }
 
-    function getUsersForChat(e) {
+    function getUsersForChat() {
         $.ajax({
             type: 'GET',
             url: "/search/getUsersForChat",
@@ -118,7 +119,8 @@ $(document).ready(function () {
                 } catch (e) {
                     result = res;
                 }
-                username_by_inter = res.usersName[1];
+                username_by_inter = res.usersName[0];
+                start_chat();
             },
             error: function (jqXHR, textStatus, errorThrown) {
             }
@@ -205,7 +207,7 @@ $(document).ready(function () {
                     cancelBtn.click();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert("ошибка отправки запроса")
+                    alert("К сожалению не удалось найти собеседника с данными интересами. Попробуйте выбрать другие")
                 }
             });
         }

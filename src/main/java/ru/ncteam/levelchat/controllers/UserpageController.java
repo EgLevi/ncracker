@@ -10,8 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.ncteam.levelchat.dao.ChatDAO;
-import ru.ncteam.levelchat.dao.UserInfoDAO;
+import ru.ncteam.levelchat.dao.*;
 import ru.ncteam.levelchat.entity.*;
 import ru.ncteam.levelchat.service.UserLogService;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
@@ -28,11 +27,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
 public class UserpageController {
-    @Autowired
-    private ChatDAO chatDAO;
 
     @Autowired
-    private MessageDAO messageDAO;
+    private ChatDAO chatDAO;
 
     @Autowired
     private UserInfoDAO userInfoDAO;
@@ -47,9 +44,6 @@ public class UserpageController {
     private ApplicationUtil util;
 
     @Autowired
-    private LevelsDAO levelsDAO;
-
-    @Autowired
     private UserChatDAO userChatDAO;
 
 
@@ -61,7 +55,6 @@ public class UserpageController {
             userInfo.setPhoto_ava("photo/ava.png");
         }
         map.put("userInfo", userInfo);
-        //userLogService.putDashboard(userInfo.getUser_id());
         return "userpage";
     }
 
@@ -192,9 +185,10 @@ public class UserpageController {
     @RequestMapping(value = "/search/getUsersForChat", method = RequestMethod.GET)
     @ResponseBody
     public String getUsersForChat() {
-
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long id = userInfoDAO.getUserInfoByLogin(user.getUsername()).getUser_id();
         JSONObject object = new JSONObject();
-        object.put("usersName", userLogService.getUsersChat("", ",", "", 20, 21, userLogService.getId()));
+        object.put("usersName", userLogService.getUsersChat("", "", "", 20, 21, userLogService.getId(), id));
 
         return object.toJSONString();
     }
