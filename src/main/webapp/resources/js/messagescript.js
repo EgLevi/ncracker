@@ -120,7 +120,7 @@ $(document).ready(function () {
     function enterDown(event) {
         if (!event.shiftKey) {
             if (event.keyCode == 13) {
-                if(message.value!="")
+                if(message.value!="" || successLoad.style.display == "")
                 {
                     sendMsg.click();
                 }

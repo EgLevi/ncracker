@@ -19,6 +19,7 @@ import ru.ncteam.levelchat.entity.*;
 
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 @Repository
 public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
@@ -524,7 +525,40 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
     public void putInterestsUser(long UserID, Set<Interests> interests)
     {
         UserInfo userinfo = getUser(UserID);
-        userinfo.setInterests(interests);
+        Set<Interests> existInterests = new CopyOnWriteArraySet();
+        Set<Interests> copyExistInterests = new CopyOnWriteArraySet();
+        Set<Interests> TSInterests = new CopyOnWriteArraySet();
+        existInterests.addAll(userinfo.getInterests());
+        copyExistInterests.addAll(userinfo.getInterests());
+        TSInterests.addAll(interests);
+        for(Interests interest : existInterests)
+        {
+            if(!existInSetInterest(TSInterests,interest))
+            {
+                existInterests.remove(interest);
+            }
+        }
+        for(Interests interest : TSInterests)
+        {
+            if(existInSetInterest(existInterests,interest))
+            {
+                TSInterests.remove(interest);
+            }
+        }
+        existInterests.addAll(TSInterests);
+        userinfo.setInterests(existInterests);
+    }
+
+    private boolean existInSetInterest(Set<Interests> set, Interests interest)
+    {
+        for(Interests intr : set)
+        {
+            if(intr.getInterestId()==interest.getInterestId())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Transactional
