@@ -4,7 +4,7 @@
     <div class="col-sm-12">
         <div class="panel panel-default text-left">
             <div id="chatHistory" class="panel-body container-overflow" style="height: 450px;">
-                <div class="row">
+                <div id="msgs" class="row">
                     <ul class="chat-in list-group">
                         <c:forEach items="${messages}" var="message">
                             <li class="list-group-item">

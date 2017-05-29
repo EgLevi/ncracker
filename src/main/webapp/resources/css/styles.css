@@ -183,10 +183,12 @@ span.badge {
 
 .container-overflow {
     display: block;
-    overflow: auto;
+    overflow-y: hidden;
     height: 400pt;
 
-}
+}.container-overflow:hover {
+     overflow-y: auto;
+ }
 
 div.message {
     white-space: pre-wrap;
