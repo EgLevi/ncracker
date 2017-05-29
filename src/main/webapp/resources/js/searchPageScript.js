@@ -98,6 +98,12 @@ $(document).ready(function () {
             element[0].style.display = "inline";
             element[0].getElementsByTagName("div")[0].addEventListener("click", deleteInterest);
             listInterest.appendChild(element[0]);
+            var childs = listInterest.children;
+            element =childs[childs.length-1];
+            if(element.offsetHeight>16)
+            {
+                listInterest.insertBefore(document.createElement('br'),element);
+            }
             //если такого элемента нет, то вносим его в список интересов
             data.push({
                 "interestId": parentEl.getElementsByTagName("label")[0].innerHTML,

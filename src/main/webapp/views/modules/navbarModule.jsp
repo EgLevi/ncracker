@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="/resources/images/logo4.png"  height="30"></a>
+            <a class="navbar-brand" href="#" style="padding-top: 7px;"><img src="/resources/images/logo4.png"  height="30"></a>
         </div>
         <form action="/logout" id="logout" method="post">
             <!--<input type="hidden" name="${_csrf.parameterName}"

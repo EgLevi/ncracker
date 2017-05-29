@@ -3,7 +3,7 @@
     <div class="panel panel-default" style="height:483px;">
         <div class="panel-heading">
             <div style="width:80%; margin:auto; text-align: center; transform:scale(1.5);">
-                <img src="resources/images/search-title.png" alt="Logo" height="40" align="top">
+                <label style="color:#337ab7">Поиск собеседника</label>
             </div>
         </div>
         <div class="panel-body table-responsive" style="height: 420px">

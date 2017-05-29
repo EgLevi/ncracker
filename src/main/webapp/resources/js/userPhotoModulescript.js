@@ -39,7 +39,7 @@ function imgAlignment(imgSource)
             scale=maxHeight/imgs[index].naturalHeight;
             if((sumWidth+scale*imgs[index].naturalWidth+5)>widthPanel)
             {
-                scale=widthPanel/sumWidth;
+                scale=(widthPanel - 5*scales.length)/sumWidth;
                 for(i=0;i<scales.length;i++)
                 {
                     scales[i]=scales[i]*scale;
@@ -57,7 +57,7 @@ function imgAlignment(imgSource)
         }
         if(sumWidth<widthPanel)
         {
-            scale=widthPanel/sumWidth;
+            scale=(widthPanel - 5*scales.length)/sumWidth;
             for(i=0;i<scales.length;i++)
             {
                 scales[i]=scales[i]*scale;
@@ -69,7 +69,7 @@ function imgAlignment(imgSource)
             str+='<span style="position:relative;">' +
                 '<div style="position:relative; display:inline-block;">'+
                 '<img src="'+imgs[indexes[i]].src+'" style="width:'+imgs[indexes[i]].naturalWidth*scales[i]+'px; height:'+imgs[indexes[i]].naturalHeight*scales[i]+'px; margin-right: 5px; margin-top:5px;">' +
-                '<button type="button" style="position:absolute; right:2px; top:0px; color:#ff0000; display: none;" class="close">×</button>'+
+                '<button type="button" style="position:absolute; right:7px; top:2px; color:#ff0000; display: none;" class="close">×</button>'+
                 '</div>'+
                 '</span>';
         }
@@ -372,10 +372,7 @@ $(document).ready(function () {
 
     function mouseOnPhotoPanel(e) {
         document.body.style.overflow = 'hidden';
-        /*if(document.body.scrollHeight!=document.body.clientHeight)
-        {
-            document.body.style.paddingRight = '17px';
-        }*/
+        document.body.style.paddingRight = '17px';
     }
 
     function mouseOutPhotoPanel(e) {

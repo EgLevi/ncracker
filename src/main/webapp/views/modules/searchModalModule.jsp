@@ -4,8 +4,7 @@
         <div class="panel panel-primary" style="background-color:#e5e8ed; width: 400px; height:483px;">
             <div class="panel-heading" style="background-color:#e5e8ed">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <img src="resources/images/interest_for_search.png" alt="Logo" height="40" align="top"
-                     style="transform: scale(1);">
+                <label style="color:#337ab7">Интересы для поиска</label>
             </div>
             <div class="panel-body" style="height: 75%">
                 <div>
@@ -15,8 +14,8 @@
                     <div id="listInterest" style="overflow: auto; height:55px;">
                         <div id="flistelement" class="listSelInterest" style="display: none;">
                             <label id="flabel" style="display: none;">0</label>
-                            <span id="fspan" class="label fontface selInterest">Default Label</span>
-                            <div id="fbtn" class="btn remBtn"><span class="glyphicon glyphicon-remove"></span></div>
+                            <span id="fspan" class="label fontface selInterest" style="color:#337ab7">Default Label</span>
+                            <div id="fbtn" class="btn remBtn"><span class="glyphicon glyphicon-remove" style="color:#337ab7"></span></div>
                         </div>
                     </div>
                     <div style="margin-top:20px">
