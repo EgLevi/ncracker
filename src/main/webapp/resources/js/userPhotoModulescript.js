@@ -37,7 +37,7 @@ function imgAlignment(imgSource)
         while(index<imgs.length)
         {
             scale=maxHeight/imgs[index].naturalHeight;
-            if((sumWidth+scale*imgs[index].naturalWidth)>widthPanel)
+            if((sumWidth+scale*imgs[index].naturalWidth+5)>widthPanel)
             {
                 scale=widthPanel/sumWidth;
                 for(i=0;i<scales.length;i++)
@@ -51,7 +51,7 @@ function imgAlignment(imgSource)
             {
                 scales.push(scale);
                 indexes.push(index);
-                sumWidth+=scale*imgs[index].naturalWidth;
+                sumWidth+=scale*imgs[index].naturalWidth+5;
             }
             index++;
         }
@@ -68,7 +68,7 @@ function imgAlignment(imgSource)
             strScale='scale('+scales[i]+')';
             str+='<span style="position:relative;">' +
                 '<div style="position:relative; display:inline-block;">'+
-                '<img src="'+imgs[indexes[i]].src+'" style="width:'+imgs[indexes[i]].naturalWidth*scales[i]+'px; height:'+imgs[indexes[i]].naturalHeight*scales[i]+'px">' +
+                '<img src="'+imgs[indexes[i]].src+'" style="width:'+imgs[indexes[i]].naturalWidth*scales[i]+'px; height:'+imgs[indexes[i]].naturalHeight*scales[i]+'px; margin-right: 5px; margin-top:5px;">' +
                 '<button type="button" style="position:absolute; right:2px; top:0px; color:#ff0000; display: none;" class="close">×</button>'+
                 '</div>'+
                 '</span>';
@@ -372,7 +372,10 @@ $(document).ready(function () {
 
     function mouseOnPhotoPanel(e) {
         document.body.style.overflow = 'hidden';
-        document.body.style.paddingRight = '17px';
+        /*if(document.body.scrollHeight!=document.body.clientHeight)
+        {
+            document.body.style.paddingRight = '17px';
+        }*/
     }
 
     function mouseOutPhotoPanel(e) {

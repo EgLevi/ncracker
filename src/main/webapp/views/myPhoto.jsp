@@ -20,7 +20,7 @@
     <script src="../resources/js/userPhotoModulescript.js"></script>
     <script src="../resources/js/modalAddPhotoModule.js"></script>
 </head>
-<body>
+<body style="padding-right: 0px;">
 
 <jsp:include page="modules/navbarModule.jsp"/>
 
@@ -37,11 +37,11 @@
 
 <div class="container text-center">
     <div class="row">
-        <div class="col-sm-3 well">
+        <div class="col-sm-4 well">
             <jsp:include page="modules/leftModule.jsp"/>
         </div>
 
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <jsp:include page="modules/userPhotoModule.jsp"/>
         </div>
 

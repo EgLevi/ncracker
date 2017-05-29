@@ -25,10 +25,10 @@
 
 <div class="container text-center">
     <div class="row">
-        <div class="col-sm-3 well">
+        <div class="col-sm-4 well">
             <jsp:include page="modules/editAvatarModule.jsp"/>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <jsp:include page="modules/aboutModule.jsp"/>
             <jsp:include page="modules/searchButtonModule.jsp"/>
             <!--<jsp:include page="modules/dashboardModule.jsp"/>-->
