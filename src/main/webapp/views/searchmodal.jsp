@@ -5,12 +5,12 @@
 <script src="resources/js/jquery-1.4.2.min.js" type="text/javascript" ></script>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/affablebean.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap_min.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/LCstyle.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <link rel="stylesheet" type="text/css" href="../resources/css/affablebean.css">
+    <link rel="stylesheet" type="text/css" href="../resources/css/bootstrap_min.css">
+    <link rel="stylesheet" type="text/css" href="../resources/css/LCstyle.css">
+    <script src="../resources/js/jquery.min.js" type="text/javascript"></script>
+    <script src="../resources/js/bootstrap.min.js"></script>
 </head>
 <body style="background-attachment:fixed" topmargin="10">
 <div class="container-fluid" style="width:730px;">

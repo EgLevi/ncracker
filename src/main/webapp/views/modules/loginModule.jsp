@@ -12,7 +12,8 @@
             <div class="form-group">
                 <input type="password" class="form-control" name="j_password" placeholder="Пароль">
             </div>
-            <div class="form-group">
+            <label class="label label-danger">${error}</label>
+            <div class="form-group" style="margin-top: 10px;">
                 <button type="submit" class="btn btn-primary btn-block">Войти</button>
             </div>
             <div class="form-group">

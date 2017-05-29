@@ -22,22 +22,21 @@
         }
     </style>
     <!-- Bootstrap -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="../resources/css/bootstrap-chosen.css" rel="stylesheet">
 
     <link href="../resources/css/select2.min.css" rel="stylesheet">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../resources/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../resources/js/bootstrap.min.js"></script>
     <script src="../resources/js/chosen.jquery.js"></script>
     <script src="../resources/js/select2.min.js"></script>
     <script src="../resources/js/jquery.json.js"></script>
     <script src="../resources/js/anketa.js"></script>
 
 
-    <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
     <link rel="stylesheet" href="../resources/css/styles.css">
     <link rel="stylesheet" href="../resources/css/userpagestyles.css">
     <script src="../resources/js/modalUserPhoto.js"></script>

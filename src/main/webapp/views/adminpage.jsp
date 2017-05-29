@@ -5,7 +5,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
-<script src="resources/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+<script src="../resources/js/jquery-1.4.2.min.js" type="text/javascript"></script>
 <head>
     <style>
         .btn-default-hover {
@@ -101,7 +101,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../resources/js/bootstrap.min.js"></script>
 </head>
 <body>
     <textarea id="txtarea" rows="2" cols="20" name="text" style="position:absolute; top: 0px; left: 0px; display:none;"></textarea>

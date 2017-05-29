@@ -81,7 +81,6 @@
             <jsp:include page="modules/messageModule.jsp"/>
             <jsp:include page="modules/userPhotoModule.jsp"/>
             <jsp:include page="modules/searchModule.jsp"/>
-            #dashboard
         </div>
 
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>${userInfo.login}</title>
+    <title>${userInfo.name} ${userInfo.surname}</title>
     <sec:csrfMetaTags/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,12 +26,12 @@
 <div class="container text-center">
     <div class="row">
         <div class="col-sm-3 well">
-            <jsp:include page="modules/leftModule.jsp"/>
+            <jsp:include page="modules/editAvatarModule.jsp"/>
         </div>
         <div class="col-sm-9">
             <jsp:include page="modules/aboutModule.jsp"/>
             <jsp:include page="modules/searchButtonModule.jsp"/>
-            <jsp:include page="modules/dashboardModule.jsp"/>
+            <!--<jsp:include page="modules/dashboardModule.jsp"/>-->
         </div>
     </div>
 </div>

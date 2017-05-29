@@ -37,7 +37,18 @@ public class UserLogController {
     private static Logger log = Logger.getLogger("h");
 
     @RequestMapping("/login")
-    public String login() {
+    public String login(String error,
+                        Map<String, Object> map)
+    {
+        if(error==null)
+        {
+            return "login";
+        }
+        if(error.equals("true"))
+        {
+            map.put("error","Введён неправильный логин или пароль");
+        }
+
         return "login";
     }
 
