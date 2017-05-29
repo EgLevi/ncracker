@@ -2,6 +2,6 @@
 
 <footer class="container-fluid text-center" style="background-color: #ffffff; color:#000000;">
 
-  NetCrackerTeam - Работает, не трогай! <span class="glyphicon glyphicon-copyright-mark"></span>
+  DNIWE Team - Работает, не трогай! <span class="glyphicon glyphicon-copyright-mark"></span>
 
 </footer>
