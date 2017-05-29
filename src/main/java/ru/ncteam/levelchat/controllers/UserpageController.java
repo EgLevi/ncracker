@@ -238,8 +238,10 @@ public class UserpageController {
         userChat2.setChat(chat);
         userChat2.setUserInfo(secondUser);
         userChatDAO.create(userChat2);
+        JSONObject object = new JSONObject();
+        object.put("idChat",chat.getChatId());
 
-        return null;
+        return object.toJSONString();
     }
 
     @RequestMapping(value = "/edituserinfo", method = RequestMethod.GET)

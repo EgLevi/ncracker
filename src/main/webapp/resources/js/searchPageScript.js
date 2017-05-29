@@ -195,22 +195,29 @@ $(document).ready(function () {
     }
 
 
-        function start_chat() {
-            var ulogin = {ulogin: username_by_inter};
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': csrfToken},
-                type: "POST",
-                url: "search/startchat",
-                contentType: "application/json",
-                data: JSON.stringify(ulogin),
-                success: function (res) {
-                    cancelBtn.click();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert("К сожалению не удалось найти собеседника с данными интересами. Попробуйте выбрать другие")
-                }
-            });
-        }
+    function start_chat() {
+        var ulogin = {ulogin: username_by_inter};
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': csrfToken},
+            type: "POST",
+            url: "search/startchat",
+            contentType: "application/json",
+            //TODO Доделать
+            dataType: "json",
+            data: JSON.stringify(ulogin),
+            success: function (res) {
+                cancelBtn.click();
+                alert(res);
+                var json = JSON.parse(res);
+                var url = "http://localhost:8081/chats/" + json.idChat
+                alert(url);
+                location.href = url;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("К сожалению не удалось найти собеседника с данными интересами. Попробуйте выбрать другие")
+            }
+        });
+    }
 
 
     getCategory();
