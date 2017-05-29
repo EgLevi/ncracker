@@ -3,7 +3,7 @@
 <div id="chatListPanel" class="col-sm-12 removableElement">
     <div class="panel panel-default text-left">
         <div class="panel-body">
-            <h4>Список чатов</h4>
+            <h4 style="color:#337ab7">Список чатов</h4>
             <div class="row">
                 <ul id="listChats" class="nav nav-pills nav-stacked text-left">
                     <c:forEach items="${chats}" var="chat">

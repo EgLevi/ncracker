@@ -11,43 +11,43 @@
         <div class="panel-body">
             <div id="edituserform">
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email" style="color:#337ab7">Email</label>
                     <input type="text" class="form-control" name="email">
                     <label id="emailError" class="label label-danger">${emailError}</label>
                     <form:errors name="email" cssClass="error"/>
                 </div>
                 <div class="form-group">
-                    <label for="country">Страна</label>
+                    <label for="country" style="color:#337ab7">Страна</label>
                     <input type="text" class="form-control" name="country" >
                     <label id="countryError" class="label label-danger">${countryError}</label>
                     <form:errors name="country" cssClass="error"/>
                 </div>
                 <div class="form-group">
-                    <label for="city">Город</label>
+                    <label for="city" style="color:#337ab7">Город</label>
                     <input type="text" class="form-control" name="city" >
                     <label id="cityError" class="label label-danger">${cityError}</label>
                     <form:errors name="city" cssClass="error"/>
                 </div>
                 <div class="form-group">
-                    <label for="name">Имя</label>
+                    <label for="name" style="color:#337ab7">Имя</label>
                     <input type="text" class="form-control" name="name" >
                     <label id="nameError" class="label label-danger">${nameError}</label>
                     <form:errors name="name" cssClass="error"/>
                 </div>
                 <div class="form-group">
-                    <label for="surname">Фамилия</label>
+                    <label for="surname" style="color:#337ab7">Фамилия</label>
                     <input type="text" class="form-control" name="surname" >
                     <label id="surnameError" class="label label-danger">${surnameError}</label>
                     <form:errors name="surname" cssClass="error"/>
                 </div>
                 <div class="form-group">
-                    <label for="age">Возраст</label>
+                    <label for="age" style="color:#337ab7">Возраст</label>
                     <input type="text" class="form-control" name="age" >
                     <label id="ageError" class="label label-danger">${ageError}</label>
                     <form:errors name="age" cssClass="error"/>
                 </div>
                 <div class="form-group">
-                    <label>Пол</label>
+                    <label style="color:#337ab7">Пол</label>
                     <select class="form-control" name="sex" >
                         <option>м</option>
                         <option>ж</option>
