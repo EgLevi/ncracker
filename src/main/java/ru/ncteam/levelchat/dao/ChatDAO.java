@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ncteam.levelchat.entity.Chat;
 import ru.ncteam.levelchat.entity.UserChat;
+import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
 
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class ChatDAO extends AbstractDAO<Chat, Long> {
@@ -89,5 +92,18 @@ public class ChatDAO extends AbstractDAO<Chat, Long> {
         }
         return new Chat();
 
+    }
+
+    @Transactional
+    public List<UserInfo> getUsersOfChat(Chat c)
+    {
+        Chat chat = sessionFactory.getCurrentSession().get(Chat.class,c.getChatId());
+        Set<UserChat> userChats = chat.getUserChats();
+        List<UserInfo> users = new CopyOnWriteArrayList();
+        for(UserChat uc:userChats)
+        {
+            users.add(uc.getUserInfo());
+        }
+        return users;
     }
 }

@@ -111,10 +111,20 @@ public class ChatController {
                 List<Message> messages = messageDAO.allMessagesByChatIdWithInfo(idChat);
                 map.put("messages", messages);
                 map.put("chatId", idChat);
+
                 UserInfo userInfo = userInfoDAO.getUserInfoByLogin(user.getUsername());
                 if(userInfo.getPhoto_ava()==null)
                 {
                     userInfo.setPhoto_ava("photo/ava.png");
+                }
+                List<UserInfo> users = chatDAO.getUsersOfChat(chat);
+                for(UserInfo ui: users)
+                {
+                    if(!ui.getLogin().equals(user.getUsername()))
+                    {
+                        map.put("headerChat",ui.getLogin());
+                        break;
+                    }
                 }
                 map.put("userInfo", userInfo);
                 return "messages";

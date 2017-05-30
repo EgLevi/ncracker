@@ -3,6 +3,9 @@
 <div id="chatPanel" class="row removableElement">
     <div class="col-sm-12">
         <div class="panel panel-default text-left">
+            <div class="panel-heading text-center" style="">
+                <label>${headerChat}</label>
+            </div>
             <div id="chatHistory" class="panel-body container-overflow" style="height: 450px;">
                 <div id="msgs" class="row">
                     <ul class="chat-in list-group">

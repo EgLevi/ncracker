@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ncteam.levelchat.entity.UserInfo;
 import ru.ncteam.levelchat.utils.ApplicationUtil;
 import ru.ncteam.levelchat.entity.UserChat;
 
@@ -85,4 +86,5 @@ public class UserChatDAO extends AbstractDAO<UserChat, Long> {
         return new UserChat();
 
     }
+
 }
