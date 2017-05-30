@@ -213,11 +213,14 @@ $(document).ready(function () {
             data: JSON.stringify(ulogin),
             success: function (res) {
                 cancelBtn.click();
-                alert(res);
-                var json = JSON.parse(res);
-                var url = "http://localhost:8081/chats/" + json.idChat
-                alert(url);
-                location.href = url;
+                try {
+                    result = JSON.parse(res);
+                } catch (e) {
+                    result = res;
+                }
+                var url = "http://localhost:8081/chats/" + result.idChat;
+
+                 location.href = url;
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert("К сожалению не удалось найти собеседника с данными интересами. Попробуйте выбрать другие")
