@@ -269,7 +269,7 @@ public class UserpageController {
                 if (!code.equals("typeMismatch")) {
                     map.put(listError.getField() + "Error", listError.getDefaultMessage());
                 } else {
-                    map.put(listError.getField() + "Error", "Недопустимое значение");
+                    map.put(listError.getField() + "Error", "Недопуcтимое значение");
                 }
             }
             return map;
