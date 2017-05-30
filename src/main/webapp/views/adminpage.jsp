@@ -705,6 +705,7 @@
 	    {
 	        if (aList[aList.length-1] == this)//если произошло нажатие на добавление новой категории
 	        {
+                prevSelIndex = this;
 	            coordinates = labelSlct.getBoundingClientRect();
 	            txtareaSelect.style.top = coordinates.top + "px";
 	            txtareaSelect.style.left = coordinates.left + "px";
@@ -727,7 +728,12 @@
 	            	dataDelete = [];
 	            	getInterestOfCategory();
 	            	hideDropDown();
+	            	txtareaSelect.style.display="none";
 	            }
+	            else
+                {
+                    hideDropDown();
+                }
 	        }
         	e.stopPropagation();
 	    }
