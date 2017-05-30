@@ -208,5 +208,6 @@ $(document).ready(function() {
                 $("#writeUser option[value=" + i + "]").attr('selected', 'true');
             }
         }
+        $('#select').trigger('chosen:open');
     });
 });
