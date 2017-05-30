@@ -132,11 +132,8 @@
                     </div>
                     <button type="button" id="commitBtn" data-title="Сохранить изменения" class="btn btn-default btn-default-hover" style="margin-bottom:0px; height: 34px;"><span class="glyphicon glyphicon-ok" style="color:#00FF00;"></span></button>
                     <button type="button" id="cancelBtn" data-title="Отменить" class="btn btn-default btn-default-hover" style="margin-bottom:0px; height: 34px;"><span class="glyphicon glyphicon-repeat" style="color:#FF0000;"></span></button>
-
-                </div>
-                <div style="position:absolute; left:770px;top:15px;">
-                    <a href="/userpage" style="margin-left: 50px;">На страничку пользователя</a>
-                    <a href="#" onclick="document.getElementById('logout').submit();" style="margin-left: 10px;">Выйти</a>
+                    <button class="btn btn-link"><a href="/userpage">На страничку пользователя</a></button>
+                    <button class="btn btn-link" onclick="document.getElementById('logout').submit();">Выйти</button>
                 </div>
             </div>
             <div class="panel-body table-responsive" style="height:480px;">

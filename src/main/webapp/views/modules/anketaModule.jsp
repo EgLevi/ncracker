@@ -14,24 +14,34 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-6">
-        <form>
-            <select id="select" multiple class="chosen-select" tabindex="-1">
-            </select>
-        </form>
+    
+	<div class="row">
+	    	Выберите подходящие вам интересы	    
+	    <div class="col-md-6">
+	        <form>
+	            <select id="select" multiple class="chosen-select" tabindex="-1">
+	            </select>
+	        </form>
+	    </div>     
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
-        <input type="button" value="Сохранить" id="but" onclick="save()">
-    </div>
+	 <div class="col-md-12">
+		Напишите свои улвечения, хобби
+	</div>
 </div>
 
 <div class="row">
     <div class="col-md-6">
         <select id="writeUser" multiple class="select-tag" tabindex="-1" aria-hidden="true">
         </select>
+    </div>
+</div>
+
+
+<div class="row" align="center" style="margin-top: 10px;">
+    <div class="col-md-12">
+        <input type="button" class="btn btn-basic" value="Сохранить" id="but" onclick="save()">
     </div>
 </div>
