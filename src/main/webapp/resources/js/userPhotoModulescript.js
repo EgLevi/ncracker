@@ -372,7 +372,7 @@ $(document).ready(function () {
 
     function mouseOnPhotoPanel(e) {
         document.body.style.overflow = 'hidden';
-        document.body.style.paddingRight = '17px';
+        //document.body.style.paddingRight = '17px';
     }
 
     function mouseOutPhotoPanel(e) {
