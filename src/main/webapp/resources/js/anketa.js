@@ -76,6 +76,16 @@ function save(){
         data:JSON.stringify(request),
         contentType: "application/json"
     });
+
+    var childs = myInterests.children;
+    while(childs.length>0)
+    {
+        childs[0].remove();
+    }//clear interests panel
+    for(i=0;i<request.count;i++)
+    {
+        $('#myInterests').append('<span class="label label-primary" style="margin-left: 5px;">'+request[i]+'</span>');
+    }
 }
 
 

@@ -40,8 +40,8 @@
 </div>
 
 
-<div class="row" align="center">
+<div class="row" align="center" style="margin-top: 10px;">
     <div class="col-md-12">
-        <input type="button" value="Сохранить" id="but" onclick="save()">
+        <input type="button" class="btn btn-basic" value="Сохранить" id="but" onclick="save()">
     </div>
 </div>
