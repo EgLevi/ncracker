@@ -32,7 +32,7 @@ public class UserInfo {
     @Pattern(regexp="[a-zA-Z0-9[А-я][-_*]]{0,}", message="Допустимые символы: буквы, цифры, _, -, *")
     private String surname;
 
-    @Column(name = "SEX", length = 1)
+    @Column(name = "SEX", length = 10)
     private String sex;
 
     @Column(name = "AGE")
