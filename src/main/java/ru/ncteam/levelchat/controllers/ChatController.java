@@ -87,6 +87,10 @@ public class ChatController {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         Message message = gson.fromJson(gson.toJson(json.get("message")), Message.class);
+        String textMessage = message.getTextMessage();
+        textMessage = textMessage.replaceAll("<","&lt;");
+        textMessage = textMessage.replaceAll(">","&gt;");
+        message.setTextMessage(textMessage);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userChatDAO.setReadable(chatId);
         message.setChat(chatDAO.getEntityById(chatId));
