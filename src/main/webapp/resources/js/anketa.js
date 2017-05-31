@@ -220,4 +220,19 @@ $(document).ready(function() {
         }
         $('#select').trigger('chosen:open');
     });
+
+    function changeInterface()
+    {
+        var child = document.getElementById('writeUser');
+        var parent = getParent(child);
+        var element = parent.children[1];
+        element.style.width="100%"
+        child = document.getElementById('select');
+        parent = getParent(child);
+        element = parent.children[1];
+        element.style.width="90%"
+    }
+
+    changeInterface();
+
 });

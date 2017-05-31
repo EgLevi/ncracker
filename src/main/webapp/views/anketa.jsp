@@ -39,6 +39,7 @@
 
     <link rel="stylesheet" href="../resources/css/styles.css">
     <link rel="stylesheet" href="../resources/css/userpagestyles.css">
+    <script src="../resources/js/globalscript.js"></script>
     <script src="../resources/js/modalUserPhoto.js"></script>
     <script src="../resources/js/csrfscript.js"></script>
     <script src="../resources/js/menuModulescript.js"></script>

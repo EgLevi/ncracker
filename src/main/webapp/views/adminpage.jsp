@@ -104,8 +104,8 @@
     <script src="../resources/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <textarea id="txtarea" rows="2" cols="20" name="text" style="position:absolute; top: 0px; left: 0px; display:none;"></textarea>
-    <textarea id="txtareaSelect" rows="2" cols="20" name="text" style="position:absolute; top: 0px; left: 0px; display:none; z-index:3"></textarea>
+    <textarea id="txtarea" rows="2" cols="20" name="text" style="position:absolute; top: 0px; left: 0px; display:none; resize: none;"></textarea>
+    <textarea id="txtareaSelect" rows="2" cols="20" name="text" style="position:absolute; top: 0px; left: 0px; display:none; z-index:3; resize: none;"></textarea>
 
     <button type="button" id="removeBtn" data-title="Удалить строки" class="btn btn-default" style="position:absolute; margin-bottom:0px; height: 34px; display:none;"><span class="glyphicon glyphicon-remove" style="color:#FF0000;"></span></button>
 
@@ -705,6 +705,7 @@
 	    {
 	        if (aList[aList.length-1] == this)//если произошло нажатие на добавление новой категории
 	        {
+                prevSelIndex = this;
 	            coordinates = labelSlct.getBoundingClientRect();
 	            txtareaSelect.style.top = coordinates.top + "px";
 	            txtareaSelect.style.left = coordinates.left + "px";
@@ -727,7 +728,12 @@
 	            	dataDelete = [];
 	            	getInterestOfCategory();
 	            	hideDropDown();
+	            	txtareaSelect.style.display="none";
 	            }
+	            else
+                {
+                    hideDropDown();
+                }
 	        }
         	e.stopPropagation();
 	    }
