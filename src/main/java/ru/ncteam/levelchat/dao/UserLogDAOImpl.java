@@ -109,12 +109,10 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
                 buf.append(" age=:age");
                 flag = true;
             }
-            if (userInfo.getSex() != null) {
-                if (flag) {
-                    buf.append(" ,");
-                }
-                buf.append(" sex=:sex");
+            if (flag) {
+                buf.append(" ,");
             }
+            buf.append(" sex=:sex");
             buf.append(" where login=:login");
             String queryString = buf.toString();
             Query query = sessionFactory.getCurrentSession().createQuery(queryString);
@@ -136,9 +134,7 @@ public class UserLogDAOImpl implements UserDetailsService, UserLogDAO {
             if (userInfo.getAge() != null) {
                 query.setParameter("age", userInfo.getAge());
             }
-            if (userInfo.getSex() != null) {
-                query.setParameter("sex", userInfo.getSex());
-            }
+            query.setParameter("sex", userInfo.getSex());
             query.setParameter("login", userInfo.getLogin());
             query.executeUpdate();
             return "success";

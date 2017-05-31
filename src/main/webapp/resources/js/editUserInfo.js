@@ -10,9 +10,26 @@ $(document).ready(function () {
         {
             formData.surname=document.getElementsByName("surname")[0].value;
         }
-        if(document.getElementsByName("sex")[0].value!="")
+        var options = document.getElementsByName("sex")[0].options;
+        var selOpt=-1;
+        for(i=0;i<options.length;i++)
         {
-            formData.sex=document.getElementsByName("sex")[0].value;
+            if(options[i].selected)
+            {
+                selOpt=i;
+                break;
+            }
+        }
+        if(selOpt>=0)
+        {
+            if(selOpt==0)
+            {
+                formData.sex=null;
+            }
+            else
+            {
+                formData.sex=options[selOpt].value;
+            }
         }
         if(document.getElementsByName("country")[0].value!="")
         {
@@ -52,6 +69,7 @@ $(document).ready(function () {
                 for (var field in result)
                 {
                     resetErrorLabels();
+                    field.name;
                     document.getElementById(field).innerHTML = result[field];
                 }
             },

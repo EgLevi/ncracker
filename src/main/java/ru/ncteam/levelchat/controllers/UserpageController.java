@@ -275,7 +275,7 @@ public class UserpageController {
             return map;
         }
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userInfo.setSex(userInfo.getSex());
+        //userInfo.setSex(userInfo.getSex());
         userInfo.setLogin(user.getUsername());
 
         if (userLogService.updateUserInfo(userInfo).equals("success")) {
