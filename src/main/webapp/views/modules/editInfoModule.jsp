@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="editUserInfoTable" class="row col-md-8 removableElement">
+<div id="editUserInfoTable" class="row col-sm-12 removableElement">
     <div class="panel panel-default">
         <div class="panel-heading">
             <img src="resources/images/logo4.png" alt="Logo" height='40' align='top'>

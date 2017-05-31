@@ -11,7 +11,6 @@
                 <h4><label>Страна: </label> ${userInfo.country}</h4>
                 <h4><label>Город: </label> ${userInfo.city} </h4>
                 <h4><label>Email: </label> ${userInfo.email}</h4>
-                <h4><label>Пол: </label> ${userInfo.sex}</h4>
 
                 <p ><a id="edituserinfoBtn" class="fa-link pull-right" href="edituserinfo"> Редактировать</a></p>
                 <span> <hr size="1" width="710" align="left" > </span>
