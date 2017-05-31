@@ -48,7 +48,12 @@
                 </div>
                 <div class="form-group">
                     <label style="color:#337ab7">Пол</label>
-                    <select class="form-control" name="sex" value="${userInfo.sex}">
+                    <select class="form-control" name="sex">
+                        <option>не выбрано</option>
+                        <c:if test="${userInfo.sex==null}">
+                            <option>мужской</option>
+                            <option>женский</option>
+                        </c:if>
                         <c:if test="${userInfo.sex=='мужской'}">
                             <option selected="true">мужской</option>
                             <option>женский</option>
