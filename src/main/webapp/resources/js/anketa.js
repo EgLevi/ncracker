@@ -84,7 +84,7 @@ function save(){
     }//clear interests panel
     for(i=0;i<request.count;i++)
     {
-        $('#myInterests').append('<span class="label label-primary" style="margin-left: 5px;">'+request[i]+'</span>');
+        $('#myInterests').append('<span class="label label-primary" style="margin-left: 5px; display:inline-block;">'+request[i]+'</span>');
     }
 }
 
